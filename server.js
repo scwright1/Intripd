@@ -12,7 +12,7 @@ server.use(express.json());
 server.use(express.methodOverride());
 server.use(express.static(__dirname + '/public'));
 
-server.get('/todos', function(req, res) {
+server.get('/api/v1/todos', function(req, res) {
 	var todo = {
 		"todo": [
 			{
@@ -34,6 +34,8 @@ server.get('/todos', function(req, res) {
 	};
 	res.send(todo);
 });
+
+server.get('/map');
 
 //start the server
 http.createServer(server).listen('3000', function() {

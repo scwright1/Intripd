@@ -1,3 +1,14 @@
-//generate the application instance
+/**
+ * Application entry point
+ * 
+ * Clientside code - Intripd-Ember-Node
+ * 
+ * ste.c.wr@gmail.com
+ **/
 
-window.Todos = Ember.Application.create();
+window.Intripd = Ember.Application.create();
+
+//Define Data API entry point (versioned)
+Intripd.ApplicationAdapter = Ember.RESTAdapter.extend({
+	namespace: 'api/v1'
+});
