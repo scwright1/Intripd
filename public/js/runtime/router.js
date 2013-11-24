@@ -7,6 +7,7 @@
 
 Intripd.Router.map(function() {
 	this.route('map', {path: '/map'});
+  this.route('auth', {path: '/login'});
 });
 
 Intripd.IndexRoute = Ember.Route.extend({
