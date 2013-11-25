@@ -2,28 +2,15 @@
 	<div style="height: 100px"></div>
 	<div class="row">
 		<div class="col-md-4"></div>
-		<div id="auth-login" class="col-md-4">
-			<div class="auth-login-header">
-				<img class="img-responsive" src="img/logo.png" alt="Intripd Logo" />
+		<div class="auth-container col-md-4">
+			<div class="auth-header">
+				<img class="img-responsive" src="img/logo.png" alt="Intripd Logo" style="margin: 0 auto;"/>
 			</div>
-			<div class="auth-login-title">
-				<p>Already got an account? Log in here.</p>
-			</div>
-			<form role="form"  {{action 'login' on='submit'}}>
-				{{#if loginFailed}}
-					<div class="danger">Invalid Email or Password</div>
-				{{/if}}
-				<div class="form-group auth-form-element-group">
-					<label for="email" class="auth-form-label">Email Address</label>
-					{{input value=email class="form-control auth-input" placeholder="Email Address" type="text"}}
-				</div>
-				<div class="form-group auth-form-element-group">
-					<label for="password" class="auth-form-label">Password</label>
-					{{input value=password type="password" class="form-control auth-input" placeholder="Password"}}
-				</div>
-				<button type="submit" class="btn btn-info btn-block login-override">Log In</button>
-				<input type="checkbox">Remember Me</input> | <b>Forgot your password?</b>
-			</form>
+			<button id="login-local" class="btn btn-success btn-block">Login with Email</button>
+			<button id="login-local" class="btn btn-block login-facebook" disabled="disabled">Login with Facebook</button>
+			<button id="login-local" class="btn btn-block login-twitter" disabled="disabled">Login with Twitter</button>
+			<button id="login-local" class="btn btn-block login-google" disabled="disabled">Login with Google</button>
+			{{outlet}}
 		</div>
 	</div>
 </div>

@@ -1,46 +1,14 @@
 Ember.TEMPLATES["auth"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashContexts, hashTypes, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  
-  data.buffer.push("\n					<div class=\"danger\">Invalid Email or Password</div>\n				");
-  }
 
-  data.buffer.push("<div class=\"container\">\n	<div style=\"height: 100px\"></div>\n	<div class=\"row\">\n		<div class=\"col-md-4\"></div>\n		<div id=\"auth-login\" class=\"col-md-4\">\n			<div class=\"auth-login-header\">\n				<img class=\"img-responsive\" src=\"img/logo.png\" alt=\"Intripd Logo\" />\n			</div>\n			<div class=\"auth-login-title\">\n				<p>Already got an account? Log in here.</p>\n			</div>\n			<form role=\"form\"  ");
-  hashContexts = {'on': depth0};
-  hashTypes = {'on': "STRING"};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "login", {hash:{
-    'on': ("submit")
-  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n				");
+  data.buffer.push("<div class=\"container\">\n	<div style=\"height: 100px\"></div>\n	<div class=\"row\">\n		<div class=\"col-md-4\"></div>\n		<div class=\"auth-container col-md-4\">\n			<div class=\"auth-header\">\n				<img class=\"img-responsive\" src=\"img/logo.png\" alt=\"Intripd Logo\" style=\"margin: 0 auto;\"/>\n			</div>\n			<button id=\"login-local\" class=\"btn btn-success btn-block\">Login with Email</button>\n			<button id=\"login-local\" class=\"btn btn-block login-facebook\" disabled=\"disabled\">Login with Facebook</button>\n			<button id=\"login-local\" class=\"btn btn-block login-twitter\" disabled=\"disabled\">Login with Twitter</button>\n			<button id=\"login-local\" class=\"btn btn-block login-google\" disabled=\"disabled\">Login with Google</button>\n			");
   hashTypes = {};
   hashContexts = {};
-  stack1 = helpers['if'].call(depth0, "loginFailed", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n				<div class=\"form-group auth-form-element-group\">\n					<label for=\"email\" class=\"auth-form-label\">Email Address</label>\n					");
-  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0};
-  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING"};
-  options = {hash:{
-    'value': ("email"),
-    'class': ("form-control auth-input"),
-    'placeholder': ("Email Address"),
-    'type': ("text")
-  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n				</div>\n				<div class=\"form-group auth-form-element-group\">\n					<label for=\"password\" class=\"auth-form-label\">Password</label>\n					");
-  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0};
-  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING"};
-  options = {hash:{
-    'value': ("password"),
-    'type': ("password"),
-    'class': ("form-control auth-input"),
-    'placeholder': ("Password")
-  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n				</div>\n				<button type=\"submit\" class=\"btn btn-info btn-block login-override\">Log In</button>\n				<input type=\"checkbox\">Remember Me</input> | <b>Forgot your password?</b>\n			</form>\n		</div>\n	</div>\n</div>");
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n		</div>\n	</div>\n</div>");
   return buffer;
   
 });
@@ -155,6 +123,53 @@ function program4(depth0,data) {
   },inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n</ul>");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES["login"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashContexts, hashTypes, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("\n					<div class=\"danger\">Invalid Email or Password</div>\n				");
+  }
+
+  data.buffer.push("		<div id=\"auth-login\">\n			<div class=\"auth-login-title\">\n				<p>Already got an account? Log in here.</p>\n			</div>\n			<form role=\"form\"  ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "login", {hash:{
+    'on': ("submit")
+  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n				");
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers['if'].call(depth0, "loginFailed", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n				<div class=\"form-group auth-form-element-group\">\n					<label for=\"email\" class=\"auth-form-label\">Email Address</label>\n					");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING"};
+  options = {hash:{
+    'value': ("email"),
+    'class': ("form-control auth-input"),
+    'placeholder': ("Email Address"),
+    'type': ("text")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n				<div class=\"form-group auth-form-element-group\">\n					<label for=\"password\" class=\"auth-form-label\">Password</label>\n					");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING"};
+  options = {hash:{
+    'value': ("password"),
+    'type': ("password"),
+    'class': ("form-control auth-input"),
+    'placeholder': ("Password")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n				<button type=\"submit\" class=\"btn btn-info btn-block login-override\">Log In</button>\n				<input type=\"checkbox\">Remember Me</input> | <b>Forgot your password?</b>\n			</form>\n		</div>");
   return buffer;
   
 });
