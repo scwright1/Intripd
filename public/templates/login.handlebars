@@ -1,20 +1,30 @@
-		<div id="auth-login">
-			<div class="auth-login-title">
-				<p>Already got an account? Log in here.</p>
+			<div id="auth-login">
+				<h3 class="auth-text-override"><b>Login</b></h3>
+				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">Already got an account? Log in here</h6>
+				<form role="form"  {{action 'login' on='submit'}}>
+					{{#if loginFailed}}
+						<div class="alert alert-danger auth-text-override">Invalid Email or Password</div>
+					{{/if}}
+					<div class="form-group auth-form-element-group">
+						<label for="email" class="auth-form-label">Email Address</label>
+						{{input value=email class="form-control auth-input" placeholder="Email Address" type="text"}}
+					</div>
+					<div class="form-group auth-form-element-group">
+						<label for="password" class="auth-form-label">Password</label>
+						{{input value=password type="password" class="form-control auth-input" placeholder="Password"}}
+					</div>
+					<div class="auth-text-override">
+						<button type="submit" class="btn btn-success login-override" style="width: 100px;">Log In</button>
+					</div>
+				</form>
+				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">{{#link-to "auth.forgot"}}Forgot your password?{{/link-to}} | {{#link-to "auth.signup"}}No account?{{/link-to}}</h6>
+				<div style="height:6px"></div>
+				<div class="social-login" style="border-top: 1px solid #e4e4e4">
+					<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">Coming soon - Log in with one of these accounts</h6>
+					<div class="auth-text-override">
+						<button class="btn login-facebook btn-social" disabled="disabled"><span class="fa fa-facebook"></span></button>
+						<button class="btn login-twitter btn-social" disabled="disabled"><span class="fa fa-twitter"></span></button>
+						<button class="btn login-google btn-social" disabled="disabled"><span class="fa fa-google-plus"></span></button>
+					</div>
+				</div>
 			</div>
-			<form role="form"  {{action 'login' on='submit'}}>
-				{{#if loginFailed}}
-					<div class="danger">Invalid Email or Password</div>
-				{{/if}}
-				<div class="form-group auth-form-element-group">
-					<label for="email" class="auth-form-label">Email Address</label>
-					{{input value=email class="form-control auth-input" placeholder="Email Address" type="text"}}
-				</div>
-				<div class="form-group auth-form-element-group">
-					<label for="password" class="auth-form-label">Password</label>
-					{{input value=password type="password" class="form-control auth-input" placeholder="Password"}}
-				</div>
-				<button type="submit" class="btn btn-info btn-block login-override">Log In</button>
-				<input type="checkbox">Remember Me</input> | <b>Forgot your password?</b>
-			</form>
-		</div>
