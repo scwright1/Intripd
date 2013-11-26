@@ -5,6 +5,15 @@
  *
  **/
 
+var AuthManager = require('config/auth_manager');
+
+Intripd.ApplicationRoute = Ember.Route.extend({
+  init: function() {
+    this._super();
+    Intripd.AuthManager = AuthManager.create();
+  }
+});
+
 Intripd.Router.map(function() {
 	this.route('map', {path: '/map'});
   this.resource('auth', {path: '/auth'}, function() {
