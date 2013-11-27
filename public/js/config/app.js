@@ -7,8 +7,17 @@ require('../vendor/handlebars');
 require('../vendor/ember');
 require('../vendor/ember-data'); // delete if you don't want ember-data
 
-var App = window.App = Ember.Application.create();
-App.Store = require('./store'); // delete if you don't want ember-data
+window.App = Ember.Application.create();
+
+var App = window.App;
+
+App.ApplicationAdapter = DS.RESTAdapter.extend({
+	namespace: 'v1'
+});
+
+App.Store = DS.Store.extend({
+	adapter: App.ApplicationAdapter
+});
 
 module.exports = App;
 

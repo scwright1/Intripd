@@ -1,7 +1,5 @@
-DS.RESTAdapter.reopen({
+var ApplicationAdapter = DS.RESTAdapter.extend({
 	namespace: 'v1'
 });
 
-module.exports = DS.Store.extend({
-	version: 12
-});
+module.exports = ApplicationAdapter;
