@@ -1,6 +1,9 @@
 			<div id="auth-login">
 				<h3 class="auth-text-override"><b>Login</b></h3>
 				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">Already got an account? Log in here</h6>
+				{{#if flash}}
+					<div class="alert alert-narrow alert-danger">{{flash}}</div>
+				{{/if}}
 				<form role="form"  {{action 'login' on='submit'}}>
 					{{#if loginFailed}}
 						<div class="alert alert-danger auth-text-override">Invalid Email or Password</div>
@@ -17,7 +20,7 @@
 						<button type="submit" class="btn btn-success login-override" style="width: 100px;">Log In</button>
 					</div>
 				</form>
-				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">{{#link-to "index"}}Forgot your password?{{/link-to}} | {{#link-to "users.create"}}No account?{{/link-to}}</h6>
+				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">{{#link-to "index"}}Forgot your password?{{/link-to}} | {{#link-to "auth.register"}}No account?{{/link-to}}</h6>
 				<div style="height:6px"></div>
 				<div class="social-login" style="border-top: 1px solid #e4e4e4">
 					<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">Coming soon - Log in with one of these accounts</h6>

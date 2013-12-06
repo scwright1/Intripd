@@ -1,11 +1,16 @@
 var AuthLoginController = Ember.ObjectController.extend({
 	actions: {
 		login: function() {
-			var router = this.get('target');
-			var data = this.getProperties('email', 'password');
-			$.post('auth/login', data, function(results) {
-				//App.AuthManager.authenticate(results.api_key.access_token, results.api_key.user_id);
-				router.transitionTo('index');
+			var self = this, data = this.getProperties('email', 'password');
+			//set the flash message to null
+			self.set('flash', null);
+			$.post('/api/auth/login', data).then(function(response) {
+				if(response.err) {
+					self.set('flash', response.err);
+				} else if(response.success) {
+					self.set('token', response.token);
+				}
+				self.set('flash', response.message);
 			});
 		}
 	}	

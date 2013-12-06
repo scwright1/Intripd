@@ -1,10 +1,10 @@
 			<div id="auth-register">
 				<h3 class="auth-text-override"><b>Register</b></h3>
 				<h6 class="auth-text-override" style="color: #c2c2c2; padding-top: 10px;">Already got an account? {{#linkTo 'auth.login'}}Log in here{{/linkTo}}</h6>
-				<form role="form" {{action registerUser this on='submit'}}>
-					{{#if loginFailed}}
-						<div class="alert alert-danger auth-text-override">Invalid Email or Password</div>
-					{{/if}}
+				{{#if flash}}
+					<div class="alert alert-narrow alert-danger">{{flash}}</div>
+				{{/if}}
+				<form role="form" {{action 'registerUser' on='submit'}}>
 					<div class="form-group auth-form-element-group">
 						<label for="email" class="auth-form-label">Email Address</label>
 						{{input value=email class="form-control auth-input" placeholder="Email Address" type="text"}}
