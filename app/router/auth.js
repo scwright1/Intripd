@@ -10,4 +10,8 @@ module.exports = function(server, passport) {
 			});
 		});
 	});
+
+	server.post('/api/auth/register', function(req, res, next) {
+		res.send(req.body.registration.email);
+	});
 }
