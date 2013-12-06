@@ -1,6 +1,6 @@
 var AuthLoginRoute = Ember.Route.extend({
 	model: function() {
-		return Ember.Object.create();
+		return Ember.Object.create({});
 	}
 });
 
