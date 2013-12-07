@@ -1,9 +1,15 @@
-var AuthManager = require('../config/auth_manager');
+var AppInit = require('../config/session_manager');
 
 var ApplicationRoute = Ember.Route.extend({
 	init: function() {
 		this._super();
-		App.AuthManager = AuthManager.create();
+	}
+});
+
+Ember.Application.initializer({
+	name: 'session',
+	initialize: function(container, application) {
+		AppInit.create();
 	}
 });
 

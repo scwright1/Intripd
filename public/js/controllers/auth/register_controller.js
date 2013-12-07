@@ -13,11 +13,9 @@ var AuthRegisterController = Ember.ObjectController.extend({
 		 			if(response.code) {
 		 				self.set('flash', response.err);
 		 			} else if(response.success) {
-		 				//something	
-		 				console.log(response.uid);
 		 				$.cookie('ato', response.token);
 		 				$.cookie('uid', response.uid);
-		 				self.transitionToRoute('index');
+		 				self.transitionToRoute('map');
 		 			}
 		 		});
 	 		}

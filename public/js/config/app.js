@@ -12,7 +12,7 @@ window.App = Ember.Application.create();
 var App = window.App;
 
 App.ApplicationAdapter = DS.RESTAdapter.extend({
-	namespace: 'v1'
+	namespace: 'api'
 });
 
 App.Store = DS.Store.extend({

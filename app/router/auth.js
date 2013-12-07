@@ -53,6 +53,7 @@ module.exports = function(server, passport) {
 				api_token = token(user.uid);
 				res.send({
 					success: true,
+					uid: user.uid,
 					token: api_token
 				});
 			}

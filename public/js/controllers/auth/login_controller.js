@@ -9,6 +9,8 @@ var AuthLoginController = Ember.ObjectController.extend({
 					self.set('flash', response.err);
 				} else if(response.success) {
 					self.set('token', response.token);
+					$.cookie('ato', response.token);
+					$.cookie('uid', response.uid);
 					self.transitionToRoute('index');
 				}
 				self.set('flash', response.message);

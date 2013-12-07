@@ -13,7 +13,7 @@ window.App = Ember.Application.create();
 var App = window.App;
 
 App.ApplicationAdapter = DS.RESTAdapter.extend({
-	namespace: 'v1'
+	namespace: 'api'
 });
 
 App.Store = DS.Store.extend({
@@ -24,68 +24,6 @@ module.exports = App;
 
 
 },{"../vendor/ember":17,"../vendor/ember-data":16,"../vendor/handlebars":18,"../vendor/jquery":20,"../vendor/jquery.cookie":19}],2:[function(require,module,exports){
-var User = require('../models/user');
-
-var AuthManager = Ember.Object.extend({
-	init: function() {
-		this._super();
-		var accessToken = $.cookie('access_token');
-		var authUserId = $.cookie('auth_user');
-		if(!Ember.isEmpty(accessToken) && !Ember.isEmpty(authUserId)) {
-			this.authenticate(accessToken, authUserId);
-		}
-	},
-
-	isAuthenticated: function() {
-		return !Ember.isEmpty(this.get('apiKey.accessToken')) && !Ember.isEmpty(this.get('apiKey.user'));
-	},
-
-	authenticate: function(accessToken, userId) {
-		$.ajaxSetup({
-			headers: { 'Authorization': 'Bearer ' + accessToken }
-		});
-		var user = User.find(userId);
-		this.set('apiKey', App.ApiKey.create({
-			accessToken: accessToken,
-			user: user
-		}));
-	},
-
-	// Log out the user
-  reset: function() {
-    App.__container__.lookup("route:application").transitionTo('auth.login');
-    Ember.run.sync();
-    Ember.run.next(this, function(){
-      this.set('apiKey', null);
-      $.ajaxSetup({
-        headers: { 'Authorization': 'Bearer none' }
-      });
-    });
-  },
-
-  // Ensure that when the apiKey changes, we store the data in cookies in order for us to load
-  // the user when the browser is refreshed.
-  apiKeyObserver: function() {
-    if (Ember.isEmpty(this.get('apiKey'))) {
-      $.removeCookie('access_token');
-      $.removeCookie('auth_user');
-    } else {
-      $.cookie('access_token', this.get('apiKey.accessToken'));
-      $.cookie('auth_user', this.get('apiKey.user.id'));
-    }
-  }.observes('apiKey')
-});
-
-// Reset the authentication if any ember data request returns a 401 unauthorized error
-DS.rejectionHandler = function(reason) {
-  if (reason.status === 401) {
-    App.AuthManager.reset();
-  }
-  throw reason;
-};
-
-module.exports = AuthManager;
-},{"../models/user":9}],3:[function(require,module,exports){
 var App = require('./app');
 
 App.Router.map(function() {
@@ -98,7 +36,18 @@ App.Router.map(function() {
 });
 
 
-},{"./app":1}],4:[function(require,module,exports){
+},{"./app":1}],3:[function(require,module,exports){
+
+SessionManager = Ember.Object.extend({
+	init: function() {
+		this._super();
+		this.set('token', $.cookie('ato'));
+		this.set('uid', $.cookie('uid'));
+	}
+});
+
+module.exports = SessionManager;
+},{}],4:[function(require,module,exports){
 var AuthLoginController = Ember.ObjectController.extend({
 	actions: {
 		login: function() {
@@ -110,6 +59,8 @@ var AuthLoginController = Ember.ObjectController.extend({
 					self.set('flash', response.err);
 				} else if(response.success) {
 					self.set('token', response.token);
+					$.cookie('ato', response.token);
+					$.cookie('uid', response.uid);
 					self.transitionToRoute('index');
 				}
 				self.set('flash', response.message);
@@ -137,11 +88,9 @@ var AuthRegisterController = Ember.ObjectController.extend({
 		 			if(response.code) {
 		 				self.set('flash', response.err);
 		 			} else if(response.success) {
-		 				//something	
-		 				console.log(response.uid);
 		 				$.cookie('ato', response.token);
 		 				$.cookie('uid', response.uid);
-		 				self.transitionToRoute('index');
+		 				self.transitionToRoute('map');
 		 			}
 		 		});
 	 		}
@@ -176,7 +125,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":3,"./controllers/auth/login_controller":4,"./controllers/auth/register_controller":5,"./models/api_key":7,"./models/registration":8,"./models/user":9,"./routes/application_route":10,"./routes/auth/login_route":11,"./routes/auth/register_route":12,"./routes/index_route":13,"./routes/map_route":14,"./templates":15}],7:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/auth/login_controller":4,"./controllers/auth/register_controller":5,"./models/api_key":7,"./models/registration":8,"./models/user":9,"./routes/application_route":10,"./routes/auth/login_route":11,"./routes/auth/register_route":12,"./routes/index_route":13,"./routes/map_route":14,"./templates":15}],7:[function(require,module,exports){
 var ApiKey = DS.Model.extend({
 	access_token: '',
 	user: null
@@ -202,19 +151,25 @@ module.exports = User;
 
 
 },{}],10:[function(require,module,exports){
-var AuthManager = require('../config/auth_manager');
+var AppInit = require('../config/session_manager');
 
 var ApplicationRoute = Ember.Route.extend({
 	init: function() {
 		this._super();
-		App.AuthManager = AuthManager.create();
+	}
+});
+
+Ember.Application.initializer({
+	name: 'session',
+	initialize: function(container, application) {
+		AppInit.create();
 	}
 });
 
 module.exports = ApplicationRoute;
 
 
-},{"../config/auth_manager":2}],11:[function(require,module,exports){
+},{"../config/session_manager":3}],11:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	model: function() {
 		return Ember.Object.create({});
