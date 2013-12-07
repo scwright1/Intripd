@@ -4,12 +4,13 @@
 
 //require mongoose for mongodb access.  require hash for hashing passwords
 var mongoose		= require('mongoose'),
-	hash 			= require('../helpers/hash');
+	hash 			= require('../helpers/hash'),
+    uuid            = require('node-uuid');
 
 //create the base user schema
 var baseCredentialsSchema = mongoose.Schema({
 	provider: {type: String, required: true, default: 'local'},
-	uid: {type: String, required: false},
+	uid: {type: String, default: uuid.v4()},
 	email: {type: String, required: true, unique: true, trim: true, lowercase: true},
 	hash: {type: String, required: true},
 	salt: {type: String, required: true},

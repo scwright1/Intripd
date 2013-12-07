@@ -110,6 +110,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 					self.set('flash', response.err);
 				} else if(response.success) {
 					self.set('token', response.token);
+					self.transitionToRoute('index');
 				}
 				self.set('flash', response.message);
 			});
@@ -133,10 +134,14 @@ var AuthRegisterController = Ember.ObjectController.extend({
 	 			self.set('flash', 'Passwords do not match.');
 	 		} else {
 		 		$.post('/api/auth/register', data).then(function(response) {
-		 			if(response.err) {
+		 			if(response.code) {
 		 				self.set('flash', response.err);
 		 			} else if(response.success) {
-		 				//something
+		 				//something	
+		 				console.log(response.uid);
+		 				$.cookie('ato', response.token);
+		 				$.cookie('uid', response.uid);
+		 				self.transitionToRoute('index');
 		 			}
 		 		});
 	 		}
@@ -267,7 +272,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n<div class=\"container\">\n	<div style=\"height: 100px\"></div>\n	<div class=\"row\">\n		<div class=\"col-md-4\"></div>\n		<div class=\"auth-container col-md-4\">\n			");
+  data.buffer.push("\n<div class=\"container\">\n	<div class=\"row\">\n		<div class=\"col-md-4\"></div>\n		<div class=\"auth-container col-md-4\">\n			");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -352,10 +357,10 @@ function program5(depth0,data) {
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '';
+  
 
 
-  return buffer;
+  data.buffer.push("<div class=\"container\">\n	<p>Protected Route</p>\n</div>");
   
 });
 

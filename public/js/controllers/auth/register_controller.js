@@ -10,10 +10,14 @@ var AuthRegisterController = Ember.ObjectController.extend({
 	 			self.set('flash', 'Passwords do not match.');
 	 		} else {
 		 		$.post('/api/auth/register', data).then(function(response) {
-		 			if(response.err) {
+		 			if(response.code) {
 		 				self.set('flash', response.err);
 		 			} else if(response.success) {
-		 				//something
+		 				//something	
+		 				console.log(response.uid);
+		 				$.cookie('ato', response.token);
+		 				$.cookie('uid', response.uid);
+		 				self.transitionToRoute('index');
 		 			}
 		 		});
 	 		}
