@@ -1,1 +1,1 @@
-{{#linkTo "index"}}Home{{/linkTo}} | {{#linkTo "auth.login"}}Login{{/linkTo}} | {{#linkTo "auth.register"}}Register{{/linkTo}}
+{{#linkTo "index"}}Home{{/linkTo}} | {{#linkTo "auth.login"}}Login{{/linkTo}} | {{#linkTo "auth.register"}}Register{{/linkTo}} {{#if isAuthenticated}} | <a href="#" {{action 'logout'}}>Logout</a>{{/if}}

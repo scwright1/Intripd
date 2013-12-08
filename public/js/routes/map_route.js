@@ -1,4 +1,4 @@
-var MapRoute = Ember.Route.extend({
+var MapRoute = App.AuthenticatedRoute.extend({
 
 });
 
