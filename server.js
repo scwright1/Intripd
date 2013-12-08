@@ -37,7 +37,6 @@ server.use(express.session({
   store: new RedisStore({
   })
 }));
-
 //initialize passport with config options defined above
 server.use(passport.initialize());
 server.use(passport.session());
@@ -46,6 +45,7 @@ server.use(express.static(__dirname + '/public'));
 //load the routers
 require('./app/router/auth.js')(server, passport);
 require('./app/router/map-root.js')(server);
+require('./app/router/sessions.js')(server);
 
 //start the server
 http.createServer(server).listen(config.port, function() {

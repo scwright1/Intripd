@@ -1,7 +1,8 @@
 var AuthLoginController = Ember.ObjectController.extend({
+	isChecked: false,
 	actions: {
 		login: function() {
-			var self = this, data = this.getProperties('email', 'password');
+			var self = this, data = this.getProperties('email', 'password', 'isChecked');
 			//set the flash message to null
 			self.set('flash', null);
 			$.post('/api/auth/login', data).then(function(response) {
@@ -10,7 +11,8 @@ var AuthLoginController = Ember.ObjectController.extend({
 				} else if(response.success) {
 					App.Session.setProperties({
 						token: response.token,
-						uid: response.uid
+						uid: response.uid,
+						rem: data.isChecked
 					});
 					var attemptedTransition = App.Session.get('attemptedTransition');
 			        if (attemptedTransition) {

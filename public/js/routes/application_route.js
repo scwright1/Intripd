@@ -4,10 +4,13 @@ var ApplicationRoute = Ember.Route.extend({
 	init: function() {
 		this._super();
 	},
-  events: {
+  actions: {
     logout: function() {
       App.Session.reset();
       this.transitionTo('index');
+    },
+    error: function(error, transition) {
+      console.log(error.message);
     }
   }
 });
@@ -39,4 +42,3 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-

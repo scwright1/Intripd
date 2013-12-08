@@ -1,17 +1,26 @@
 
-SessionManager = Ember.Object.extend({
+var SessionManager = Ember.Object.extend({
 	init: function() {
 		this._super();
-		this.set('token', $.cookie('ato'));
-		this.set('uid', $.cookie('uid'));
+		this.set('token', $.cookie('ato'), {expires: 365});
+		this.set('uid', $.cookie('uid'), {expires: 365});
+		this.set('rem', false);
 	},
 
 	tokenChanged: function() {
-		$.cookie('ato', this.get('token'));
+		if(this.get('rem') === true) {
+			$.cookie('ato', this.get('token'), {expires: 365});
+		} else {
+			$.cookie('ato', this.get('token'));
+		}
 	}.observes('token'),
 
 	uidChanged: function() {
-		$.cookie('uid', this.get('uid'));
+		if(this.get('rem') === true) {
+			$.cookie('uid', this.get('uid'), {expires: 365});
+		} else {
+			$.cookie('uid', this.get('uid'));
+		}
 	}.observes('uid'),
 
 	// Determine if the user is currently authenticated.
@@ -23,18 +32,29 @@ SessionManager = Ember.Object.extend({
 	    App.__container__.lookup("route:application").transitionTo('auth.login');
 	    Ember.run.sync();
 	    Ember.run.next(this, function(){
-	    	//TODO - remove session from database
-			this.set('token', '');
+	    	var tokenData = { tokenData: {token: this.get('token'), uid: this.get('uid') } };
+	    	//destroy the session on the serverside database
+	    	$.post('/api/sessions/destroy', tokenData);
+	    	//doesn't really matter if it worked or not, destroy the cookies on the client side anyway
+    	    this.set('token', '');
 			$.removeCookie('ato');
 			this.set('uid', '');
 			$.removeCookie('uid');
+			this.set('rem', false);
 			Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-  				if (!jqXHR.crossDomain) {
-    				jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
-  				}
+				if (!jqXHR.crossDomain) {
+					jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
+				}
 			});
 	    });
   	}
 });
+
+DS.rejectionHandler = function(reason) {
+	if(reason === 401) {
+		App.SessionManager.reset();
+	}
+	throw reason;
+}
 
 module.exports = SessionManager;

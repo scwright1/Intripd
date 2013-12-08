@@ -16,6 +16,9 @@
 						<label for="password" class="auth-form-label">Password</label>
 						{{input value=password type="password" class="form-control auth-input" placeholder="Password"}}
 					</div>
+					<div class="checkbox auth-form-control-element">
+						{{view Ember.Checkbox checkedBinding="isChecked"}} Remember Me
+					</div>
 					<div class="auth-text-override">
 						<button type="submit" class="btn btn-success login-override" style="width: 100px;">Log In</button>
 					</div>

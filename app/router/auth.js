@@ -51,10 +51,23 @@ module.exports = function(server, passport) {
 				});
 			} else {
 				api_token = token(user.uid);
-				res.send({
-					success: true,
-					uid: user.uid,
-					token: api_token
+				var sessionData = {
+					token: api_token,
+					uid: user.uid
+				};
+				Session.createSession(sessionData, function(response, flash) {
+					if(response === 200) {
+						res.send({
+							success: true,
+							uid: user.uid,
+							token: api_token
+						});
+					} else {
+						res.send({
+							code: response,
+							err: flash.message
+						});
+					}
 				});
 			}
 		});

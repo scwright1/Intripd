@@ -1,3 +1,5 @@
-<div class="container">
-	<p>Protected Route</p>
+<div id="navbar-vertical">
+	{{#if isAuthenticated}}
+	<a href="#" {{action 'logout'}}>Logout</a>
+	{{/if}}
 </div>
