@@ -217,7 +217,6 @@ App.MapRoute = require('./routes/map_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
-App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
 
 require('./config/routes');
@@ -225,7 +224,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./models/api_key":11,"./models/registration":12,"./models/user":13,"./routes/application_route":14,"./routes/auth/login_route":15,"./routes/auth/register_route":16,"./routes/index_route":17,"./routes/map_route":18,"./templates":19,"./views/application_view":25,"./views/index_view":26,"./views/map_view":27}],11:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./models/api_key":11,"./models/registration":12,"./models/user":13,"./routes/application_route":14,"./routes/auth/login_route":15,"./routes/auth/register_route":16,"./routes/index_route":17,"./routes/map_route":18,"./templates":19,"./views/application_view":25,"./views/map_view":26}],11:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -47590,17 +47589,17 @@ var ApplicationView = Ember.View.extend({
 
 module.exports = ApplicationView;
 },{}],26:[function(require,module,exports){
-
-},{}],27:[function(require,module,exports){
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['map-view'],
 	didInsertElement: function() {
-		this._super();
-		this.loadGoogleMaps();
+		var self = this;
+		self._super();
+		self.loadGoogleMaps();
 	},
 	willDestroyElement: function() {
 		map = null;
+		window.location.reload();
 	},
 	initiateMap: function() {
 		var mapOptions = {
@@ -47617,7 +47616,7 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback";
+		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
 	}

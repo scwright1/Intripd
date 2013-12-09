@@ -2,11 +2,13 @@ var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['map-view'],
 	didInsertElement: function() {
-		this._super();
-		this.loadGoogleMaps();
+		var self = this;
+		self._super();
+		self.loadGoogleMaps();
 	},
 	willDestroyElement: function() {
 		map = null;
+		window.location.reload();
 	},
 	initiateMap: function() {
 		var mapOptions = {
@@ -23,7 +25,7 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback";
+		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
 	}
