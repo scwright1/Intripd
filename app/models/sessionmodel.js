@@ -1,21 +1,20 @@
-var mongoose 		= require('mongoose');
+var mongoose 		= require('mongoose'),
+	jwt 			= require('jwt-simple');
 
 
 var sessionSchema = mongoose.Schema({
 	token: 		{ type: String, required: true, unique: true },
-	uid: 		{ type: String, required: false },
 	created:  	{ type: Date, default: Date.now }
 
 });
 
 sessionSchema.statics.createSession = function(data, done) {
-	var Session = this, t = data.token, u = data.uid;
+	var Session = this, t = data.token;
 	if(token === '') {
 		return done(400, { message: 'Token not found'} );
 	} else {
 		Session.create({
-			token: t,
-			uid: u
+			token: t
 		}, function(err, state) {
 			if(err) {
 				return done(400, { message: 'Token Malformed'});
@@ -27,13 +26,12 @@ sessionSchema.statics.createSession = function(data, done) {
 };
 
 sessionSchema.statics.destroySession = function(data, done) {
-	var Session = this, t = data.token, u = data.uid;
+	var Session = this, t = data.token;
 	if (!token) {
 		return done(400);
 	} else {
 		Session.remove({
-			token: t,
-			uid: u
+			token: t
 		}, function(err, response) {
 			if(err) {
 				return done(400);
@@ -45,14 +43,20 @@ sessionSchema.statics.destroySession = function(data, done) {
 };
 
 sessionSchema.statics.checkSession = function(req, res, next) {
-	var Session = mongoose.model('Session', sessionSchema), t = req.headers['x-authentication-token'];
-	if(!t) {
+	var Session = mongoose.model('Session', sessionSchema), t = req.headers['x-authentication-token'], u = req.headers['x-uid'];
+	if((!t) || (!u)) {
 		res.send(401);
 	} else {
 		if(!Session.findOne({token: t})) {
 			res.send(401);
 		} else {
-			next();
+			var secret = process.env.token_KEY;
+			var decode = jwt.decode(t, secret);
+			if(decode === u) {
+				next();
+			} else {
+				res.send(401);
+			}
 		}
 	}
 };

@@ -25,6 +25,7 @@ Ember.Application.initializer({
 Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   if (!jqXHR.crossDomain) {
     jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', App.Session.get('token'));
+    jqXHR.setRequestHeader('X-UID', App.Session.get('uid'));
   }
 });
 

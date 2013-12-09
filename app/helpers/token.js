@@ -1,10 +1,8 @@
-var jwt 		= require('jwt-simple'),
-	uuid 		= require('node-uuid');
+var jwt 		= require('jwt-simple');
 
 module.exports = function(uid) {
-	var payload = uuid.v4();
-	var secret = uid;
-
+	var payload = uid;
+	var secret = process.env.token_KEY;
 	var token = jwt.encode(payload, secret);
 
 	return token;
