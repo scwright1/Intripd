@@ -5,7 +5,8 @@
 //require mongoose for mongodb access.  require hash for hashing passwords
 var mongoose		= require('mongoose'),
 	hash 			= require('../helpers/hash'),
-    uuid            = require('node-uuid');
+    uuid            = require('node-uuid'),
+    date            = new Date();
 
 //create the base user schema
 var baseCredentialsSchema = mongoose.Schema({
@@ -14,7 +15,7 @@ var baseCredentialsSchema = mongoose.Schema({
 	email: {type: String, required: true, unique: true, trim: true, lowercase: true},
 	hash: {type: String, required: true},
 	salt: {type: String, required: true},
-	created: {type: Date, default: Date.now}
+	created: {type: String, default: date}
 });
 
 //create a static function as part of the schema for signing up

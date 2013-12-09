@@ -68,7 +68,7 @@ var SessionManager = Ember.Object.extend({
   	},
 
   	reset: function() {
-	    App.__container__.lookup("route:application").transitionTo('auth.login');
+	    App.__container__.lookup("route:application").transitionTo('index');
 	    Ember.run.sync();
 	    Ember.run.next(this, function(){
 	    	var tokenData = { tokenData: {token: this.get('token'), uid: this.get('uid') } };
@@ -83,19 +83,12 @@ var SessionManager = Ember.Object.extend({
 			Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 				if (!jqXHR.crossDomain) {
 					jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
-					jq.XHR.setRequestHeader('X-UID', null);
+					jqXHR.setRequestHeader('X-UID', null);
 				}
 			});
 	    });
   	}
 });
-
-DS.rejectionHandler = function(reason) {
-	if(reason === 401) {
-		App.SessionManager.reset();
-	}
-	throw reason;
-}
 
 module.exports = SessionManager;
 },{}],4:[function(require,module,exports){
@@ -224,6 +217,7 @@ App.MapRoute = require('./routes/map_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
+App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
 
 require('./config/routes');
@@ -231,7 +225,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./models/api_key":11,"./models/registration":12,"./models/user":13,"./routes/application_route":14,"./routes/auth/login_route":15,"./routes/auth/register_route":16,"./routes/index_route":17,"./routes/map_route":18,"./templates":19,"./views/application_view":25,"./views/map_view":26}],11:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./models/api_key":11,"./models/registration":12,"./models/user":13,"./routes/application_route":14,"./routes/auth/login_route":15,"./routes/auth/register_route":16,"./routes/index_route":17,"./routes/map_route":18,"./templates":19,"./views/application_view":25,"./views/index_view":26,"./views/map_view":27}],11:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -289,12 +283,20 @@ Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   }
 });
 
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+  // You should include additional conditions to the if statement so that this
+  // only triggers when you're absolutely certain it should
+  if (jqXHR.status === 401) {
+    App.Session.reset();
+  }
+});
+
 module.exports = ApplicationRoute;
 
 App.AuthenticatedRoute = Ember.Route.extend({
 	redirectToLogin: function(transition) {
     App.Session.set('attemptedTransition', transition);
-    this.transitionTo('auth.login');
+    this.transitionTo('index');
   },
  
   beforeModel: function(transition) {
@@ -47588,12 +47590,17 @@ var ApplicationView = Ember.View.extend({
 
 module.exports = ApplicationView;
 },{}],26:[function(require,module,exports){
+
+},{}],27:[function(require,module,exports){
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['map-view'],
 	didInsertElement: function() {
 		this._super();
 		this.loadGoogleMaps();
+	},
+	willDestroyElement: function() {
+		map = null;
 	},
 	initiateMap: function() {
 		var mapOptions = {
@@ -47608,7 +47615,11 @@ var MapView = Ember.View.extend({
 		window.map_callback = function() {
     		self.initiateMap();
 		}
-		$.getScript('http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback');
+		var script = document.createElement("script");
+		script.type="text/javascript";
+		script.src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback";
+		var mapGlobal = document.getElementById('map-container');
+		mapGlobal.appendChild(script);
 	}
 });
 

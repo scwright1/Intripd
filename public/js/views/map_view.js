@@ -5,6 +5,9 @@ var MapView = Ember.View.extend({
 		this._super();
 		this.loadGoogleMaps();
 	},
+	willDestroyElement: function() {
+		map = null;
+	},
 	initiateMap: function() {
 		var mapOptions = {
       		center: new google.maps.LatLng(26.055889, -5.989990),
@@ -18,7 +21,11 @@ var MapView = Ember.View.extend({
 		window.map_callback = function() {
     		self.initiateMap();
 		}
-		$.getScript('http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback');
+		var script = document.createElement("script");
+		script.type="text/javascript";
+		script.src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=false&callback=map_callback";
+		var mapGlobal = document.getElementById('map-container');
+		mapGlobal.appendChild(script);
 	}
 });
 

@@ -29,7 +29,7 @@ var SessionManager = Ember.Object.extend({
   	},
 
   	reset: function() {
-	    App.__container__.lookup("route:application").transitionTo('auth.login');
+	    App.__container__.lookup("route:application").transitionTo('index');
 	    Ember.run.sync();
 	    Ember.run.next(this, function(){
 	    	var tokenData = { tokenData: {token: this.get('token'), uid: this.get('uid') } };
@@ -44,18 +44,11 @@ var SessionManager = Ember.Object.extend({
 			Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
 				if (!jqXHR.crossDomain) {
 					jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
-					jq.XHR.setRequestHeader('X-UID', null);
+					jqXHR.setRequestHeader('X-UID', null);
 				}
 			});
 	    });
   	}
 });
-
-DS.rejectionHandler = function(reason) {
-	if(reason === 401) {
-		App.SessionManager.reset();
-	}
-	throw reason;
-}
 
 module.exports = SessionManager;

@@ -15,10 +15,9 @@ module.exports = function(server, passport) {
 					if(error) {
 						res.send({err: error});
 					} else {
-						api_token = token(user.uid);
+						api_token = token(user.uid, req.body.isChecked);
 						var sessionData = {
-							token: api_token,
-							uid: user.uid
+							token: api_token
 						};
 						Session.createSession(sessionData, function(response, flash) {
 							if(response === 200) {
@@ -50,10 +49,9 @@ module.exports = function(server, passport) {
 					message: flash.message 
 				});
 			} else {
-				api_token = token(user.uid);
+				api_token = token(user.uid, req.body.isChecked);
 				var sessionData = {
-					token: api_token,
-					uid: user.uid
+					token: api_token
 				};
 				Session.createSession(sessionData, function(response, flash) {
 					if(response === 200) {

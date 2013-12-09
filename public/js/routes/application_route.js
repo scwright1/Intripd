@@ -29,12 +29,20 @@ Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
   }
 });
 
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+  // You should include additional conditions to the if statement so that this
+  // only triggers when you're absolutely certain it should
+  if (jqXHR.status === 401) {
+    App.Session.reset();
+  }
+});
+
 module.exports = ApplicationRoute;
 
 App.AuthenticatedRoute = Ember.Route.extend({
 	redirectToLogin: function(transition) {
     App.Session.set('attemptedTransition', transition);
-    this.transitionTo('auth.login');
+    this.transitionTo('index');
   },
  
   beforeModel: function(transition) {

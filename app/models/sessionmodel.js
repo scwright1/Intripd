@@ -11,7 +11,7 @@ var sessionSchema = mongoose.Schema({
 sessionSchema.statics.createSession = function(data, done) {
 	var Session = this, t = data.token;
 	if(token === '') {
-		return done(400, { message: 'Token not found'} );
+		return done(400, { message: 'Token not found' } );
 	} else {
 		Session.create({
 			token: t
@@ -45,19 +45,28 @@ sessionSchema.statics.destroySession = function(data, done) {
 sessionSchema.statics.checkSession = function(req, res, next) {
 	var Session = mongoose.model('Session', sessionSchema), t = req.headers['x-authentication-token'], u = req.headers['x-uid'];
 	if((!t) || (!u)) {
-		res.send(401);
+		res.send(400);
 	} else {
-		if(!Session.findOne({token: t})) {
-			res.send(401);
-		} else {
-			var secret = process.env.token_KEY;
-			var decode = jwt.decode(t, secret);
-			if(decode === u) {
-				next();
+		Session.findOne({token: t}, function(err, obj) {
+			if((err) || (obj === null)) {
+				res.send(401);	
 			} else {
-				res.send(401);
+				var secret = process.env.token_KEY;
+				var decode = jwt.decode(t, secret);
+				if(decode.uid === u) {
+					var now = new Date();
+					if(now.toJSON() < decode.exp) {
+						next();
+					} else {
+						Session.destroySession({token: t}, state);
+						res.send(401);
+					}
+				} else {
+					Session.destroySession({token: t}, state);
+					res.send(401);
+				}
 			}
-		}
+		});
 	}
 };
 
