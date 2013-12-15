@@ -1,5 +1,38 @@
 <div id="navbar-vertical">
+	<div style="height: 24px"></div>
+	<div class="menu-item" data-item='search'>
+	</div>
+	<div class="menu-item" data-item='profile'>
+	</div>
+	<div class="menu-item" data-item='social'>
+	</div>
+	<div class="menu-item" data-item='trips'>
+	</div>
+	<div class="menu-item" data-item='locations'>
+	</div>
+	<div class="menu-item" data-item='media'>
+	</div>
 	{{#if isAuthenticated}}
 	<a href="#" {{action 'logout'}}>Logout</a>
 	{{/if}}
+</div>
+<div id="navbar-extend-button">
+	<div class="active-button">
+		<i class="fa fa-bars"></i>
+	</div>
+</div>
+<div id="navbar-extended">
+	<div style="height: 24px"></div>
+	<div class="menu-item-text" data-item='search'>
+	</div>
+	<div class="menu-item-text" data-item='profile'>
+	</div>
+	<div class="menu-item-text" data-item='social'>
+	</div>
+	<div class="menu-item-text" data-item='trips'>
+	</div>
+	<div class="menu-item-text" data-item='locations'>
+	</div>
+	<div class="menu-item-text" data-item='media'>
+	</div>
 </div>

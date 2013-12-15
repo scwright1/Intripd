@@ -411,7 +411,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar", options) : helperMissing.call(depth0, "render", "sidebar", options))));
-  data.buffer.push("\n			<div id=\"map-canvas\">\n			</div>\n		</div>");
+  data.buffer.push("\n			<div id=\"map-canvas\">\n			</div>\n		</div>\n		<script src=\"scripts/map-navbar.js\"></script>");
   return buffer;
   
 });
@@ -493,12 +493,12 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  data.buffer.push("<div id=\"navbar-vertical\">\n	");
+  data.buffer.push("<div id=\"navbar-vertical\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item\" data-item='search'>\n	</div>\n	<div class=\"menu-item\" data-item='profile'>\n	</div>\n	<div class=\"menu-item\" data-item='social'>\n	</div>\n	<div class=\"menu-item\" data-item='trips'>\n	</div>\n	<div class=\"menu-item\" data-item='locations'>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n	</div>\n	");
   hashTypes = {};
   hashContexts = {};
   stack1 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n</div>");
+  data.buffer.push("\n</div>\n<div id=\"navbar-extend-button\">\n	<div class=\"active-button\">\n		<i class=\"fa fa-bars\"></i>\n	</div>\n</div>\n<div id=\"navbar-extended\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item-text\" data-item='search'>\n	</div>\n	<div class=\"menu-item-text\" data-item='profile'>\n	</div>\n	<div class=\"menu-item-text\" data-item='social'>\n	</div>\n	<div class=\"menu-item-text\" data-item='trips'>\n	</div>\n	<div class=\"menu-item-text\" data-item='locations'>\n	</div>\n	<div class=\"menu-item-text\" data-item='media'>\n	</div>\n</div>");
   return buffer;
   
 });
