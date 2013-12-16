@@ -44,7 +44,18 @@
 	width: 100%;
 }
 
+.home-static {
+	width: 100%;
+	position: absolute;
+	bottom: 24px;
+	left: 0px;
+}
+
 .menu-item:hover {
+	background: @color-blue;
+}
+
+.menu-item-manual {
 	background: @color-blue;
 }
 
@@ -52,9 +63,35 @@
 	height: 48px;
 	width: 100%;
 	line-height: 48px;
-	font-size: 14px;
+	font-size: 12px;
+	font-weight: 600;
+	padding-left: 10px;
+	font-family: 'Open Sans', sans-serif;
+	color: @color-slate;
 }
 
 .menu-item-text:hover {
 	background: (@color-blue - #090909);
+}
+
+.menu-item-text-manual {
+	background: (@color-blue - #090909);
+}
+
+.menu-item-icon {
+	padding: 12px;
+}
+
+.arrow-left {
+	width: 0; 
+	height: 0; 
+	border-top: 6px solid transparent;
+	border-bottom: 6px solid transparent; 
+	border-right:6px solid @color-slate; 
+	float: right;
+	margin-top: 18px;
+}
+
+.menu-extended-text {
+	float: left;
 }

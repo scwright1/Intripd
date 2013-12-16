@@ -344,6 +344,12 @@ var IndexRoute = Ember.Route.extend({
 module.exports = IndexRoute;
 },{}],18:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
+	actions: {
+		loadModule: function(module) {
+			//load a valid view template into the view
+			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
+		}
+	},
 	model: function() {
 		return Ember.Object.create({});
 	}
@@ -480,12 +486,54 @@ function program7(depth0,data) {
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+
+
+  data.buffer.push("<div id=\"navbar-vertical\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item\" data-item='search' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/search-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='profile' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/profile-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='social'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/connect.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='trips'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/trip-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='locations'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/map-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/camera.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"home-static\" data-item=\"home\">\n		<div class=\"menu-item-icon home-icon\">\n			<img src=\"img/logo.png\" width=\"24px\" />\n		</div>\n	</div>\n</div>\n<div id=\"navbar-extend-button\">\n	<div class=\"active-button\">\n		<i class=\"fa fa-bars\"></i>\n	</div>\n</div>\n<div id=\"navbar-extended\" class=\"extended\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item-text\" data-item='search' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n		<div class=\"menu-extended-text\">SEARCH</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='profile' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n		<div class=\"menu-extended-text\">PROFILE</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='social'>\n		<div class=\"menu-extended-text\">SOCIAL</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='trips'>\n		<div class=\"menu-extended-text\">TRIPS</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='locations'>\n		<div class=\"menu-extended-text\">LOCATIONS</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='media'>\n		<div class=\"menu-extended-text\">MEDIA</div>\n	</div>\n</div>\n<div id=\"content-menu\">\n	");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "sidebar-content", options) : helperMissing.call(depth0, "outlet", "sidebar-content", options))));
+  data.buffer.push("\n</div>");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("<div class=\"container\">\n	<h3>Search</h3>\n</div>");
+  
+});
+
+Ember.TEMPLATES['sidebar/user'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	<a href=\"#\" ");
+  data.buffer.push("\n		<a href=\"#\" ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -493,12 +541,12 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  data.buffer.push("<div id=\"navbar-vertical\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item\" data-item='search'>\n	</div>\n	<div class=\"menu-item\" data-item='profile'>\n	</div>\n	<div class=\"menu-item\" data-item='social'>\n	</div>\n	<div class=\"menu-item\" data-item='trips'>\n	</div>\n	<div class=\"menu-item\" data-item='locations'>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n	</div>\n	");
+  data.buffer.push("<div class=\"container\">\n	<h1>User Biatch!</h1>\n	");
   hashTypes = {};
   hashContexts = {};
   stack1 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n</div>\n<div id=\"navbar-extend-button\">\n	<div class=\"active-button\">\n		<i class=\"fa fa-bars\"></i>\n	</div>\n</div>\n<div id=\"navbar-extended\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item-text\" data-item='search'>\n	</div>\n	<div class=\"menu-item-text\" data-item='profile'>\n	</div>\n	<div class=\"menu-item-text\" data-item='social'>\n	</div>\n	<div class=\"menu-item-text\" data-item='trips'>\n	</div>\n	<div class=\"menu-item-text\" data-item='locations'>\n	</div>\n	<div class=\"menu-item-text\" data-item='media'>\n	</div>\n</div>");
+  data.buffer.push("\n</div>");
   return buffer;
   
 });
