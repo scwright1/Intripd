@@ -1,7 +1,11 @@
 var SidebarUserController = App.ApplicationController.extend({
 	actions: {
 		doSomething: function() {
-			console.log('something being done');
+			alert('i am doing a thing via Button');
+		},
+		fetchUserProfile: function() {
+			//fetch user model
+			alert('i am doing a thing via View');
 		}
 	}
 });

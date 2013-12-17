@@ -196,7 +196,11 @@ module.exports = MenuController;
 var SidebarUserController = App.ApplicationController.extend({
 	actions: {
 		doSomething: function() {
-			console.log('something being done');
+			alert('i am doing a thing via Button');
+		},
+		fetchUserProfile: function() {
+			//fetch user model
+			alert('i am doing a thing via View');
 		}
 	}
 });
@@ -234,13 +238,14 @@ App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
 App.MapView = require('./views/map_view');
+App.SidebarUserView = require('./views/sidebar/user_view');
 
 require('./config/routes');
 
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar/user_controller":9,"./controllers/sidebar_controller":10,"./models/api_key":12,"./models/registration":13,"./models/user":14,"./routes/application_route":15,"./routes/auth/login_route":16,"./routes/auth/register_route":17,"./routes/index_route":18,"./routes/map_route":19,"./routes/sidebar/user_route":20,"./templates":21,"./views/application_view":27,"./views/map_view":28}],12:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar/user_controller":9,"./controllers/sidebar_controller":10,"./models/api_key":12,"./models/registration":13,"./models/user":14,"./routes/application_route":15,"./routes/auth/login_route":16,"./routes/auth/register_route":17,"./routes/index_route":18,"./routes/map_route":19,"./routes/sidebar/user_route":20,"./templates":21,"./views/application_view":27,"./views/map_view":28,"./views/sidebar/user_view":29}],12:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -377,9 +382,6 @@ var MapRoute = App.AuthenticatedRoute.extend({
 module.exports = MapRoute;
 },{}],20:[function(require,module,exports){
 var SidebarUserRoute = Ember.Route.extend({
-	beforeModel: function() {
-		console.log('doing a thing');
-	}
 });
 
 module.exports = SidebarUserRoute;
@@ -47684,7 +47686,99 @@ var MapView = Ember.View.extend({
 		var mapOptions = {
       		center: new google.maps.LatLng(26.055889, -5.989990),
       		zoom: 3,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
+      		mapTypeId: google.maps.MapTypeId.TERRAIN,
+      		styles: [
+    {
+        "featureType": "water",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#acbcc9"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "stylers": [
+            {
+                "color": "#f2e5d4"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5c6c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#e4d7c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fbfaf7"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5dac6"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 33
+            }
+        ]
+    },
+    {
+        "featureType": "road"
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {},
+    {
+        "featureType": "road",
+        "stylers": [
+            {
+                "lightness": 20
+            }
+        ]
+    }
+]
     	};
     	map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 	},
@@ -47702,5 +47796,15 @@ var MapView = Ember.View.extend({
 });
 
 module.exports = MapView;
+},{}],29:[function(require,module,exports){
+var SidebarUserView = Ember.View.extend({
+	didInsertElement: function() {
+		var self = this;
+		self._super();
+		self.get('controller').send('fetchUserProfile');
+	}
+});
+
+module.exports = SidebarUserView;
 },{}]},{},[11])
 ;
