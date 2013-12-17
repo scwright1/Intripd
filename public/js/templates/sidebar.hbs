@@ -1,11 +1,11 @@
 <div id="navbar-vertical">
 	<div style="height: 24px"></div>
-	<div class="menu-item" data-item='search' {{action "loadModule" 'sidebar.search'}}>
+	<div class="menu-item" data-item='search' {{action "loadModule" 'sidebar.search' false}}>
 		<div class="menu-item-icon">
 			<img src="img/search-icon.png" height="24px" width="24px" />
 		</div>
 	</div>
-	<div class="menu-item" data-item='profile' {{action 'loadModule' 'sidebar.user'}}>
+	<div class="menu-item" data-item='profile' {{action 'loadModule' 'sidebar.user' true}}>
 		<div class="menu-item-icon">
 			<img src="img/profile-icon.png" height="24px" width="24px" />
 		</div>
@@ -43,10 +43,10 @@
 </div>
 <div id="navbar-extended" class="extended">
 	<div style="height: 24px"></div>
-	<div class="menu-item-text" data-item='search' {{action 'loadModule' 'sidebar.search'}}>
+	<div class="menu-item-text" data-item='search' {{action 'loadModule' 'sidebar.search' false}}>
 		<div class="menu-extended-text">SEARCH</div>
 	</div>
-	<div class="menu-item-text" data-item='profile' {{action 'loadModule' 'sidebar.user'}}>
+	<div class="menu-item-text" data-item='profile' {{action 'loadModule' 'sidebar.user' true}}>
 		<div class="menu-extended-text">PROFILE</div>
 	</div>
 	<div class="menu-item-text" data-item='social'>

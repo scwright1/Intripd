@@ -7,5 +7,9 @@ App.Router.map(function() {
 	}); 
 
 	this.route('map');
+
+	this.resource('sidebar', function() {
+		this.route('user');
+	});
 });
 
