@@ -6,6 +6,7 @@
 var mongoose		= require('mongoose'),
 	hash 			= require('../helpers/hash'),
     uuid            = require('node-uuid'),
+    Profile         = require('./profilemodel');
     date            = new Date();
 
 //create the base user schema
@@ -33,7 +34,15 @@ baseCredentialsSchema.statics.signup = function(email, password, done){
                 if (err) {
                     return done(11000, false, {message: 'Email address is already in use.'});
                 } else {
-                    done(null, user);
+                    Profile.create({
+                        uid : user.uid
+                    }, function(err, profile){
+                        if(err) {
+                            return done(11200, false, {message: 'Profile creation failure'});
+                        } else {
+                            done(null, user);
+                        }
+                    });
                 }
             });
         }

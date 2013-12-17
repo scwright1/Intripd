@@ -43,9 +43,11 @@ server.use(passport.session());
 server.use(express.static(__dirname + '/public'));
 
 //load the routers
+require('./app/router/base.js')(server);
 require('./app/router/auth.js')(server, passport);
 require('./app/router/map-root.js')(server);
 require('./app/router/sessions.js')(server);
+require('./app/router/user.js')(server);
 
 //start the server
 http.createServer(server).listen(config.port, function() {

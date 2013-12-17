@@ -1,11 +1,11 @@
 var SidebarUserController = App.ApplicationController.extend({
 	actions: {
 		doSomething: function() {
-			alert('i am doing a thing via Button');
 		},
 		fetchUserProfile: function() {
-			//fetch user model
-			alert('i am doing a thing via View');
+			//do something
+			var mod = this.store.find('profile', App.Session.get('uid'));
+			console.log(mod);
 		}
 	}
 });
