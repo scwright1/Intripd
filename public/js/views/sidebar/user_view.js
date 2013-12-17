@@ -6,7 +6,7 @@ var SidebarUserView = Ember.View.extend({
 	didInsertElement: function() {
 		var self = this;
 		self.get('controller').send('fetchUserProfile');
-	}
+	},
 });
 
 module.exports = SidebarUserView;

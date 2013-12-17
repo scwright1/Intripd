@@ -1,15 +1,13 @@
 var MapRoute = App.AuthenticatedRoute.extend({
 	actions: {
-		loadModule: function(module, needs, model) {
+		loadModule: function(module) {
 			//load a valid view template into the view
-			if(needs === true) {
-				this.controllerFor(module).set('model', model);
-			}
-			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
+			this.render(module, 
+				{
+					into: 'sidebar',
+					outlet: 'sidebar-content'
+				});
 		}
-	},
-	model: function() {
-		return Ember.Object.create({});
 	}
 });
 
