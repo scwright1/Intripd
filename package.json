@@ -1,0 +1,17 @@
+{
+	"name": "Ember",
+	"version": "0.0.1",
+	"description": "",
+	"dependencies": {
+		"express": "*",
+		"hbs": "*",
+		"mongodb": "*",
+		"mongoose": "*",
+		"passport": "*",
+    	"passport-local": "*",
+    	"connect-redis": "*",
+		"ember-tools": "*",
+		"node-uuid": "*",
+		"jwt-simple": "*"
+	}
+}

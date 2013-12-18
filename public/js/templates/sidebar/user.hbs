@@ -1,0 +1,8 @@
+<div class="container">
+	<button {{action 'doSomething'}}>Do A Thing</button>
+	<h1>{{firstName}} {{lastName}}</h1>
+	<h4>{{id}}</h4>
+	{{#if isAuthenticated}}
+		<a href="#" {{action 'logout'}}>Logout</a>
+	{{/if}}
+</div>
