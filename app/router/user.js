@@ -14,4 +14,15 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	//update user profile
+	server.put('/api/profiles/:id', Session.checkSession, function(req,res) {
+		Profile.updateProfile(req.params.id, req.body, function(response) {
+			if(response === 401) {
+				res.send(401);
+			} else {
+				res.send(200);
+			}
+		});
+	});
 }

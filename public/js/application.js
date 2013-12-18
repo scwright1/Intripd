@@ -194,7 +194,29 @@ var MenuController = App.ApplicationController.extend({
 module.exports = MenuController;
 },{}],9:[function(require,module,exports){
 var ProfileModalController = App.ApplicationController.extend({
-	
+	firstName: '',
+	lastName: '',
+  	actions: {
+  		updateInitialProfile: function() {
+  			var self = this;
+  			var first = self.get('firstName');
+  			var last = self.get('lastName');
+  			var promise = this.store.find('profile', App.Session.get('uid'));
+  			promise.then(fulfill, reject);
+  			function fulfill(model) {
+  				model.set('firstName', first);
+  				model.set('lastName', last);
+  				model.set('newUser', false);
+  				model.save();
+  				this.$('#profile-init').modal('hide');
+  			}
+
+  			function reject(reason) {
+  				App.Session.reset();
+  				this.transitionTo('index');
+  			}
+  		}
+  	}
 });
 
 module.exports = ProfileModalController;
@@ -218,6 +240,8 @@ var SidebarUserController = App.ApplicationController.extend({
 			function fulfill(model) {
   				if(model.get('newUser') === true) {
   					//get the user to update their profile
+  					console.log('in here');
+  					this.$('#profile-init').modal('show');
   				}
 			}
 			function reject(reason) {
@@ -409,23 +433,10 @@ var MapRoute = App.AuthenticatedRoute.extend({
 		}
 	},
 	setupController: function() {
-		$('#profile-init').modal();
 		var model_promise = this.store.find('profile', App.Session.get('uid'));
 		var controller = this.controllerFor('sidebar.user');
 		controller.set('model', model_promise);
-		model_promise.then(fulfill, reject);
-		function fulfill(model) {
-			if(model.get('newUser') === true) {
-				//get the user to update their profile
-				console.log('about to do a thing');
-				this.$('#profile-init').modal('show');
-			}
-		}
-		function reject(reason) {
-			App.Session.reset();
-			this.transitionTo('index');
-		}
-		//controller.send('initUserProfile');
+		controller.send('initUserProfile');
 	},
 	model: function() {
 		return Ember.Object.create({});
@@ -663,10 +674,37 @@ function program1(depth0,data) {
 Ember.TEMPLATES['profile/modal'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  
+  var buffer = '', stack1, hashContexts, hashTypes, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("<div id=\"profile-init\" class=\"modal fade\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\">Modal title</h4>\n      </div>\n      <div class=\"modal-body\">\n        <p>One fine body&hellip;</p>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\">Save changes</button>\n      </div>\n    </div><!-- /.modal-content -->\n  </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->");
+  data.buffer.push("<div id=\"profile-init\" class=\"modal fade\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <h4 class=\"modal-title\">A Bit More Info...</h4>\n      </div>\n      <div class=\"modal-body\">\n        <p>In order to get started, we need a bit more information from you, so that we can set up your profile.</p>\n        <form role='form' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "updateInitialProfile", {hash:{
+    'on': ("submit")
+  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n          <div class=\"form-group auth-form-element-group\">\n            <label for=\"firstName\" class=\"auth-form-label\">First Name</label>\n            ");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING"};
+  options = {hash:{
+    'value': ("firstName"),
+    'class': ("form-control auth-input"),
+    'placeholder': ("First Name"),
+    'type': ("text")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n          </div>\n          <div class=\"form-group auth-form-element-group\">\n            <label for=\"lastName\" class=\"auth-form-label\">Last Name</label>\n            ");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING"};
+  options = {hash:{
+    'value': ("lastName"),
+    'type': ("text"),
+    'class': ("form-control auth-input"),
+    'placeholder': ("Last Name")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n          </div>\n          <div class=\"auth-text-override\">\n            <button type=\"submit\" class=\"btn btn-success login-override\" style=\"width: 100px;\">Save</button>\n          </div>\n        </form>\n      </div>\n    </div><!-- /.modal-content -->\n  </div><!-- /.modal-dialog -->\n</div><!-- /.modal -->");
+  return buffer;
   
 });
 

@@ -1,4 +1,9 @@
 $(function() {
+	$('#profile-init').modal({
+		show: false,
+		backdrop: 'static',
+  		keyboard: false
+	});
 	$.fn.animateRotate = function(start, angle, margin, duration, easing, complete) {
 	    return this.each(function() {
 	        var $elem = $(this);

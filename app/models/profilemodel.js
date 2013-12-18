@@ -9,6 +9,7 @@ var profileSchema = mongoose.Schema({
 	lastName: {type: String},
 	gender: {type: String},
 	DOB: {type: String},
+	email: {type: String},
 	created: {type: String, default: date},
 	newUser: {type: Boolean, default: true}
 });
@@ -25,11 +26,24 @@ profileSchema.statics.getProfile = function(data, done) {
 				var userProfile = {
 					'uid': profile.uid,
 					'id': profile._id,
-					'newUser': profile.newUser
+					'email': profile.email,
+					'newUser': profile.newUser,
+					'firstName': profile.firstName,
+					'lastName': profile.lastName
 				};
 				return done(userProfile);
 			}
 		});
+	}
+}
+
+profileSchema.statics.updateProfile = function(id, data, done) {
+	var Profile = mongoose.model('Profile', profileSchema);
+	if(!id) {
+		return done(401);
+	} else {
+		Profile.update({_id: id}, data.profile, function(){});
+		return done(200);
 	}
 }
 

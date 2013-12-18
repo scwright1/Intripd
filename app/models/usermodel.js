@@ -35,7 +35,8 @@ baseCredentialsSchema.statics.signup = function(email, password, done){
                     return done(11000, false, {message: 'Email address is already in use.'});
                 } else {
                     Profile.create({
-                        uid : user.uid
+                        uid : user.uid,
+                        email : user.email
                     }, function(err, profile){
                         if(err) {
                             return done(11200, false, {message: 'Profile creation failure'});
