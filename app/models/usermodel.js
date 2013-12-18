@@ -12,7 +12,7 @@ var mongoose		= require('mongoose'),
 //create the base user schema
 var baseCredentialsSchema = mongoose.Schema({
 	provider: {type: String, required: true, default: 'local'},
-	uid: {type: String, default: uuid.v4()},
+	uid: {type: String, required: true},
 	email: {type: String, required: true, unique: true, trim: true, lowercase: true},
 	hash: {type: String, required: true},
 	salt: {type: String, required: true},
@@ -29,7 +29,8 @@ baseCredentialsSchema.statics.signup = function(email, password, done){
             User.create({
                 email : email,
                 salt : salt,
-                hash : hash
+                hash : hash,
+                uid : uuid.v4()
             }, function(err, user){
                 if (err) {
                     return done(11000, false, {message: 'Email address is already in use.'});
