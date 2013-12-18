@@ -9,7 +9,8 @@ var profileSchema = mongoose.Schema({
 	lastName: {type: String},
 	gender: {type: String},
 	DOB: {type: String},
-	created: {type: String, default: date}
+	created: {type: String, default: date},
+	newUser: {type: Boolean, default: true}
 });
 
 profileSchema.statics.getProfile = function(data, done) {
@@ -24,8 +25,7 @@ profileSchema.statics.getProfile = function(data, done) {
 				var userProfile = {
 					'uid': profile.uid,
 					'id': profile._id,
-					'firstName': 'Steve',
-					'lastName': 'Wright'
+					'newUser': profile.newUser
 				};
 				return done(userProfile);
 			}

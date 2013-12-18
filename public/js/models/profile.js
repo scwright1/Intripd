@@ -4,7 +4,8 @@ var Profile = DS.Model.extend({
 	lastName: DS.attr('string'),
 	gender: DS.attr('string'),
 	DOB: DS.attr('date'),
-	email: DS.attr('string')
+	email: DS.attr('string'),
+	newUser: DS.attr('boolean')
 });
 
 module.exports = Profile;
