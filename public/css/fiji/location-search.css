@@ -3,13 +3,12 @@
  * Common definitions
  */
 /*flat colours*/
-#content-menu {
-  width: 350px;
+.location-search {
+  margin-top: 30px;
+}
+.location-search-results {
+  margin: 30px 0px;
   height: 100%;
-  background: #e4e4e4;
   position: absolute;
-  top: 0;
-  z-index: 97;
-  left: -350px;
-  overflow: hidden;
+  right: 0;
 }

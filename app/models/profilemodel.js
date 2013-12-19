@@ -10,7 +10,7 @@ var profileSchema = mongoose.Schema({
 	gender: {type: String},
 	DOB: {type: String},
 	email: {type: String},
-	created: {type: String, default: date},
+	created: {type: String},
 	newUser: {type: Boolean, default: true}
 });
 

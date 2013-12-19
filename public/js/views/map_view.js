@@ -109,6 +109,8 @@ var MapView = Ember.View.extend({
 ]
     	};
     	map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+        //setup location search service
+        locationService = new google.maps.places.PlacesService(map);
 	},
 	loadGoogleMaps: function() {
 		var self = this;
@@ -117,7 +119,7 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&callback=map_callback";
+		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&libraries=places&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
 	}

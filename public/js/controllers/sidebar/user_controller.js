@@ -17,7 +17,6 @@ var SidebarUserController = App.ApplicationController.extend({
 			function fulfill(model) {
   				if(model.get('newUser') === true) {
   					//get the user to update their profile
-  					console.log('in here');
   					this.$('#profile-init').modal('show');
   				}
 			}

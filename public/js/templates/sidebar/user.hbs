@@ -1,7 +1,5 @@
 <div class="container">
-	<button {{action 'doSomething'}}>Do A Thing</button>
 	<h4>{{firstName}} {{lastName}}</h4>
-	{{#if isAuthenticated}}
-		<a href="#" {{action 'logout'}}>Logout</a>
-	{{/if}}
+	<h6>{{email}}</h6>
+	<a href="#" {{action 'logout'}}>Logout</a>
 </div>

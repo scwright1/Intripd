@@ -240,7 +240,6 @@ var SidebarUserController = App.ApplicationController.extend({
 			function fulfill(model) {
   				if(model.get('newUser') === true) {
   					//get the user to update their profile
-  					console.log('in here');
   					this.$('#profile-init').modal('show');
   				}
 			}
@@ -288,6 +287,7 @@ App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
 App.MapView = require('./views/map_view');
+App.SidebarSearchView = require('./views/sidebar/search_view');
 App.SidebarUserView = require('./views/sidebar/user_view');
 
 require('./config/routes');
@@ -295,7 +295,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/profile/modal_controller":9,"./controllers/sidebar/user_controller":10,"./controllers/sidebar_controller":11,"./models/api_key":13,"./models/profile":14,"./models/registration":15,"./models/user":16,"./routes/application_route":17,"./routes/auth/login_route":18,"./routes/auth/register_route":19,"./routes/index_route":20,"./routes/map_route":21,"./routes/sidebar/user_route":22,"./routes/sidebar_route":23,"./templates":24,"./views/application_view":30,"./views/map_view":31,"./views/sidebar/user_view":32}],13:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/profile/modal_controller":9,"./controllers/sidebar/user_controller":10,"./controllers/sidebar_controller":11,"./models/api_key":13,"./models/profile":14,"./models/registration":15,"./models/user":16,"./routes/application_route":17,"./routes/auth/login_route":18,"./routes/auth/register_route":19,"./routes/index_route":20,"./routes/map_route":21,"./routes/sidebar/user_route":22,"./routes/sidebar_route":23,"./templates":24,"./views/application_view":30,"./views/map_view":31,"./views/sidebar/search_view":32,"./views/sidebar/user_view":33}],13:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -625,31 +625,17 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("<div class=\"container\">\n	<h3>Search</h3>\n</div>");
+  data.buffer.push("\n<div class=\"row location-search\">\n	<div class=\"col-md-1\"></div>\n	<div class=\"col-md-10\">\n		<input id=\"location-search-input\" type='text' placeholder='Search for something...' class=\"form-control\" />\n	</div>\n</div>\n<div class=\"location-search-results\">\n	<div class=\"location-search-results-entry no-entry\">No Results Found</div>\n</div>\n<div class=\"bottom\" style=\"height: 60px; width: 100%; position: absolute; bottom: 0;\"></div>");
   
 });
 
 Ember.TEMPLATES['sidebar/user'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n		<a href=\"#\" ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">Logout</a>\n	");
-  return buffer;
-  }
 
-  data.buffer.push("<div class=\"container\">\n	<button ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "doSomething", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">Do A Thing</button>\n	<h4>");
+  data.buffer.push("<div class=\"container\">\n	<h4>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -657,12 +643,15 @@ function program1(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h4>\n	");
+  data.buffer.push("</h4>\n	<h6>");
   hashTypes = {};
   hashContexts = {};
-  stack1 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n</div>");
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>\n	<a href=\"#\" ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">Logout</a>\n</div>");
   return buffer;
   
 });
@@ -47901,6 +47890,8 @@ var MapView = Ember.View.extend({
 ]
     	};
     	map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+        //setup location search service
+        locationService = new google.maps.places.PlacesService(map);
 	},
 	loadGoogleMaps: function() {
 		var self = this;
@@ -47909,7 +47900,7 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&callback=map_callback";
+		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&libraries=places&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
 	}
@@ -47917,6 +47908,62 @@ var MapView = Ember.View.extend({
 
 module.exports = MapView;
 },{}],32:[function(require,module,exports){
+var SidebarSearchView = Ember.View.extend({
+	didInsertElement: function() {
+		$('#location-search-input').focus(function() {
+	    	// turn on timer
+	    	startTimer();
+		}).blur(function() {
+	    	// turn off timer
+	    	endTimer();
+		});
+
+		var lastValue = "",
+    		$input = $('#location-search-input'),
+    		timerCheckCount = 0,
+    		checkInputChange = function() {
+        		timerCheckCount += 1;
+
+        		if (lastValue !== $input.val()) {
+        			//do the input change bit
+        			var bounds = map.getBounds();
+        			if($input.val() !== '') {
+	        			request = {
+	        				bounds: bounds,
+	        				query: $input.val()
+	        			};
+	        			locationService.textSearch(request, callback);
+        			}
+        			else if($input.val() === '') {
+        				$('.location-search-results').empty();
+        				$('.location-search-results').append("<div class='location-search-results-entry no-entry'>No Results Found</div>");
+        			}
+            		lastValue = $input.val();
+        		}
+    		},
+    		timer = undefined,
+    		startTimer = function() {
+        		timer = setInterval(checkInputChange, 500); // check input field every 200 ms (1/5 sec)
+    		},
+    		endTimer = function() {
+        		clearInterval(timer);
+        		timerCheckCount = 0;
+    		};
+    		function callback(results, status) {
+			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+			  	$('.location-search-results').empty();
+			    for (var i = 0; i < results.length; i++) {
+			      var place = results[i];
+			      //console.log(place);
+			      $('.location-search-results').append("<div class='location-search-results-entry'>"+place.name+"<br />"+place.formatted_address+"</div>");
+			    }
+			  }
+			}
+	}
+});
+
+module.exports = SidebarSearchView;
+},{}],33:[function(require,module,exports){
 var SidebarUserView = Ember.View.extend({
 	init: function() {
 		var self = this;

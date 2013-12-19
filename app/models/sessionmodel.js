@@ -4,7 +4,7 @@ var mongoose 		= require('mongoose'),
 
 var sessionSchema = mongoose.Schema({
 	token: 		{ type: String, required: true, unique: true },
-	created:  	{ type: Date, default: Date.now }
+	created:  	{ type: Date}
 
 });
 
@@ -14,7 +14,8 @@ sessionSchema.statics.createSession = function(data, done) {
 		return done(400, { message: 'Token not found' } );
 	} else {
 		Session.create({
-			token: t
+			token: t,
+			created: new Date()
 		}, function(err, state) {
 			if(err) {
 				return done(400, { message: 'Token Malformed'});

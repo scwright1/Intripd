@@ -16,7 +16,7 @@ var baseCredentialsSchema = mongoose.Schema({
 	email: {type: String, required: true, unique: true, trim: true, lowercase: true},
 	hash: {type: String, required: true},
 	salt: {type: String, required: true},
-	created: {type: String, default: date}
+	created: {type: String}
 });
 
 //create a static function as part of the schema for signing up
@@ -30,14 +30,16 @@ baseCredentialsSchema.statics.signup = function(email, password, done){
                 email : email,
                 salt : salt,
                 hash : hash,
-                uid : uuid.v4()
+                uid : uuid.v4(),
+                created: new Date()
             }, function(err, user){
                 if (err) {
                     return done(11000, false, {message: 'Email address is already in use.'});
                 } else {
                     Profile.create({
                         uid : user.uid,
-                        email : user.email
+                        email : user.email,
+                        created : new Date()
                     }, function(err, profile){
                         if(err) {
                             return done(11200, false, {message: 'Profile creation failure'});
