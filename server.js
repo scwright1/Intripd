@@ -32,11 +32,11 @@ server.use(express.methodOverride());
 //use cookieparser for session storage
 server.use(express.cookieParser('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
 //setup secret key for session hash and add to RedisStore for persistent session storage across server restarts
-server.use(express.session({
-  secret:'qL17C8iQnxPuDg50mYFDk56sdR0KuUm3',
-  store: new RedisStore({
-  })
-}));
+//server.use(express.session({
+//  secret:'qL17C8iQnxPuDg50mYFDk56sdR0KuUm3',
+//  store: new RedisStore({
+//  })
+//}));
 //initialize passport with config options defined above
 server.use(passport.initialize());
 server.use(passport.session());
@@ -48,6 +48,7 @@ require('./app/router/auth.js')(server, passport);
 require('./app/router/map-root.js')(server);
 require('./app/router/sessions.js')(server);
 require('./app/router/user.js')(server);
+require('./app/router/trip.js')(server);
 
 //start the server
 http.createServer(server).listen(config.port, function() {
