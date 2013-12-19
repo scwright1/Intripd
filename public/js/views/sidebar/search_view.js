@@ -44,8 +44,7 @@ var SidebarSearchView = Ember.View.extend({
 			  	$('.location-search-results').empty();
 			    for (var i = 0; i < results.length; i++) {
 			      var place = results[i];
-			      //console.log(place);
-			      $('.location-search-results').append("<div class='location-search-results-entry'>"+place.name+"<br />"+place.formatted_address+"</div>");
+			      $('.location-search-results').append("<a><div class='location-search-results-entry' onclick='setMarker(this); '><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
 			    }
 			  }
 			}
