@@ -19,7 +19,7 @@ tripSchema.statics.createTrip = function(uid, tripdata, done) {
 		return done(400);
 	} else {
 		Trip.create({
-			trip_uid : new uuid.v4(),
+			trip_uid : uuid.v4(),
 			creator_uid: uid,
 			name : tripdata.name,
 			creation_date : new Date(),
