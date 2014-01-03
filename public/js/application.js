@@ -644,7 +644,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-extended-text\">PROFILE</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='social'>\n		<div class=\"menu-extended-text\">SOCIAL</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='trips' ");
+  data.buffer.push(">\n		<div class=\"menu-extended-text\">ME</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='social'>\n		<div class=\"menu-extended-text\">SOCIAL</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='trips' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -48056,20 +48056,20 @@ var SidebarView = Ember.View.extend({
 				$(this).animateRotate(90, 0, 5);
 				$(this).removeClass('closed');
 				$('#navbar-extended').addClass('extended');
-				$('#navbar-extended').animate({'left':'48px'}, {duration: 200, queue: false});
+				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
 				if($('#content-menu').hasClass('open')) {
-					var endpoint = (48 + $('#navbar-extended').width());
+					var endpoint = (64 + $('#navbar-extended').width());
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					var mapleft = (endpoint + $('#content-menu').width());
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false});
 				} else {
-					$('#map-canvas').animate({'margin-left':'152px'}, {duration: 200, queue: false});
+					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false});
 				}
 			} else {
 				$(this).animateRotate(0, 90, 6);
 				$(this).addClass('closed');
 				$('#navbar-extended').removeClass('extended');
-				$('#navbar-extended').animate({'left':'-56px'}, {duration: 200, queue: false});
+				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});
 				if($('#content-menu').hasClass('open')) {
 					var endpoint = $('#navbar-vertical').width();
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
@@ -48078,7 +48078,7 @@ var SidebarView = Ember.View.extend({
 				} else {
 					var endpoint = $('#navbar-vertical').width() - $('#content-menu').width();
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
-					$('#map-canvas').animate({'margin-left':'48px'}, {duration: 200, queue: false});
+					$('#map-canvas').animate({'margin-left':'64px'}, {duration: 200, queue: false});
 				}
 			}
 		});
