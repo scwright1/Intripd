@@ -624,7 +624,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("<div id=\"navbar-vertical\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item\" data-item='search' ");
+  data.buffer.push("<div id=\"navbar-vertical\">\n	<div id=\"navbar-extend-button\">\n		<div class=\"active-button\">\n			<img src='img/extend.png' height='16px' width='16px' />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='search' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -636,7 +636,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/trip-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='locations'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/map-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/camera.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"home-static\" data-item=\"home\">\n		<div class=\"menu-item-icon home-icon\">\n			<img src=\"img/logo.png\" width=\"24px\" />\n		</div>\n	</div>\n</div>\n<div id=\"navbar-extend-button\">\n	<div class=\"active-button\">\n		<i class=\"fa fa-bars\"></i>\n	</div>\n</div>\n<div id=\"navbar-extended\" class=\"extended\">\n	<div style=\"height: 24px\"></div>\n	<div class=\"menu-item-text\" data-item='search' ");
+  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/trip-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='locations'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/map-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/camera.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"home-static\" data-item=\"home\">\n		<div class=\"menu-item-icon home-icon\">\n			<img src=\"img/logo.png\" width=\"24px\" />\n		</div>\n	</div>\n</div>\n<div id=\"navbar-extended\" class=\"extended\">\n	<div style=\"height: 64px\"></div>\n	<div class=\"menu-item-text\" data-item='search' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -48043,7 +48043,7 @@ var SidebarView = Ember.View.extend({
 		                $elem.css({
 		                    transform: 'rotate(' + now + 'deg)'
 		                });
-		                $elem.css('margin-top', margin+'px');
+		                $elem.css('padding-top', margin+'px');
 		            },
 		            complete: complete || $.noop
 		        });
@@ -48053,7 +48053,7 @@ var SidebarView = Ember.View.extend({
 		//animate the menu bar extention
 		$('.active-button').click(function() {
 			if($(this).hasClass('closed')) {
-				$(this).animateRotate(90, 0, 5);
+				$(this).animateRotate(90, 0, 24);
 				$(this).removeClass('closed');
 				$('#navbar-extended').addClass('extended');
 				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
@@ -48066,7 +48066,7 @@ var SidebarView = Ember.View.extend({
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false});
 				}
 			} else {
-				$(this).animateRotate(0, 90, 6);
+				$(this).animateRotate(0, 90, 24);
 				$(this).addClass('closed');
 				$('#navbar-extended').removeClass('extended');
 				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});

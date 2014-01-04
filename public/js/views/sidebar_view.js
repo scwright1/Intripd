@@ -11,7 +11,7 @@ var SidebarView = Ember.View.extend({
 		                $elem.css({
 		                    transform: 'rotate(' + now + 'deg)'
 		                });
-		                $elem.css('margin-top', margin+'px');
+		                $elem.css('padding-top', margin+'px');
 		            },
 		            complete: complete || $.noop
 		        });
@@ -21,7 +21,7 @@ var SidebarView = Ember.View.extend({
 		//animate the menu bar extention
 		$('.active-button').click(function() {
 			if($(this).hasClass('closed')) {
-				$(this).animateRotate(90, 0, 5);
+				$(this).animateRotate(90, 0, 24);
 				$(this).removeClass('closed');
 				$('#navbar-extended').addClass('extended');
 				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
@@ -34,7 +34,7 @@ var SidebarView = Ember.View.extend({
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false});
 				}
 			} else {
-				$(this).animateRotate(0, 90, 6);
+				$(this).animateRotate(0, 90, 24);
 				$(this).addClass('closed');
 				$('#navbar-extended').removeClass('extended');
 				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});
