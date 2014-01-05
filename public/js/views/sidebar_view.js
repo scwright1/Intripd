@@ -1,27 +1,9 @@
 var SidebarView = Ember.View.extend({
 	didInsertElement: function() {
-		$.fn.animateRotate = function(start, angle, margin, duration, easing, complete) {
-		    return this.each(function() {
-		        var $elem = $(this);
-
-		        $({deg: start}).animate({deg: angle}, {
-		            duration: duration,
-		            easing: easing,
-		            step: function(now) {
-		                $elem.css({
-		                    transform: 'rotate(' + now + 'deg)'
-		                });
-		                $elem.css('padding-top', margin+'px');
-		            },
-		            complete: complete || $.noop
-		        });
-		    });
-		};
-
 		//animate the menu bar extention
 		$('.active-button').click(function() {
 			if($(this).hasClass('closed')) {
-				$(this).animateRotate(90, 0, 24);
+				$(this).rotate({animateTo: 90});
 				$(this).removeClass('closed');
 				$('#navbar-extended').addClass('extended');
 				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
@@ -34,7 +16,7 @@ var SidebarView = Ember.View.extend({
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false});
 				}
 			} else {
-				$(this).animateRotate(0, 90, 24);
+				$(this).rotate({animateTo:180});
 				$(this).addClass('closed');
 				$('#navbar-extended').removeClass('extended');
 				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});
