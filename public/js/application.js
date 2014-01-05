@@ -48005,10 +48005,14 @@ var SidebarSearchView = Ember.View.extend({
     		};
     		function callback(results, status) {
 			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+                var resultsHeightContainer = $('.location-search-results').height();
+                var totalResults = resultsHeightContainer / 70; //height of results div
+                //round the result
+                var total = Math.round(totalResults);
 			  	$('.location-search-results').empty();
-			    for (var i = 0; i < results.length; i++) {
+			    for (var i = 0; i < total; i++) {
 			      var place = results[i];
-			      $('.location-search-results').append("<a><div class='location-search-results-entry' onclick='setMarker(this); '><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
+			      $('.location-search-results').append("<a><div class='location-search-results-entry' onclick='setMarker(this); '><div class='place_image'></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
 			    }
 			  }
 			}
@@ -48035,7 +48039,7 @@ var SidebarView = Ember.View.extend({
 		//animate the menu bar extention
 		$('.active-button').click(function() {
 			if($(this).hasClass('closed')) {
-				$(this).rotate({animateTo: 90});
+				$(this).rotate({animateTo: 180});
 				$(this).removeClass('closed');
 				$('#navbar-extended').addClass('extended');
 				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
@@ -48048,7 +48052,7 @@ var SidebarView = Ember.View.extend({
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false});
 				}
 			} else {
-				$(this).rotate({animateTo:180});
+				$(this).rotate({animateTo:90});
 				$(this).addClass('closed');
 				$('#navbar-extended').removeClass('extended');
 				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});

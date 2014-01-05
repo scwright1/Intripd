@@ -11,7 +11,7 @@ var express 	    = require('express'),
 var User = require('./app/models/usermodel');
 
 var server        = express();
-//<[63Y4!29R8NZ<Q36@iJX3)QrSPr11
+//export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'
 //connect to Mongo Database and check that we've connected OK.
 mongoose.connect('mongodb://' + config.mongo.host + '/' + config.mongo.db);
 var db = mongoose.connection;

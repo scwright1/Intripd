@@ -16,31 +16,61 @@
 
 .location-search-results {
 	top: 96px;
-	bottom: 35px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
     position: absolute;
     overflow-y: hidden;
-    margin: 0px 20px;
+    margin: 0px 24px;
 }
 
 .location-search-results-entry {
 	background: (@color-slate + #090909);
-	padding: 5px 10px;
 	margin: 5px 0px;
 	border: 1px solid (@color-slate - #090909);
+	height: 58px;
+}
+
+.place_image {
+	float: left;
+	height: 58px;
+	width: 58px;
+	background: #e4e4e4;
+}
+
+.place_text {
+	width: 237px;
+	height: 100%;
+	float: left;
 }
 
 .place_name {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 12px;
-	line-height: 18px;
+	line-height: 12px;
 	font-weight: 400;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 10px 10px;
 }
 
 .place_address {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 10px;
-	line-height: 16px;
+	line-height: 10px;
 	font-weight: 300;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 0px 10px;
+}
+
+.place_type {
+	height: 100%;
+	width: 5px;
+	background: @color-purple;
+	float: right;
 }
