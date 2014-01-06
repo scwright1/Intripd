@@ -47973,27 +47973,31 @@ var SidebarSearchView = Ember.View.extend({
 		});
 
 		var lastValue = "",
+            doneInit = false,
+            noType = true,
     		$input = $('#location-search-input'),
     		timerCheckCount = 0,
     		checkInputChange = function() {
         		timerCheckCount += 1;
-
         		if (lastValue !== $input.val()) {
+                    noType = false;
         			//do the input change bit
         			var bounds = map.getBounds();
         			if($input.val() !== '') {
-	        			request = {
-	        				bounds: bounds,
-	        				query: $input.val()
-	        			};
-	        			locationService.textSearch(request, callback);
+                        if($input.val().length > 1) {
+                            doneInit = false;
+                            request = {
+                                bounds: bounds,
+                                query: $input.val()
+                            };
+                            locationService.textSearch(request, callback);
+                        }
         			}
         			else if($input.val() === '') {
         				$('.location-search-results').empty();
-        				$('.location-search-results').append("<div class='location-search-results-entry no-entry'>No Results Found</div>");
         			}
-            		lastValue = $input.val();
         		}
+                lastValue = $input.val();
     		},
     		timer = undefined,
     		startTimer = function() {
@@ -48003,19 +48007,57 @@ var SidebarSearchView = Ember.View.extend({
         		clearInterval(timer);
         		timerCheckCount = 0;
     		};
-    		function callback(results, status) {
-			  if (status == google.maps.places.PlacesServiceStatus.OK) {
-                var resultsHeightContainer = $('.location-search-results').height();
-                var totalResults = resultsHeightContainer / 70; //height of results div
-                //round the result
-                var total = Math.round(totalResults);
-			  	$('.location-search-results').empty();
-			    for (var i = 0; i < total; i++) {
-			      var place = results[i];
-			      $('.location-search-results').append("<a><div class='location-search-results-entry' onclick='setMarker(this); '><div class='place_image'></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
-			    }
-			  }
-			}
+
+	    function callback(results, status) {
+		  if (status == google.maps.places.PlacesServiceStatus.OK) {
+            var resultsHeightContainer = $('.location-search-results').height();
+            var totalResults = resultsHeightContainer / 70; //height of results div
+            //round the result
+            var total = Math.round(totalResults);
+		  	$('.location-search-results').empty();
+            if(doneInit === false) {
+                for (var i = 0; i < total; i++) {
+                    var place = results[i];
+                    $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"' onclick='setMarker(this);'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
+                }
+            }
+            noType = true;
+            doneInit = true;
+            if(doneInit === true) {
+                for(var j = 0; j < total; j++) {
+                    var pl = results[j];
+                    getPhoto(pl.reference);
+                }
+            }
+		  }
+		}
+
+        function getPhoto(place) {
+            var request = {
+                reference: place
+            };
+            if(noType === false) {
+                return;
+            }
+            locationService.getDetails(request, function(details, status) {
+                if(status == google.maps.places.PlacesServiceStatus.OK) {
+                    var photo = '';
+                    var photos = details.photos;
+                    if(!photos) {
+                        //no photos for this location.  Moving on...
+                        $("#search_result_"+place+" > .place_image").empty();
+                        $("#search_result_"+place+" > .place_image").css('background', '#e4e4e4');
+                    } else {
+                        photo = photos[0].getUrl({'maxHeight': 56, 'maxWidth': 58});
+                        $("#search_result_"+place+" > .place_image").empty();
+                        $("#search_result_"+place+" > .place_image").append("<img src='"+photo+"' height='56px' width='58px' />");
+                    }
+                    
+                } else if (status == google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+                    setTimeout(function(){getPhoto(place)},100);
+                }
+            });
+        }
 	}
 });
 
