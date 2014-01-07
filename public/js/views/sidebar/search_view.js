@@ -52,17 +52,38 @@ var SidebarSearchView = Ember.View.extend({
             var total = Math.round(totalResults);
 		  	$('.location-search-results').empty();
             if(doneInit === false) {
-                for (var i = 0; i < total; i++) {
-                    var place = results[i];
+                if (results.length == 1) {
+                    var place = results[0];
+                    console.log(place);
                     $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"' onclick='setMarker(this);'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");
+
+                } else {
+                    for (var i = 0; i < total; i++) {
+                        var place = results[i];
+                        if(place === undefined) {
+                            //do nothing
+                        } else {
+                            console.log(place);
+                            $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"' onclick='setMarker(this);'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.nb+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.ob+" hidden='hidden'></div></div></a>");                           
+                        }
+                    }
                 }
             }
             noType = true;
             doneInit = true;
             if(doneInit === true) {
-                for(var j = 0; j < total; j++) {
-                    var pl = results[j];
+                if(results.length == 1) {
+                    var pl = results[0];
                     getPhoto(pl.reference);
+                } else {
+                    for(var j = 0; j < total; j++) {
+                        var pl = results[j];
+                        if(pl === undefined) {
+                            //do nothing
+                        } else {
+                            getPhoto(pl.reference);
+                        }
+                    }
                 }
             }
 		  }
