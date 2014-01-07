@@ -50,6 +50,17 @@ var SidebarSearchView = Ember.View.extend({
             var totalResults = resultsHeightContainer / 70; //height of results div
             //round the result
             var total = Math.round(totalResults);
+            var a = results.length;
+            while(a--) {
+                var b = results[a];
+                for(var c = 0; c < markers.length; c++) {
+                    var d = markers[c];
+                    if(b.id === d) {
+                        results.splice(a, 1);
+                    }
+                }
+            }
+
 		  	$('.location-search-results').empty();
             if(doneInit === false) {
                 if (results.length == 1) {
