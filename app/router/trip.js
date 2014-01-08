@@ -9,4 +9,16 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	server.get('/api/trips', Session.checkSession, function(req, res) {
+		Trip.getTrips(req.query.creator_uid, function(response, data) {
+			if(response === 200) {
+				var ret = {
+					'trips': data
+				};
+				console.log(ret);
+				res.send(ret);
+			}
+		});
+	});
 }

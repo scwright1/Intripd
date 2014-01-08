@@ -5,6 +5,7 @@ var SessionManager = Ember.Object.extend({
 		this.set('token', $.cookie('ato'), {expires: 365});
 		this.set('uid', $.cookie('uid'), {expires: 365});
 		this.set('rem', false);
+		this.set('trip', null);
 		this.set('ac-tr', '');
 	},
 
@@ -37,6 +38,7 @@ var SessionManager = Ember.Object.extend({
 	    	//destroy the session on the serverside database
 	    	$.post('/api/sessions/destroy', tokenData);
 	    	//doesn't really matter if it worked or not, destroy the cookies on the client side anyway
+	    	this.set('trip', null);
 	    	this.set('ac-tr', '')
 	    	$.removeCookie('ac-tr');
     	    this.set('token', '');

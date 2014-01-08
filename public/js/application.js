@@ -48,6 +48,7 @@ var SessionManager = Ember.Object.extend({
 		this.set('token', $.cookie('ato'), {expires: 365});
 		this.set('uid', $.cookie('uid'), {expires: 365});
 		this.set('rem', false);
+		this.set('trip', null);
 		this.set('ac-tr', '');
 	},
 
@@ -80,6 +81,7 @@ var SessionManager = Ember.Object.extend({
 	    	//destroy the session on the serverside database
 	    	$.post('/api/sessions/destroy', tokenData);
 	    	//doesn't really matter if it worked or not, destroy the cookies on the client side anyway
+	    	this.set('trip', null);
 	    	this.set('ac-tr', '')
 	    	$.removeCookie('ac-tr');
     	    this.set('token', '');
@@ -250,14 +252,31 @@ var SidebarTripsController = App.ApplicationController.extend({
 			var promise = trip.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
+				App.Session.set('trip', model);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
 			}
 
 			function reject(reason) {
-				alert('failed to save Trip.  Please Try Again!');
 				console.log(reason);
 			}
+		},
+		loadTrips: function() {
+			//load all trips into table for this user
+			var trips = this.store.find('trip', {creator_uid: App.Session.get('uid')});
+			trips.then(fulfill, reject);
+
+			function fulfill(models) {
+				for(var i = 0; i < models.content.length; i++) {
+					var record = models.content[i]._data;
+					$('.create_trip > .row > .col-xs-10 > table').append('<tr><td>'+record.name+'</td></tr>');
+				}
+			}
+
+			function reject(reason) {
+				console.log(reason);
+			}
+
 		}
 	}
 });
@@ -742,7 +761,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'placeholder': ("dd/mm/yyyy")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table class='table'>\n				</table>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });
@@ -48163,6 +48182,7 @@ var SidebarTripsView = Ember.View.extend({
 	    format: "dd/mm/yyyy",
 	    autoclose: true
 	  });
+	  this.get('controller').send('loadTrips');
 	}
 });
 
