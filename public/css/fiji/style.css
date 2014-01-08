@@ -6702,3 +6702,21 @@ h6,
   background: #4f92a3;
   float: right;
 }
+#create_trip_form {
+  padding-top: 20px;
+}
+#create_trip_form > .form-group > label {
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  text-align: center;
+  display: block;
+}
+#create_trip_form > .form-group > input {
+  background: #fefdf8;
+  border: 1px solid #ecebe6;
+  font-size: 12px;
+  height: 40px;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}

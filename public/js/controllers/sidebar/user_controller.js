@@ -1,17 +1,9 @@
 var SidebarUserController = App.ApplicationController.extend({
 	actions: {
-		doSomething: function() {
-			alert('DO SOMETIHGING');
-		},
-		fetchUserProfile: function() {
-			//do something
-			console.log(this.get('model'));
-		},
 		profile: function() {
 			return this.store.find('profile', App.Session.get('uid'));
 		}.property(),
 		initUserProfile: function() {
-			//do something
 			var promise = this.store.find('profile', App.Session.get('uid'));
 			promise.then(fulfill, reject);
 			function fulfill(model) {

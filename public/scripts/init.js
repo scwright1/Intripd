@@ -18,7 +18,6 @@ function setMarker(element) {
   	});
   	attachListener(marker, $(element).children('.place_text').children('.place_name').data('value'), $(element).children('.place_text').children('.place_address').data('value'));
     markers.push($(element).children('.place_id').data('value'));
-    console.log(markers);
     map.panTo(latLng);
     $(element).remove();
 

@@ -2,15 +2,15 @@ var mongoose 		= require('mongoose'),
 	uuid 			= require('node-uuid');
 
 var tripSchema = mongoose.Schema({
-	trip_uid: {type: String},
+	uid: {type: String},
 	creator_uid: {type: String},
 	name: {type: String},
 	creation_date: {type: Date},
 	start_date: {type: Date},
 	end_date: {type: Date},
-	center_lat: {type: String},
-	center_lng: {type: String},
-	zoom_level: {type: Number}
+	lat: {type: String},
+	lng: {type: String},
+	zoom: {type: Number}
 });
 
 tripSchema.statics.createTrip = function(uid, tripdata, done) {
@@ -19,19 +19,31 @@ tripSchema.statics.createTrip = function(uid, tripdata, done) {
 		return done(400);
 	} else {
 		Trip.create({
-			trip_uid : uuid.v4(),
+			uid : uuid.v4(),
 			creator_uid: uid,
 			name : tripdata.name,
 			creation_date : new Date(),
 			start_date : tripdata.start_date,
 			end_date : tripdata.end_date,
-			center_lat : tripdata.lat,
-			center_lng : tripdata.lng,
-			zoom_level : tripdata.zoom
-		}, function(err, trip) {
+			lat : tripdata.lat,
+			lng : tripdata.lng,
+			zoom : tripdata.zoom
+		}, function(err, t) {
 			if(err) {
 				return done(err);
 			} else {
+				var trip = {
+					'uid': t.uid,
+					'id': t._id,
+					'creator_uid': t.creator_uid,
+					'name': t.name,
+					'creation_date': t.creation_date,
+					'start_date': t.start_date,
+					'end_date': t.end_date,
+					'lat': t.lat,
+					'lng': t.lng,
+					'zoom': t.zoom
+				};
 				return done(200, trip);
 			}
 		});

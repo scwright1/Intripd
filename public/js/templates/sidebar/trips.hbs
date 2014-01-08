@@ -1,4 +1,26 @@
 	
 	<div class="create_trip">
-		<button id="create_trip_button" class="btn btn-success" {{action 'createTrip'}}>Create A Trip</button>
+		<div style='font-size: 10px;'>{{uid}}</div>
+		<div class='row'>
+			<div class='col-xs-1'></div>
+			<div class='col-xs-10'>
+				<form id="create_trip_form" role='form' {{action 'createTrip' on='submit'}}>
+					<div class='form-group'>
+						<label for='name'>Trip Name</label>
+						{{input value=name type='text' class='form-control' placeholder="Trip Name"}}
+					</div>
+					<div class='form-group'>
+						<label for='start'>Start Date (optional)</label>
+						{{input value=start class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+					</div>
+					<div class='form-group'>
+						<label for='end'>End Date (optional)</label>
+						{{input value=end class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+					</div>
+					<div class='form-group'>
+						<button class="btn btn-success btn-block" name='submit' type='submit'>Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
