@@ -16,7 +16,6 @@ module.exports = function(server) {
 				var ret = {
 					'trips': data
 				};
-				console.log(ret);
 				res.send(ret);
 			}
 		});

@@ -9,7 +9,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
 				return date;
 			}
-
+			var self = this;
 			var startDate = convertDateToISO(this.get('start'));
 			var endDate = convertDateToISO(this.get('end'));
 
@@ -24,9 +24,9 @@ var SidebarTripsController = App.ApplicationController.extend({
 			var promise = trip.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
-				App.Session.set('trip', model);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
+				self.send('loadTrips');
 			}
 
 			function reject(reason) {
@@ -39,6 +39,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 			trips.then(fulfill, reject);
 
 			function fulfill(models) {
+				$('.create_trip > .row > .col-xs-10 > table').empty();
 				for(var i = 0; i < models.content.length; i++) {
 					var record = models.content[i]._data;
 					$('.create_trip > .row > .col-xs-10 > table').append('<tr><td>'+record.name+'</td></tr>');

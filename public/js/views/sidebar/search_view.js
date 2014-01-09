@@ -37,7 +37,7 @@ var SidebarSearchView = Ember.View.extend({
     		},
     		timer = undefined,
     		startTimer = function() {
-        		timer = setInterval(checkInputChange, 500); // check input field every 200 ms (1/5 sec)
+        		timer = setInterval(checkInputChange, 200); // check input field every 200 ms (1/5 sec)
     		},
     		endTimer = function() {
         		clearInterval(timer);

@@ -237,7 +237,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
 				return date;
 			}
-
+			var self = this;
 			var startDate = convertDateToISO(this.get('start'));
 			var endDate = convertDateToISO(this.get('end'));
 
@@ -252,9 +252,9 @@ var SidebarTripsController = App.ApplicationController.extend({
 			var promise = trip.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
-				App.Session.set('trip', model);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
+				self.send('loadTrips');
 			}
 
 			function reject(reason) {
@@ -267,6 +267,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 			trips.then(fulfill, reject);
 
 			function fulfill(models) {
+				$('.create_trip > .row > .col-xs-10 > table').empty();
 				for(var i = 0; i < models.content.length; i++) {
 					var record = models.content[i]._data;
 					$('.create_trip > .row > .col-xs-10 > table').append('<tr><td>'+record.name+'</td></tr>');
@@ -711,7 +712,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n			<div class=\"location-search-results-entry no-entry\">No Results Found</div>\n		</div>");
+  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n			<div class=\"location-search-results-entry no-entry\">No Results Found</div>\n		</div>\n		<div class='location-search-google'>\n			<img src=\"img/powered-by-google-on-white.png\" alt='Powered By Google' />\n		</div>");
   
 });
 
@@ -48084,7 +48085,7 @@ var SidebarSearchView = Ember.View.extend({
     		},
     		timer = undefined,
     		startTimer = function() {
-        		timer = setInterval(checkInputChange, 500); // check input field every 200 ms (1/5 sec)
+        		timer = setInterval(checkInputChange, 200); // check input field every 200 ms (1/5 sec)
     		},
     		endTimer = function() {
         		clearInterval(timer);
