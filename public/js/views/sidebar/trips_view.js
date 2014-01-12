@@ -4,7 +4,7 @@ var SidebarTripsView = Ember.View.extend({
 	    format: "dd/mm/yyyy",
 	    autoclose: true
 	  });
-	  this.get('controller').send('loadTrips');
+	  this.get('controller').send('setupActive');
 	}
 });
 

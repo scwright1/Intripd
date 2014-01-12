@@ -20,4 +20,15 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	server.get('/api/trips/:uid', Session.checkSession, function(req, res) {
+		Trip.getTrip(req.params.uid, function(response, data) {
+			if(response === 200) {
+				var ret = {
+					'trip': data
+				};
+				res.send(ret);
+			}
+		});
+	});
 }

@@ -36,6 +36,7 @@ App.Router.map(function() {
 
 	this.resource('sidebar', function() {
 		this.route('user');
+		this.route('trips');
 	});
 });
 
@@ -226,7 +227,8 @@ var ProfileModalController = App.ApplicationController.extend({
 
 module.exports = ProfileModalController;
 },{}],10:[function(require,module,exports){
-var SidebarTripsController = App.ApplicationController.extend({
+var SidebarTripsController = Ember.ArrayController.extend({
+	ac_trip: null,
 	name: '',
 	start: '',
 	end: '',
@@ -252,6 +254,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 			var promise = trip.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
+				App.Session.set('trip', model._data);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
 				self.send('loadTrips');
@@ -277,7 +280,17 @@ var SidebarTripsController = App.ApplicationController.extend({
 			function reject(reason) {
 				console.log(reason);
 			}
-
+		},
+		setupActive: function() {
+			var active = this.store.find('trip', $.cookie('ac-tr'));
+			var self = this;
+			active.then(fulfill, reject);
+			function fulfill(model) {
+				self.set('ac_trip', model._data);
+			}
+			function reject(reason) {
+				console.log(reason);
+			}
 		}
 	}
 });
@@ -502,11 +515,29 @@ module.exports = IndexRoute;
 },{}],23:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
 	actions: {
-		loadModule: function(module) {
+		loadModule: function(module, mod, key, func) {
 			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
+			//because we're not linking to the sidebar items via linkTo, we need to fire 
+			//up their model pre-processing manually here
+			var model = null;
+			if(mod !== 'null') {
+				if(key !== 'null') {
+					//tofix - do not hardcode creator_uid
+					model = this.store.find(mod, {creator_uid: App.Session.get('uid')});
+				} else {
+					model = this.store.find(mod, App.Session.get('uid'));
+				}
+				var controller = this.controllerFor(module);
+				controller.set('model', model);
+
+				if(func !== 'null') {
+					controller.send(func);
+				}
+			}
 		}
 	},
 	setupController: function() {
+		//run-once: make sure the user has completed their profile
 		var model_promise = this.store.find('profile', App.Session.get('uid'));
 		var controller = this.controllerFor('sidebar.user');
 		controller.set('model', model_promise);
@@ -517,9 +548,14 @@ var MapRoute = App.AuthenticatedRoute.extend({
 	}
 });
 
+
 module.exports = MapRoute;
 },{}],24:[function(require,module,exports){
-var SidebarTripsRoute = App.AuthenticatedRoute.extend({
+var SidebarTripsRoute = Ember.Route.extend({
+	model: function() {
+		console.log('hit this model route');
+		return this.store.find('trip', {creator_uid: App.Session.get('uid')});
+	}
 });
 
 module.exports = SidebarTripsRoute;
@@ -675,15 +711,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push("<div id=\"navbar-vertical\">\n	<div id=\"navbar-extend-button\">\n		<div class=\"active-button\">\n			<!--<img src='img/extend.png' height='16px' width='16px' />-->\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='search' ");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", "null", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/search.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='profile' ");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", "profile", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/profile.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<!-- <div class=\"menu-item\" data-item='social'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/social.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div> -->\n	<div class=\"menu-item\" data-item='trips' ");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", "trip", "creator_uid", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/trips.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<!--<div class=\"menu-item\" data-item='locations'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/map-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/camera.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>-->\n	<div class=\"home-static\" data-item=\"home\">\n		<div class=\"menu-item-icon home-icon\">\n			<img src=\"img/logo.png\" width=\"24px\" />\n		</div>\n	</div>\n</div>\n<div id=\"navbar-extended\" class=\"extended\">\n	<div style=\"height: 64px\"></div>\n	<div class=\"menu-item-text\" data-item='search' ");
   hashTypes = {};
   hashContexts = {};
@@ -706,6 +742,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
+Ember.TEMPLATES['tripbar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("<div id=\"tripbar\">\n	<p>Tripbar</p>\n</div>");
+  
+});
+
 Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
@@ -719,14 +765,24 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/trips'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
-
-  data.buffer.push("	\n	<div class=\"create_trip\">\n		<div style='font-size: 10px;'>");
+function program1(depth0,data) {
+  
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("\n					<tr>\n						<td>");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "uid", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<form id=\"create_trip_form\" role='form' ");
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</td>\n					</tr>\n					");
+  return buffer;
+  }
+
+  data.buffer.push("	\n	<div class=\"create_trip\">\n		");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<form id=\"create_trip_form\" role='form' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "createTrip", {hash:{
@@ -762,7 +818,12 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'placeholder': ("dd/mm/yyyy")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table class='table'>\n				</table>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table class='table table-condensed table-striped table-hover'>\n					");
+  hashTypes = {};
+  hashContexts = {};
+  stack2 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("\n				</table>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });
@@ -48183,7 +48244,7 @@ var SidebarTripsView = Ember.View.extend({
 	    format: "dd/mm/yyyy",
 	    autoclose: true
 	  });
-	  this.get('controller').send('loadTrips');
+	  this.get('controller').send('setupActive');
 	}
 });
 

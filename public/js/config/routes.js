@@ -10,6 +10,7 @@ App.Router.map(function() {
 
 	this.resource('sidebar', function() {
 		this.route('user');
+		this.route('trips');
 	});
 });
 

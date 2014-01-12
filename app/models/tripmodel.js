@@ -81,5 +81,33 @@ tripSchema.statics.getTrips = function(creator_uid, done) {
 	}
 }
 
+tripSchema.statics.getTrip = function(uid, done) {
+	var Trip = mongoose.model('Trip', tripSchema);
+	if(!uid) {
+		return done(400);
+	} else {
+		Trip.findOne({uid: uid}, function(err, trip) {
+			var tmp;
+			if((err) || (trip === null)) {
+				return done(400);
+			} else {
+				tmp = {
+					'uid': trip.uid,
+					'id': trip.id,
+					'creator_uid': trip.creator_uid,
+					'name': trip.name,
+					'creation_date': trip.creation_date,
+					'start_date': trip.start_date,
+					'end_date': trip.end_date,
+					'lat': trip.lat,
+					'lng': trip.lng,
+					'zoom': trip.zoom
+				};
+			}
+			return done(200, tmp);
+		});
+	}
+}
+
 var Trip = mongoose.model('Trip', tripSchema);
 module.exports = Trip;

@@ -1,4 +1,5 @@
-var SidebarTripsController = App.ApplicationController.extend({
+var SidebarTripsController = Ember.ArrayController.extend({
+	ac_trip: null,
 	name: '',
 	start: '',
 	end: '',
@@ -24,6 +25,7 @@ var SidebarTripsController = App.ApplicationController.extend({
 			var promise = trip.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
+				App.Session.set('trip', model._data);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
 				self.send('loadTrips');
@@ -49,7 +51,17 @@ var SidebarTripsController = App.ApplicationController.extend({
 			function reject(reason) {
 				console.log(reason);
 			}
-
+		},
+		setupActive: function() {
+			var active = this.store.find('trip', $.cookie('ac-tr'));
+			var self = this;
+			active.then(fulfill, reject);
+			function fulfill(model) {
+				self.set('ac_trip', model._data);
+			}
+			function reject(reason) {
+				console.log(reason);
+			}
 		}
 	}
 });

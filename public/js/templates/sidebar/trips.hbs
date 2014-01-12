@@ -1,6 +1,6 @@
 	
 	<div class="create_trip">
-		<div style='font-size: 10px;'>{{uid}}</div>
+		{{ac_trip.name}}
 		<div class='row'>
 			<div class='col-xs-1'></div>
 			<div class='col-xs-10'>
@@ -26,7 +26,12 @@
 		<div class='row'>
 			<div class='col-xs-1'></div>
 			<div class='col-xs-10'>
-				<table class='table'>
+				<table class='table table-condensed table-striped table-hover'>
+					{{#each}}
+					<tr>
+						<td>{{name}}</td>
+					</tr>
+					{{/each}}
 				</table>
 			</div>
 		</div>
