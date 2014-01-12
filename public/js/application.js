@@ -770,19 +770,31 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n					<tr>\n						<td>");
+  data.buffer.push("\n						<tr>\n							<td>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</td>\n					</tr>\n					");
+  data.buffer.push("</td>\n						</tr>\n						");
   return buffer;
   }
 
-  data.buffer.push("	\n	<div class=\"create_trip\">\n		");
+  data.buffer.push("	\n	<div class=\"create_trip\">\n		<div class=\"row\">\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<h4>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<form id=\"create_trip_form\" role='form' ");
+  data.buffer.push("</h4>\n				<h6>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.start_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>\n				<h6>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.end_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>\n				<div style='display: none'>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.uid", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</div>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<form id=\"create_trip_form\" role='form' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "createTrip", {hash:{
@@ -818,12 +830,12 @@ function program1(depth0,data) {
     'placeholder': ("dd/mm/yyyy")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table class='table table-condensed table-striped table-hover'>\n					");
+  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table id='trips-table' class='table table-condensed table-striped table-hover'>\n					<tbody>\n						");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n				</table>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n					</tbody>\n				</table>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });

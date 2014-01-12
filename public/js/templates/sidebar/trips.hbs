@@ -1,6 +1,14 @@
 	
 	<div class="create_trip">
-		{{ac_trip.name}}
+		<div class="row">
+			<div class='col-xs-1'></div>
+			<div class='col-xs-10'>
+				<h4>{{ac_trip.name}}</h4>
+				<h6>{{ac_trip.start_date}}</h6>
+				<h6>{{ac_trip.end_date}}</h6>
+				<div style='display: none'>{{ac_trip.uid}}</div>
+			</div>
+		</div>
 		<div class='row'>
 			<div class='col-xs-1'></div>
 			<div class='col-xs-10'>
@@ -26,12 +34,14 @@
 		<div class='row'>
 			<div class='col-xs-1'></div>
 			<div class='col-xs-10'>
-				<table class='table table-condensed table-striped table-hover'>
-					{{#each}}
-					<tr>
-						<td>{{name}}</td>
-					</tr>
-					{{/each}}
+				<table id='trips-table' class='table table-condensed table-striped table-hover'>
+					<tbody>
+						{{#each}}
+						<tr>
+							<td>{{name}}</td>
+						</tr>
+						{{/each}}
+					</tbody>
 				</table>
 			</div>
 		</div>
