@@ -19,6 +19,16 @@ var MapRoute = App.AuthenticatedRoute.extend({
 					controller.send(func);
 				}
 			}
+		},
+		loadItemMenu: function() {
+			if($('#content-menu').hasClass('open')) {
+				var start = $('#content-menu').position().left;
+				var endpoint = (start + $('#content-menu').width());
+				$('#item-specific-menu').css('left', endpoint+'px');
+			}
+			var width = $('#map-canvas').width() / 2;
+			$('#item-specific-menu').animate({'width':width+'px'}, {duration: 200, queue: false});
+			$('#item-specific-menu').addClass('open');
 		}
 	},
 	setupController: function() {

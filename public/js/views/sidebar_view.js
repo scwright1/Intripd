@@ -12,8 +12,14 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					var mapleft = (endpoint + $('#content-menu').width());
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':'175px'}, {duration: 200, queue: false});
+					}
 				}
 			} else {
 				$(this).rotate({animateTo:90});
@@ -25,10 +31,16 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					var mapleft = (endpoint + $('#content-menu').width());
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					var endpoint = $('#navbar-vertical').width() - $('#content-menu').width();
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					$('#map-canvas').animate({'margin-left':'64px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':'64px'}, {duration: 200, queue: false});
+					}
 				}
 			}
 		});
@@ -180,6 +192,9 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':left+'px'},'fast');
 					var mapleft = left + $('#content-menu').width();
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					//menu change
 					$('#content-menu').removeClass();
@@ -199,6 +214,9 @@ var SidebarView = Ember.View.extend({
 				$('#content-menu').animate({'left':left+'px'},{duration: 200, queue: false}); 
 				var mapleft = left + $('#content-menu').width();
 				$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				if($('#item-specific-menu').hasClass('open')) {
+					$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+				}
 			}
 		}
 	}

@@ -534,6 +534,16 @@ var MapRoute = App.AuthenticatedRoute.extend({
 					controller.send(func);
 				}
 			}
+		},
+		loadItemMenu: function() {
+			if($('#content-menu').hasClass('open')) {
+				var start = $('#content-menu').position().left;
+				var endpoint = (start + $('#content-menu').width());
+				$('#item-specific-menu').css('left', endpoint+'px');
+			}
+			var width = $('#map-canvas').width() / 2;
+			$('#item-specific-menu').animate({'width':width+'px'}, {duration: 200, queue: false});
+			$('#item-specific-menu').addClass('open');
 		}
 	},
 	setupController: function() {
@@ -737,6 +747,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "sidebar-content", options) : helperMissing.call(depth0, "outlet", "sidebar-content", options))));
+  data.buffer.push("\n</div>\n<div id='item-specific-menu'>\n	");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "specific-item-menu", options) : helperMissing.call(depth0, "outlet", "specific-item-menu", options))));
   data.buffer.push("\n</div>");
   return buffer;
   
@@ -830,7 +845,11 @@ function program1(depth0,data) {
     'placeholder': ("dd/mm/yyyy")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table id='trips-table' class='table table-condensed table-striped table-hover'>\n					<tbody>\n						");
+  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<button id='open-item-menu' class=\"btn btn-success btn-block\" type='submit' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadItemMenu", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">New Trip</button>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table id='trips-table' class='table table-condensed table-striped table-hover'>\n					<tbody>\n						");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
@@ -48288,8 +48307,14 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					var mapleft = (endpoint + $('#content-menu').width());
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':'175px'}, {duration: 200, queue: false});
+					}
 				}
 			} else {
 				$(this).rotate({animateTo:90});
@@ -48301,10 +48326,16 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					var mapleft = (endpoint + $('#content-menu').width());
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					var endpoint = $('#navbar-vertical').width() - $('#content-menu').width();
 					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
 					$('#map-canvas').animate({'margin-left':'64px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':'64px'}, {duration: 200, queue: false});
+					}
 				}
 			}
 		});
@@ -48456,6 +48487,9 @@ var SidebarView = Ember.View.extend({
 					$('#content-menu').animate({'left':left+'px'},'fast');
 					var mapleft = left + $('#content-menu').width();
 					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#item-specific-menu').hasClass('open')) {
+						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+					}
 				} else {
 					//menu change
 					$('#content-menu').removeClass();
@@ -48475,6 +48509,9 @@ var SidebarView = Ember.View.extend({
 				$('#content-menu').animate({'left':left+'px'},{duration: 200, queue: false}); 
 				var mapleft = left + $('#content-menu').width();
 				$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				if($('#item-specific-menu').hasClass('open')) {
+					$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
+				}
 			}
 		}
 	}
