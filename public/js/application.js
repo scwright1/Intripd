@@ -322,7 +322,57 @@ var SidebarUserController = App.ApplicationController.extend({
 module.exports = SidebarUserController;
 },{}],12:[function(require,module,exports){
 var SidebarController = App.ApplicationController.extend({
+	trigger: null,
+	act: null,
+	actions: {
+		navigate: function() {
+			//define the menu item
+			var el = null;
 
+			//work on the trigger element
+			el = this.get('trigger');
+			//make inactive if already active
+			if($(el).hasClass('on')) {
+				$(el).removeClass('on');
+				this.set('act', 'close');
+				this.send('menu');
+			} else {
+				//if any of the sibling elements are active, remove their active value then make current active
+				if($(el).siblings().hasClass('on')) {
+					$(el).siblings().removeClass('on');
+					$(el).addClass('on');
+					this.set('act', 'change');
+					this.send('menu');
+				} else {
+					//just make current active
+					$(el).addClass('on');
+					this.set('act', 'open');
+					this.send('menu');
+				}
+			}
+		},
+		menu: function() {
+			var el, action, left = null;
+
+			action = this.get('act');
+			el = this.get('trigger');
+			left = $(el).parent().width();
+
+			if(action === 'open') {
+				//
+				var ml = left + $('#menu').width();
+				$('#menu').animate({'left': left+'px'}, {duration: 200, queue: false});
+				$('#map-canvas').animate({'margin-left': ml+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+			} else if(action === 'close') {
+				var cl = left - $('#menu').width();
+				$('#menu').animate({'left': cl+'px'}, {duration: 200, queue: false});
+				$('#map-canvas').animate({'margin-left': left+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+			} else if(action === 'change') {
+				//change width of menu
+				//update map left-margin
+			}
+		}
+	}
 });
 
 module.exports = SidebarController;
@@ -646,7 +696,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar", options) : helperMissing.call(depth0, "render", "sidebar", options))));
-  data.buffer.push("\n			<div id=\"map-canvas\">\n			</div>\n		</div>");
+  data.buffer.push("\n			<div id=\"map-canvas\">\n		</div>");
   return buffer;
   
 });
@@ -712,7 +762,7 @@ function program7(depth0,data) {
   
 });
 
-Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+Ember.TEMPLATES['sidebar-old'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
@@ -752,6 +802,22 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "specific-item-menu", options) : helperMissing.call(depth0, "outlet", "specific-item-menu", options))));
+  data.buffer.push("\n</div>");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<div id='nb-vert'>\n	<ul>\n		<li data-menu='search'>\n			<img src='img/search.png' width='24px' alt='Search' />\n		</li>\n		<li data-menu='user'>\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips'>\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n		</li>\n		<li data-menu='media'>\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "sidebar-content", options) : helperMissing.call(depth0, "outlet", "sidebar-content", options))));
   data.buffer.push("\n</div>");
   return buffer;
   
@@ -48295,225 +48361,15 @@ module.exports = SidebarUserView;
 },{}],38:[function(require,module,exports){
 var SidebarView = Ember.View.extend({
 	didInsertElement: function() {
-		//animate the menu bar extention
-		$('.active-button').click(function() {
-			if($(this).hasClass('closed')) {
-				$(this).rotate({animateTo: 180});
-				$(this).removeClass('closed');
-				$('#navbar-extended').addClass('extended');
-				$('#navbar-extended').animate({'left':'64px'}, {duration: 200, queue: false});
-				if($('#content-menu').hasClass('open')) {
-					var endpoint = (64 + $('#navbar-extended').width());
-					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
-					var mapleft = (endpoint + $('#content-menu').width());
-					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					if($('#item-specific-menu').hasClass('open')) {
-						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
-					}
-				} else {
-					$('#map-canvas').animate({'margin-left':'175px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					if($('#item-specific-menu').hasClass('open')) {
-						$('#item-specific-menu').animate({'left':'175px'}, {duration: 200, queue: false});
-					}
-				}
-			} else {
-				$(this).rotate({animateTo:90});
-				$(this).addClass('closed');
-				$('#navbar-extended').removeClass('extended');
-				$('#navbar-extended').animate({'left':'-47px'}, {duration: 200, queue: false});
-				if($('#content-menu').hasClass('open')) {
-					var endpoint = $('#navbar-vertical').width();
-					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
-					var mapleft = (endpoint + $('#content-menu').width());
-					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					if($('#item-specific-menu').hasClass('open')) {
-						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
-					}
-				} else {
-					var endpoint = $('#navbar-vertical').width() - $('#content-menu').width();
-					$('#content-menu').animate({'left':endpoint+'px'}, {duration: 200, queue: false});
-					$('#map-canvas').animate({'margin-left':'64px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					if($('#item-specific-menu').hasClass('open')) {
-						$('#item-specific-menu').animate({'left':'64px'}, {duration: 200, queue: false});
-					}
-				}
-			}
+		//hold entity scope in variable
+		var self = this;
+
+		//perform change in controller, called from view
+		$('#nb-vert > ul > li').click(function() {
+			var controller = self.get('controller');
+			controller.set('trigger', this);
+			controller.send('navigate');
 		});
-
-		$('.menu-item').click(function() {
-			if($(this).hasClass('active')) {
-				var item = $(this).data('item');
-				$(this).removeClass('active');
-				$(this).removeClass('menu-item-manual');
-				$('.menu-item-text').each(function() {
-					if($(this).data('item') == item) {
-						$(this).removeClass('active');
-						$(this).removeClass('menu-item-text-manual');
-					}
-				});
-				switchContentMenu(item);
-			} else {
-				//create the relevant classes and activate a menu
-				$('.menu-item').each(function() {
-					if($(this).hasClass('active')) {
-						var item = $(this).data('item');
-						$(this).removeClass('active');
-						$(this).removeClass('menu-item-manual');
-						$('.menu-item-text').each(function() {
-							if($(this).data('item') == item) {
-								$(this).removeClass('active');
-								$(this).removeClass('menu-item-text-manual');
-							}
-						});
-					}
-				});
-				$(this).addClass('active');
-				$(this).addClass('menu-item-manual');
-				var item = $(this).data('item');
-				$('.menu-item-text').each(function() {
-					if($(this).data('item') == item) {
-						$(this).addClass('active');
-						$(this).addClass('menu-item-text-manual');
-					}
-				});
-				switchContentMenu(item);
-			}
-		});
-
-		if($('#navbar-extended').hasClass('extended')) {
-			$('.menu-item-text').click(function() {
-				if($(this).hasClass('active')) {
-					var item = $(this).data('item');
-					$(this).removeClass('active');
-					$(this).removeClass('menu-item-text-manual');
-					$('.menu-item').each(function() {
-						if($(this).data('item') == item) {
-							$(this).removeClass('active');
-							$(this).removeClass('menu-item-manual');
-						}
-					});
-					switchContentMenu(item);
-				} else {
-					//create the relevant classes and activate a menu
-					$('.menu-item-text').each(function() {
-						if($(this).hasClass('active')) {
-							var item = $(this).data('item');
-							$(this).removeClass('active');
-							$(this).removeClass('menu-item-text-manual');
-							$('.menu-item').each(function() {
-								if($(this).data('item') == item) {
-									$(this).removeClass('active');
-									$(this).removeClass('menu-item-manual');
-								}
-							});
-						}
-					});
-					$(this).addClass('active');
-					$(this).addClass('menu-item-text-manual');
-					var item = $(this).data('item');
-					$('.menu-item').each(function() {
-						if($(this).data('item') == item) {
-							$(this).addClass('active');
-							$(this).addClass('menu-item-manual');
-						}
-					});
-					switchContentMenu(item);
-				}
-			});
-		}
-
-		//animate the hover when the menu bar is extended
-		$('.menu-item').each(function() {
-			$(this).hover(function() {
-				if($('#navbar-extended').hasClass('extended')) {
-					var item = $(this).data("item");
-					$('.menu-item-text').each(function() {
-						if($(this).data("item") == item) {
-							$(this).addClass('menu-item-text-manual');
-						}
-					});
-				}
-			}, function() {
-				if($('#navbar-extended').hasClass('extended')) {
-					var item = $(this).data("item");
-					$('.menu-item-text').each(function() {
-						if($(this).data("item") == item) {
-							if(!($(this).hasClass('active'))) {
-								$(this).removeClass('menu-item-text-manual');
-							}
-						}
-					});
-				}
-			});
-		});
-
-		//animate the hover on the narrow menu
-		if($('#navbar-extended').hasClass('extended')) {
-			$('.menu-item-text').each(function() {
-				$(this).hover(function() {
-					var item = $(this).data("item");
-					$('.menu-item').each(function() {
-						if($(this).data("item") == item) {
-							$(this).addClass('menu-item-manual');
-						}
-					});
-				}, function() {
-					var item = $(this).data("item");
-					$('.menu-item').each(function() {
-						if($(this).data("item") == item) {
-							if(!($(this).hasClass('active'))) {
-								$(this).removeClass('menu-item-manual');
-							}
-						}
-					});
-				});
-			});
-		}
-
-		function switchContentMenu(menu) {
-			//open the menu, switch the content, or close the menu
-			if($('#content-menu').hasClass('open')) {
-				if($('#content-menu').hasClass(menu+'-menu')) {
-					//menu is the same as currently open, so we're closing the menu
-					var right;
-					if($('#navbar-extended').hasClass('extended')) {
-						right = ($('#navbar-extended').position().left + $('#navbar-extended').width());
-					} else {
-						right = ($('#navbar-vertical').width());
-					}
-					$('#content-menu').removeClass('open');
-					$('#content-menu').removeClass(menu+'-menu');
-					var left = right - $('#content-menu').width();
-					$('#content-menu').animate({'left':left+'px'},'fast');
-					var mapleft = left + $('#content-menu').width();
-					$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					if($('#item-specific-menu').hasClass('open')) {
-						$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
-					}
-				} else {
-					//menu change
-					$('#content-menu').removeClass();
-					$('#content-menu').addClass('open');
-					$('#content-menu').addClass(menu+'-menu');
-				}
-			} else {
-				//open the menu
-				$('#content-menu').addClass('open');
-				$('#content-menu').addClass(menu+'-menu');
-				var left;
-				if($('#navbar-extended').hasClass('extended')) {
-					left = ($('#navbar-extended').position().left + $('#navbar-extended').width());
-				} else {
-					left = ($('#navbar-vertical').width());
-				}
-				$('#content-menu').animate({'left':left+'px'},{duration: 200, queue: false}); 
-				var mapleft = left + $('#content-menu').width();
-				$('#map-canvas').animate({'margin-left':mapleft+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-				if($('#item-specific-menu').hasClass('open')) {
-					$('#item-specific-menu').animate({'left':mapleft+'px'}, {duration: 200, queue: false});
-				}
-			}
-		}
 	}
 });
 

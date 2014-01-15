@@ -1,0 +1,69 @@
+<div id="navbar-vertical">
+	<div id="navbar-extend-button">
+		<div class="active-button">
+			<!--<img src='img/extend.png' height='16px' width='16px' />-->
+		</div>
+	</div>
+	<div class="menu-item" data-item='search' {{action "loadModule" 'sidebar.search' 'null' 'null' 'null'}}>
+		<div class="menu-item-icon">
+			<img src="img/search.png" height="24px" width="24px" />
+		</div>
+	</div>
+	<div class="menu-item" data-item='profile' {{action 'loadModule' 'sidebar.user' 'profile' 'null' 'null'}}>
+		<div class="menu-item-icon">
+			<img src="img/profile.png" height="24px" width="24px" />
+		</div>
+	</div>
+	<!-- <div class="menu-item" data-item='social'>
+		<div class="menu-item-icon">
+			<img src="img/social.png" height="24px" width="24px" />
+		</div>
+	</div> -->
+	<div class="menu-item" data-item='trips' {{action 'loadModule' 'sidebar.trips' 'trip' 'creator_uid' 'null'}}>
+		<div class="menu-item-icon">
+			<img src="img/trips.png" height="24px" width="24px" />
+		</div>
+	</div>
+	<!--<div class="menu-item" data-item='locations'>
+		<div class="menu-item-icon">
+			<img src="img/map-icon.png" height="24px" width="24px" />
+		</div>
+	</div>
+	<div class="menu-item" data-item='media'>
+		<div class="menu-item-icon">
+			<img src="img/camera.png" height="24px" width="24px" />
+		</div>
+	</div>-->
+	<div class="home-static" data-item="home">
+		<div class="menu-item-icon home-icon">
+			<img src="img/logo.png" width="24px" />
+		</div>
+	</div>
+</div>
+<div id="navbar-extended" class="extended">
+	<div style="height: 64px"></div>
+	<div class="menu-item-text" data-item='search' {{action 'loadModule' 'sidebar.search'}}>
+		<div class="menu-extended-text">SEARCH</div>
+	</div>
+	<div class="menu-item-text" data-item='profile' {{action 'loadModule' 'sidebar.user'}}>
+		<div class="menu-extended-text">ME</div>
+	</div>
+	<!-- <div class="menu-item-text" data-item='social'>
+		<div class="menu-extended-text">SOCIAL</div>
+	</div> -->
+	<div class="menu-item-text" data-item='trips' {{action 'loadModule' 'sidebar.trips'}}>
+		<div class="menu-extended-text">TRIPS</div>
+	</div>
+	<!--<div class="menu-item-text" data-item='locations'>
+		<div class="menu-extended-text">LOCATIONS</div>
+	</div>
+	<div class="menu-item-text" data-item='media'>
+		<div class="menu-extended-text">MEDIA</div>
+	</div>-->
+</div>
+<div id="content-menu">
+	{{outlet sidebar-content}}
+</div>
+<div id='item-specific-menu'>
+	{{outlet specific-item-menu}}
+</div>
