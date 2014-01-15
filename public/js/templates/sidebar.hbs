@@ -1,17 +1,19 @@
 <div id='nb-vert'>
 	<ul>
-		<li data-menu='search'>
+		<li data-menu='search' data-width='350' {{action "loadModule" 'sidebar.search' 'null' 'null' 'null'}}>
 			<img src='img/search.png' width='24px' alt='Search' />
 		</li>
-		<li data-menu='user'>
+		<li data-menu='user' data-width='300' {{action "loadModule" 'sidebar.user' 'profile' 'null' 'null'}}>
 			<img src='img/profile.png' width='24px' alt='Profile' />
 		</li>
 		<li data-menu='trips'>
 			<img src='img/trips.png' width='24px' alt='Trips' />
 		</li>
 		<li data-menu='waypoint'>
+			<img src='img/waypoints.png' width='24px' alt='Waypoint' />
 		</li>
 		<li data-menu='media'>
+			<img src='img/media.png' width='24px' alt='Media' />
 		</li>
 	</ul>
 	<div class='static'>

@@ -324,6 +324,7 @@ module.exports = SidebarUserController;
 var SidebarController = App.ApplicationController.extend({
 	trigger: null,
 	act: null,
+	w: null,
 	actions: {
 		navigate: function() {
 			//define the menu item
@@ -352,24 +353,28 @@ var SidebarController = App.ApplicationController.extend({
 			}
 		},
 		menu: function() {
-			var el, action, left = null;
+			var el, action, left, width = null;
 
 			action = this.get('act');
 			el = this.get('trigger');
 			left = $(el).parent().width();
+			width = this.get('w');
 
 			if(action === 'open') {
-				//
-				var ml = left + $('#menu').width();
+				var ml = left + width;
+				$('#menu').css('width', width+'px');
 				$('#menu').animate({'left': left+'px'}, {duration: 200, queue: false});
 				$('#map-canvas').animate({'margin-left': ml+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'close') {
-				var cl = left - $('#menu').width();
+				var cl = left - width;
 				$('#menu').animate({'left': cl+'px'}, {duration: 200, queue: false});
 				$('#map-canvas').animate({'margin-left': left+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'change') {
 				//change width of menu
+				$('#menu').animate({'width': width+'px'}, {duration: 100, queue: false});
 				//update map left-margin
+				var cl = left + width;
+				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			}
 		}
 	}
@@ -810,10 +815,18 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("<div id='nb-vert'>\n	<ul>\n		<li data-menu='search'>\n			<img src='img/search.png' width='24px' alt='Search' />\n		</li>\n		<li data-menu='user'>\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips'>\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n		</li>\n		<li data-menu='media'>\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
+  data.buffer.push("<div id='nb-vert'>\n	<ul>\n		<li data-menu='search' data-width='350' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", "null", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n			<img src='img/search.png' width='24px' alt='Search' />\n		</li>\n		<li data-menu='user' data-width='300' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", "profile", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips'>\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n			<img src='img/waypoints.png' width='24px' alt='Waypoint' />\n		</li>\n		<li data-menu='media'>\n			<img src='img/media.png' width='24px' alt='Media' />\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -931,7 +944,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div class=\"container\">\n	<h4>");
+  data.buffer.push("<!--<div class=\"container\">\n	<h4>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -947,7 +960,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">Logout</a>\n</div>");
+  data.buffer.push(">Logout</a>\n</div>-->\n\n	<div class='user-content'>\n		<div class='user-image'></div>\n		<div class='user-name'>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(" ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</div>\n	</div>");
   return buffer;
   
 });
@@ -48367,6 +48388,9 @@ var SidebarView = Ember.View.extend({
 		//perform change in controller, called from view
 		$('#nb-vert > ul > li').click(function() {
 			var controller = self.get('controller');
+			if($(this).data('width') !== null) {
+				controller.set('w', $(this).data('width'));
+			}
 			controller.set('trigger', this);
 			controller.send('navigate');
 		});

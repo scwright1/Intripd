@@ -1,6 +1,7 @@
 var SidebarController = App.ApplicationController.extend({
 	trigger: null,
 	act: null,
+	w: null,
 	actions: {
 		navigate: function() {
 			//define the menu item
@@ -29,24 +30,28 @@ var SidebarController = App.ApplicationController.extend({
 			}
 		},
 		menu: function() {
-			var el, action, left = null;
+			var el, action, left, width = null;
 
 			action = this.get('act');
 			el = this.get('trigger');
 			left = $(el).parent().width();
+			width = this.get('w');
 
 			if(action === 'open') {
-				//
-				var ml = left + $('#menu').width();
+				var ml = left + width;
+				$('#menu').css('width', width+'px');
 				$('#menu').animate({'left': left+'px'}, {duration: 200, queue: false});
 				$('#map-canvas').animate({'margin-left': ml+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'close') {
-				var cl = left - $('#menu').width();
+				var cl = left - width;
 				$('#menu').animate({'left': cl+'px'}, {duration: 200, queue: false});
 				$('#map-canvas').animate({'margin-left': left+'px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'change') {
 				//change width of menu
+				$('#menu').animate({'width': width+'px'}, {duration: 100, queue: false});
 				//update map left-margin
+				var cl = left + width;
+				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			}
 		}
 	}
