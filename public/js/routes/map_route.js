@@ -1,7 +1,6 @@
 var MapRoute = App.AuthenticatedRoute.extend({
 	actions: {
 		loadModule: function(module, mod, key, func) {
-			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 			//because we're not linking to the sidebar items via linkTo, we need to fire 
 			//up their model pre-processing manually here
 			var model = null;
@@ -19,16 +18,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 					controller.send(func);
 				}
 			}
-		},
-		loadItemMenu: function() {
-			if($('#content-menu').hasClass('open')) {
-				var start = $('#content-menu').position().left;
-				var endpoint = (start + $('#content-menu').width());
-				$('#item-specific-menu').css('left', endpoint+'px');
-			}
-			var width = $('#map-canvas').width() / 2;
-			$('#item-specific-menu').animate({'width':width+'px'}, {duration: 200, queue: false});
-			$('#item-specific-menu').addClass('open');
+			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 		}
 	},
 	setupController: function() {
@@ -40,6 +30,9 @@ var MapRoute = App.AuthenticatedRoute.extend({
 	},
 	model: function() {
 		return Ember.Object.create({});
+	},
+	sup: function() {
+		alert('sup');
 	}
 });
 

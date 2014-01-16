@@ -11,7 +11,7 @@ var SidebarView = Ember.View.extend({
 			}
 			controller.set('trigger', this);
 			controller.send('navigate');
-		});
+		}); 
 	}
 });
 

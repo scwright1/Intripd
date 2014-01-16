@@ -1,9 +1,18 @@
 var SidebarTripsController = Ember.ArrayController.extend({
+	needs: 'sidebar',
 	ac_trip: null,
 	name: '',
 	start: '',
 	end: '',
+	w: null,
+	trigger: null,
 	actions: {
+		menu: function() {
+			var sidebarController = this.get('controllers.sidebar');
+			sidebarController.set('w', this.get('w'));
+			sidebarController.set('trigger', this.get('trigger'));
+			sidebarController.send('navigate');
+		},
 		createTrip: function() {
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');

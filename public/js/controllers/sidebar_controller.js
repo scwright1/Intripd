@@ -31,11 +31,12 @@ var SidebarController = App.ApplicationController.extend({
 		},
 		menu: function() {
 			var el, action, left, width = null;
+			var self = this;
 
-			action = this.get('act');
-			el = this.get('trigger');
+			action = self.get('act');
+			el = self.get('trigger');
 			left = $(el).parent().width();
-			width = this.get('w');
+			width = self.get('w');
 
 			if(action === 'open') {
 				var ml = left + width;
@@ -51,8 +52,13 @@ var SidebarController = App.ApplicationController.extend({
 				$('#menu').animate({'width': width+'px'}, {duration: 100, queue: false});
 				//update map left-margin
 				var cl = left + width;
-				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {
+					google.maps.event.trigger(map, 'resize');
+				}});
 			}
+		},
+		proof: function() {
+			alert('proof');
 		}
 	}
 });

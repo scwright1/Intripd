@@ -5,6 +5,12 @@
 </div>-->
 
 	<div class='user-content'>
+		<div class='user-pm-count'><b>0</b> new Private Messages</div>
 		<div class='user-image'></div>
 		<div class='user-name'>{{firstName}} {{lastName}}</div>
+		<div class='user-email'>{{email}}</div>
+		<div class='buttonbox'>
+			<button class='btn btn-danger btn-xs' style='float: left'><i class='fa fa-bug'></i> Found A Bug?</button>
+			<button class='btn btn-info' style='float: right' {{action 'logout'}}>Logout</button>
+		</div>
 	</div>

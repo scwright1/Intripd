@@ -228,11 +228,20 @@ var ProfileModalController = App.ApplicationController.extend({
 module.exports = ProfileModalController;
 },{}],10:[function(require,module,exports){
 var SidebarTripsController = Ember.ArrayController.extend({
+	needs: 'sidebar',
 	ac_trip: null,
 	name: '',
 	start: '',
 	end: '',
+	w: null,
+	trigger: null,
 	actions: {
+		menu: function() {
+			var sidebarController = this.get('controllers.sidebar');
+			sidebarController.set('w', this.get('w'));
+			sidebarController.set('trigger', this.get('trigger'));
+			sidebarController.send('navigate');
+		},
 		createTrip: function() {
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');
@@ -298,7 +307,16 @@ var SidebarTripsController = Ember.ArrayController.extend({
 module.exports = SidebarTripsController;
 },{}],11:[function(require,module,exports){
 var SidebarUserController = App.ApplicationController.extend({
+	needs: 'sidebar',
+	w: null,
+	trigger: null,
 	actions: {
+		menu: function() {
+			var sidebarController = this.get('controllers.sidebar');
+			sidebarController.set('w', this.get('w'));
+			sidebarController.set('trigger', this.get('trigger'));
+			sidebarController.send('navigate');
+		},
 		profile: function() {
 			return this.store.find('profile', App.Session.get('uid'));
 		}.property(),
@@ -354,11 +372,12 @@ var SidebarController = App.ApplicationController.extend({
 		},
 		menu: function() {
 			var el, action, left, width = null;
+			var self = this;
 
-			action = this.get('act');
-			el = this.get('trigger');
+			action = self.get('act');
+			el = self.get('trigger');
 			left = $(el).parent().width();
-			width = this.get('w');
+			width = self.get('w');
 
 			if(action === 'open') {
 				var ml = left + width;
@@ -374,8 +393,13 @@ var SidebarController = App.ApplicationController.extend({
 				$('#menu').animate({'width': width+'px'}, {duration: 100, queue: false});
 				//update map left-margin
 				var cl = left + width;
-				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'margin-left': cl+'px'}, {duration: 100, queue: false, complete: function() {
+					google.maps.event.trigger(map, 'resize');
+				}});
 			}
+		},
+		proof: function() {
+			alert('proof');
 		}
 	}
 });
@@ -571,7 +595,6 @@ module.exports = IndexRoute;
 var MapRoute = App.AuthenticatedRoute.extend({
 	actions: {
 		loadModule: function(module, mod, key, func) {
-			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 			//because we're not linking to the sidebar items via linkTo, we need to fire 
 			//up their model pre-processing manually here
 			var model = null;
@@ -589,16 +612,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 					controller.send(func);
 				}
 			}
-		},
-		loadItemMenu: function() {
-			if($('#content-menu').hasClass('open')) {
-				var start = $('#content-menu').position().left;
-				var endpoint = (start + $('#content-menu').width());
-				$('#item-specific-menu').css('left', endpoint+'px');
-			}
-			var width = $('#map-canvas').width() / 2;
-			$('#item-specific-menu').animate({'width':width+'px'}, {duration: 200, queue: false});
-			$('#item-specific-menu').addClass('open');
+			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 		}
 	},
 	setupController: function() {
@@ -610,6 +624,9 @@ var MapRoute = App.AuthenticatedRoute.extend({
 	},
 	model: function() {
 		return Ember.Object.create({});
+	},
+	sup: function() {
+		alert('sup');
 	}
 });
 
@@ -631,7 +648,11 @@ var SidebarUserRoute = Ember.Route.extend({
 module.exports = SidebarUserRoute;
 },{}],26:[function(require,module,exports){
 var SidebarRoute = Ember.Route.extend({
-
+	actions: {
+		l: function() {
+			alert('data');
+		}
+	}
 });
 
 module.exports = SidebarRoute;
@@ -826,7 +847,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", "profile", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips'>\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n			<img src='img/waypoints.png' width='24px' alt='Waypoint' />\n		</li>\n		<li data-menu='media'>\n			<img src='img/media.png' width='24px' alt='Media' />\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
+  data.buffer.push(">\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips' data-width='350' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", "trip", "c", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n			<img src='img/waypoints.png' width='24px' alt='Waypoint' />\n		</li>\n		<li data-menu='media'>\n			<img src='img/media.png' width='24px' alt='Media' />\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -960,7 +985,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">Logout</a>\n</div>-->\n\n	<div class='user-content'>\n		<div class='user-image'></div>\n		<div class='user-name'>");
+  data.buffer.push(">Logout</a>\n</div>-->\n\n	<div class='user-content'>\n		<div class='user-pm-count'><b>0</b> new Private Messages</div>\n		<div class='user-image'></div>\n		<div class='user-name'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -968,7 +993,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n	</div>");
+  data.buffer.push("</div>\n		<div class='user-email'>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</div>\n		<div class='buttonbox'>\n			<button class='btn btn-danger btn-xs' style='float: left'><i class='fa fa-bug'></i> Found A Bug?</button>\n			<button class='btn btn-info' style='float: right' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">Logout</button>\n		</div>\n	</div>");
   return buffer;
   
 });
@@ -48357,6 +48390,9 @@ var SidebarSearchView = Ember.View.extend({
 module.exports = SidebarSearchView;
 },{}],36:[function(require,module,exports){
 var SidebarTripsView = Ember.View.extend({
+	init: function() {
+		this._super();
+	},
 	didInsertElement: function() {
 	  $('#create_trip_form > .form-group > .date').datepicker({
 	    format: "dd/mm/yyyy",
@@ -48393,7 +48429,7 @@ var SidebarView = Ember.View.extend({
 			}
 			controller.set('trigger', this);
 			controller.send('navigate');
-		});
+		}); 
 	}
 });
 

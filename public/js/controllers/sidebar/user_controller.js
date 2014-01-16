@@ -1,5 +1,14 @@
 var SidebarUserController = App.ApplicationController.extend({
+	needs: 'sidebar',
+	w: null,
+	trigger: null,
 	actions: {
+		menu: function() {
+			var sidebarController = this.get('controllers.sidebar');
+			sidebarController.set('w', this.get('w'));
+			sidebarController.set('trigger', this.get('trigger'));
+			sidebarController.send('navigate');
+		},
 		profile: function() {
 			return this.store.find('profile', App.Session.get('uid'));
 		}.property(),
