@@ -1,40 +1,4 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var MarkerComponent = Ember.Component.extend({
-	setup: function(element) {
-		var store = this.get('store');
-		console.log(store);
-		var image = 'img/wpt.png';
-		var lat = $(element).children('.place_lat').data('value');
-		var lng = $(element).children('.place_lng').data('value');
-		var name = $(element).children('.place_text').children('.place_name').data('value');
-		var address = $(element).children('.place_text').children('.place_address').data('value');
-		var latLng = new google.maps.LatLng(lat, lng);
-		var marker = new google.maps.Marker({
-	    	position: latLng,
-	      	map: map,
-	      	icon: image,
-	      	animation: google.maps.Animation.DROP,
-	      	title: name
-	  	});
-	  	attachListener(marker, name, address);
-	    markers.push($(element).children('.place_id').data('value'));
-	    map.panTo(latLng);
-	    $(element).remove();
-	    var controller = this.get('controller.marker');
-	    controller.set('marker', {
-	    	name: name,
-	    	lat: lat,
-	    	lng: lng,
-	    	address: address,
-	    	creator_uid: App.Session.get('uid'),
-	    	trip_uid: App.Session.get('ac-tr')
-	    });
-	    controller.send('push');
-	}
-});
-
-module.exports = MarkerComponent;
-},{}],2:[function(require,module,exports){
 // require other, dependencies here, ie:
 // require('./vendor/moment');
 
@@ -56,20 +20,10 @@ App.Store = DS.Store.extend({
 	adapter: App.ApplicationAdapter
 });
 
-Ember.onLoad('Ember.Application', function(Application) {
-  Application.initializer({
-    name: "injectStoreIntoMarker",
-    after: "store",
-    initialize: function(container, application) {   
-      	application.inject('component', 'store', 'store:main');
-    }
-  });
-})
-
 module.exports = App;
 
 
-},{"../vendor/ember":33,"../vendor/ember-data":32,"../vendor/handlebars":34,"../vendor/jquery":36,"../vendor/jquery.cookie":35}],3:[function(require,module,exports){
+},{"../vendor/ember":33,"../vendor/ember-data":32,"../vendor/handlebars":34,"../vendor/jquery":36,"../vendor/jquery.cookie":35}],2:[function(require,module,exports){
 var App = require('./app');
 
 App.Router.map(function() {
@@ -89,7 +43,7 @@ App.Router.map(function() {
 });
 
 
-},{"./app":2}],4:[function(require,module,exports){
+},{"./app":1}],3:[function(require,module,exports){
 
 var SessionManager = Ember.Object.extend({
 	init: function() {
@@ -149,7 +103,7 @@ var SessionManager = Ember.Object.extend({
 });
 
 module.exports = SessionManager;
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var ApplicationController = Ember.ObjectController.extend({
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated()
@@ -157,7 +111,7 @@ var ApplicationController = Ember.ObjectController.extend({
 });
 
 module.exports = ApplicationController;
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var AuthLoginController = Ember.ObjectController.extend({
 	isChecked: false,
 	actions: {
@@ -191,7 +145,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 module.exports = AuthLoginController;
 
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var AuthRegisterController = Ember.ObjectController.extend({
   	actions: {
 	 	registerUser: function() {
@@ -228,7 +182,7 @@ var AuthRegisterController = Ember.ObjectController.extend({
 module.exports = AuthRegisterController;
 
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var MapController = App.ApplicationController.extend({
 	actions: {
 		pollData: function() {
@@ -241,7 +195,7 @@ var MapController = App.ApplicationController.extend({
 });
 
 module.exports = MapController;
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var MarkerController = App.ApplicationController.extend({
 	marker: null,
 	actions: {
@@ -253,12 +207,12 @@ var MarkerController = App.ApplicationController.extend({
 });
 
 module.exports = MarkerController;
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var MenuController = App.ApplicationController.extend({
 });
 
 module.exports = MenuController;
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 var ProfileModalController = App.ApplicationController.extend({
 	firstName: '',
 	lastName: '',
@@ -286,6 +240,66 @@ var ProfileModalController = App.ApplicationController.extend({
 });
 
 module.exports = ProfileModalController;
+},{}],11:[function(require,module,exports){
+var SidebarSearchController = Ember.ArrayController.extend({
+	needs: 'sidebar',
+	input: null,
+	lastVal: '',
+	tick: 0,
+	timer: null,
+	actions: {
+		search: function() {
+			this.set('timer', setInterval(searchTick, 200));
+			var self = this;
+			var input = this.get('input');
+			var bounds = map.getBounds();
+			function searchTick() {
+				var t = self.get('tick');
+				t += 1;
+				self.set('tick', t);
+				if((self.get('lastVal') !== $(input).val()) && (self.get('lastVal') !== '')) {
+					if($(input).val().length > 1) {
+						var request = {
+							bounds: bounds,
+							query: $(input).val()
+						};
+						locationService.textSearch(request, function(results, status) {
+							if(status === google.maps.places.PlacesServiceStatus.OK) {
+								var dat = self.store.all('search');
+								for(var a = 0; a < dat.content.length; a++) {
+									dat.content[a].deleteRecord();
+								}
+								for(var i = 0; i < results.length; i++) {
+									self.store.createRecord('search', {
+										sid: results[i].id,
+										reference: results[i].reference,
+										name: results[i].name,
+										address: results[i].formatted_address,
+										lat: results[i].geometry.location.lat(),
+										lng: results[i].geometry.location.lng()
+									});
+								}
+							}
+						});
+					}
+				} else if($(input).val() === '') {
+					var dat = self.store.all('search');
+						for(var a = 0; a < dat.content.length; a++) {
+						dat.content[a].deleteRecord();
+					}
+				}
+				self.set('lastVal', $(input).val());
+			}
+		},
+		clear: function() {
+			clearInterval(this.get('timer'));
+			this.set('tick', 0);
+			console.log('tick off');
+		}
+	}
+});
+
+module.exports = SidebarSearchController;
 },{}],12:[function(require,module,exports){
 var SidebarTripsController = Ember.ArrayController.extend({
 	needs: 'sidebar',
@@ -473,12 +487,12 @@ var App = window.App = require('./config/app');
 require('./templates');
 
 
-App.MarkerComponent = require('./components/marker-component');
 App.ApplicationController = require('./controllers/application_controller');
 App.MapController = require('./controllers/map_controller');
 App.MarkerController = require('./controllers/marker_controller');
 App.MenuController = require('./controllers/menu_controller');
 App.SidebarController = require('./controllers/sidebar_controller');
+App.SidebarSearchController = require('./controllers/sidebar/search_controller');
 App.SidebarTripsController = require('./controllers/sidebar/trips_controller');
 App.SidebarUserController = require('./controllers/sidebar/user_controller');
 App.ProfileModalController = require('./controllers/profile/modal_controller');
@@ -488,7 +502,7 @@ App.ApiKey = require('./models/api_key');
 App.Marker = require('./models/marker');
 App.Profile = require('./models/profile');
 App.Registration = require('./models/registration');
-App.Searchresult = require('./models/searchresult');
+App.Search = require('./models/search');
 App.Trip = require('./models/trip');
 App.User = require('./models/user');
 App.ApplicationRoute = require('./routes/application_route');
@@ -503,8 +517,8 @@ App.ApplicationView = require('./views/application_view');
 App.MapView = require('./views/map_view');
 App.MarkerView = require('./views/marker_view');
 App.SidebarView = require('./views/sidebar_view');
+App.SidebarSearchViewOld = require('./views/sidebar/search_view-old');
 App.SidebarSearchView = require('./views/sidebar/search_view');
-App.SidebarSearchresults = require('./views/sidebar/searchresults');
 App.SidebarTripsView = require('./views/sidebar/trips_view');
 App.SidebarUserView = require('./views/sidebar/user_view');
 
@@ -513,7 +527,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./components/marker-component":1,"./config/app":2,"./config/routes":3,"./controllers/application_controller":5,"./controllers/auth/login_controller":6,"./controllers/auth/register_controller":7,"./controllers/map_controller":8,"./controllers/marker_controller":9,"./controllers/menu_controller":10,"./controllers/profile/modal_controller":11,"./controllers/sidebar/trips_controller":12,"./controllers/sidebar/user_controller":13,"./controllers/sidebar_controller":14,"./models/api_key":16,"./models/marker":17,"./models/profile":18,"./models/registration":19,"./models/searchresult":20,"./models/trip":21,"./models/user":22,"./routes/application_route":23,"./routes/auth/login_route":24,"./routes/auth/register_route":25,"./routes/index_route":26,"./routes/map_route":27,"./routes/sidebar/trips_route":28,"./routes/sidebar/user_route":29,"./routes/sidebar_route":30,"./templates":31,"./views/application_view":37,"./views/map_view":38,"./views/marker_view":39,"./views/sidebar/search_view":40,"./views/sidebar/searchresults":41,"./views/sidebar/trips_view":42,"./views/sidebar/user_view":43,"./views/sidebar_view":44}],16:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/marker_controller":8,"./controllers/menu_controller":9,"./controllers/profile/modal_controller":10,"./controllers/sidebar/search_controller":11,"./controllers/sidebar/trips_controller":12,"./controllers/sidebar/user_controller":13,"./controllers/sidebar_controller":14,"./models/api_key":16,"./models/marker":17,"./models/profile":18,"./models/registration":19,"./models/search":20,"./models/trip":21,"./models/user":22,"./routes/application_route":23,"./routes/auth/login_route":24,"./routes/auth/register_route":25,"./routes/index_route":26,"./routes/map_route":27,"./routes/sidebar/trips_route":28,"./routes/sidebar/user_route":29,"./routes/sidebar_route":30,"./templates":31,"./views/application_view":37,"./views/map_view":38,"./views/marker_view":39,"./views/sidebar/search_view":41,"./views/sidebar/search_view-old":40,"./views/sidebar/trips_view":42,"./views/sidebar/user_view":43,"./views/sidebar_view":44}],16:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -554,11 +568,17 @@ var UserRegistration = DS.Model.extend({
 
 module.exports = UserRegistration;
 },{}],20:[function(require,module,exports){
-var SearchResult = Ember.Object.extend({
-	
+var Search = DS.Model.extend({
+	sid: DS.attr('string'),
+	reference: DS.attr('string'),
+	name: DS.attr('string'),
+	address: DS.attr('string'),
+	lat: DS.attr('string'),
+	lng: DS.attr('string')
 });
 
-module.exports = SearchResult;
+
+module.exports = Search;
 },{}],21:[function(require,module,exports){
 var Trip = DS.Model.extend({
 	uid: DS.attr('string'),
@@ -637,7 +657,7 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-},{"../config/session_manager":4}],24:[function(require,module,exports){
+},{"../config/session_manager":3}],24:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('token')) {
@@ -711,9 +731,6 @@ var MapRoute = App.AuthenticatedRoute.extend({
 	},
 	model: function() {
 		return Ember.Object.create({});
-	},
-	sup: function() {
-		alert('sup');
 	}
 });
 
@@ -721,10 +738,6 @@ var MapRoute = App.AuthenticatedRoute.extend({
 module.exports = MapRoute;
 },{}],28:[function(require,module,exports){
 var SidebarTripsRoute = Ember.Route.extend({
-	model: function() {
-		console.log('hit this model route');
-		return this.store.find('trip', {creator_uid: App.Session.get('uid')});
-	}
 });
 
 module.exports = SidebarTripsRoute;
@@ -878,20 +891,26 @@ function program7(depth0,data) {
 Ember.TEMPLATES['searchresult'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
   
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("\n		");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n	");
+  return buffer;
+  }
 
-
-  data.buffer.push("<p>Hi</p>");
-  
-});
-
-Ember.TEMPLATES['searchresults'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  
-
-
-  data.buffer.push("<div class='no'>\n</div>");
+  data.buffer.push("<div class='sr'>\n	");
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers.each.call(depth0, "searchresult", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n</div>");
+  return buffer;
   
 });
 
@@ -981,26 +1000,10 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n			<div class=\"location-search-results-entry no-entry\">No Results Found</div>\n			");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "searchresults", options) : helperMissing.call(depth0, "render", "searchresults", options))));
-  data.buffer.push("\n		</div>\n		<div class='location-search-google'>\n			<img src=\"img/powered-by-google-on-white.png\" alt='Powered By Google' />\n		</div>");
-  return buffer;
-  
-});
-
-Ember.TEMPLATES['sidebar/searchresult'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("<div class='container'>\n</div>");
+  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n		</div>\n		<div class='location-search-google'>\n			<img src=\"img/powered-by-google-on-white.png\" alt='Powered By Google' />\n		</div>");
   
 });
 
@@ -48382,6 +48385,7 @@ var MapView = Ember.View.extend({
 module.exports = MapView;
 },{}],39:[function(require,module,exports){
 var MarkerView = Ember.View.extend({
+	controller: App.MarkerController.create(),
 	setup: function(element) {
 		var image = 'img/wpt.png';
 		var lat = $(element).children('.place_lat').data('value');
@@ -48482,7 +48486,7 @@ var SidebarSearchView = Ember.View.extend({
             if(doneInit === false) {
                 if (results.length == 1) {
                     var place = results[0];
-                    $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.lat()+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.lng()+" hidden='hidden'></div></div></a>");
+                    $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"' onclick='var marker = App.MarkerView.create(); marker.setup(this);'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.lat()+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.lng()+" hidden='hidden'></div></div></a>");
 
                 } else {
                     for (var i = 0; i < total; i++) {
@@ -48490,7 +48494,7 @@ var SidebarSearchView = Ember.View.extend({
                         if(place === undefined) {
                             //do nothing
                         } else {
-                            $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.lat()+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.lng()+" hidden='hidden'></div></div></a>");                      
+                            $('.location-search-results').append("<a><div class='location-search-results-entry' id='search_result_"+ place.reference +"' onclick='var marker = App.MarkerView.create(); marker.setup(this);'><div class='place_image'><i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i></div><div class='place_text'><div class='place_name' data-value='"+place.name+"'>"+place.name+"</div><div class='place_address' data-value='"+place.formatted_address+"'>"+place.formatted_address+"</div></div><div class='place_type'></div><div class='place_id' data-value="+place.id+" hidden='hidden'></div><div class='place_ref' data-value="+place.reference+" hidden='hidden'></div><div class='place_lat' data-value="+place.geometry.location.lat()+" hidden='hidden'></div><div class='place_lng' data-value="+place.geometry.location.lng()+" hidden='hidden'></div></div></a>");                      
                         }
                     }
                 }
@@ -48546,10 +48550,21 @@ var SidebarSearchView = Ember.View.extend({
 
 module.exports = SidebarSearchView;
 },{}],41:[function(require,module,exports){
-var SidebarSearchResults = Ember.ContainerView.extend({
+var SidebarSearchView = Ember.View.extend({
+	didInsertElement: function() {
+		var controller = this.get('controller');
+		$('#location-search-input').focus(function() {
+			//start checking
+			controller.set('input', this);
+			controller.send('search');
+		}).blur(function() {
+			//end checking
+			controller.send('clear');
+		});
+	}
 });
 
-module.exports = SidebarSearchResults;
+module.exports = SidebarSearchView;
 },{}],42:[function(require,module,exports){
 var SidebarTripsView = Ember.View.extend({
 	init: function() {

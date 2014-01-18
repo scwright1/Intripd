@@ -1,4 +1,5 @@
 var MarkerView = Ember.View.extend({
+	controller: App.MarkerController.create(),
 	setup: function(element) {
 		var image = 'img/wpt.png';
 		var lat = $(element).children('.place_lat').data('value');

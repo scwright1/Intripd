@@ -33,9 +33,6 @@ var MapRoute = App.AuthenticatedRoute.extend({
 	},
 	model: function() {
 		return Ember.Object.create({});
-	},
-	sup: function() {
-		alert('sup');
 	}
 });
 
