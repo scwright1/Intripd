@@ -19,5 +19,15 @@ App.Store = DS.Store.extend({
 	adapter: App.ApplicationAdapter
 });
 
+Ember.onLoad('Ember.Application', function(Application) {
+  Application.initializer({
+    name: "injectStoreIntoMarker",
+    after: "store",
+    initialize: function(container, application) {   
+      	application.inject('component', 'store', 'store:main');
+    }
+  });
+})
+
 module.exports = App;
 

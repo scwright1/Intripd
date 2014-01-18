@@ -6,7 +6,7 @@ var SessionManager = Ember.Object.extend({
 		this.set('uid', $.cookie('uid'), {expires: 365});
 		this.set('rem', false);
 		this.set('trip', null);
-		this.set('ac-tr', '');
+		this.set('ac-tr', $.cookie('ac-tr'), {expires: 365});
 	},
 
 	tokenChanged: function() {

@@ -19,6 +19,9 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				}
 			}
 			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
+		},
+		load: function() {
+			console.log('this');
 		}
 	},
 	setupController: function() {
