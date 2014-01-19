@@ -4,7 +4,22 @@
 		</div>
 		<div class="location-search-results">
 			{{#each searchResults}}
-				{{name}}
+				<a>
+					<div class='location-search-results-entry' {{bindAttr id='reference'}}>
+						<div class='place_image'>
+							<i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i>
+						</div>
+						<div class='place_text'>
+							<div class='place_name' {{bindAttr data-value='name'}}>{{name}}</div>
+							<div class='place_address' {{bindAttr data-value='address'}}>{{address}}</div>
+						</div>
+						<div class='place_type'></div>
+						<div class='place_id' {{bindAttr data-value='sid'}} hidden='hidden'>{{sid}}</div>
+						<div class='place_ref' {{bindAttr data-value='reference'}} hidden='hidden'>{{reference}}</div>
+						<div class='place_lat' {{bindAttr data-value='lat'}} hidden='hidden'>{{lat}}</div>
+						<div class='place_lng' {{bindAttr value='lng'}} hidden='hidden'>{{lng}}</div>
+					</div>
+				</a>
 			{{/each}}
 		</div>
 		<div class='location-search-google'>
