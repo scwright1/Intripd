@@ -247,6 +247,7 @@ var SidebarSearchController = Ember.ArrayController.extend({
 	lastVal: '',
 	tick: 0,
 	timer: null,
+	searchResults: null,
 	actions: {
 		search: function() {
 			this.set('timer', setInterval(searchTick, 200));
@@ -265,28 +266,30 @@ var SidebarSearchController = Ember.ArrayController.extend({
 						};
 						locationService.textSearch(request, function(results, status) {
 							if(status === google.maps.places.PlacesServiceStatus.OK) {
-								var dat = self.store.all('search');
-								for(var a = 0; a < dat.content.length; a++) {
-									dat.content[a].deleteRecord();
-								}
+							//	var dat = self.store.all('search');
+							//	for(var a = 0; a < dat.content.length; a++) {
+							//		dat.content[a].deleteRecord();
+							//	}
+								self.set('searchResults', null);
+							//	self.set('newData', 'start');
+								var sr = new Array();
 								for(var i = 0; i < results.length; i++) {
-									self.store.createRecord('search', {
+							//		self.store.createRecord('search', {
+									sr[i] = {
 										sid: results[i].id,
 										reference: results[i].reference,
 										name: results[i].name,
 										address: results[i].formatted_address,
 										lat: results[i].geometry.location.lat(),
 										lng: results[i].geometry.location.lng()
-									});
+									};
 								}
+								self.set('searchResults', sr);
 							}
 						});
 					}
 				} else if($(input).val() === '') {
-					var dat = self.store.all('search');
-						for(var a = 0; a < dat.content.length; a++) {
-						dat.content[a].deleteRecord();
-					}
+					self.set('searchResults', null);
 				}
 				self.set('lastVal', $(input).val());
 			}
@@ -1000,10 +1003,26 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
   
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("\n				");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n			");
+  return buffer;
+  }
 
-
-  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n		</div>\n		<div class='location-search-google'>\n			<img src=\"img/powered-by-google-on-white.png\" alt='Powered By Google' />\n		</div>");
+  data.buffer.push("\n		<div class=\"location-search\">\n			<input id=\"location-search-input\" type='text' placeholder='Find Somewhere...' class=\"form-control\" />\n		</div>\n		<div class=\"location-search-results\">\n			");
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers.each.call(depth0, "searchResults", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n		</div>\n		<div class='location-search-google'>\n			<img src=\"img/powered-by-google-on-white.png\" alt='Powered By Google' />\n		</div>");
+  return buffer;
   
 });
 

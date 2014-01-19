@@ -3,6 +3,9 @@
 			<input id="location-search-input" type='text' placeholder='Find Somewhere...' class="form-control" />
 		</div>
 		<div class="location-search-results">
+			{{#each searchResults}}
+				{{name}}
+			{{/each}}
 		</div>
 		<div class='location-search-google'>
 			<img src="img/powered-by-google-on-white.png" alt='Powered By Google' />

@@ -4,6 +4,7 @@ var SidebarSearchController = Ember.ArrayController.extend({
 	lastVal: '',
 	tick: 0,
 	timer: null,
+	searchResults: null,
 	actions: {
 		search: function() {
 			this.set('timer', setInterval(searchTick, 200));
@@ -22,28 +23,30 @@ var SidebarSearchController = Ember.ArrayController.extend({
 						};
 						locationService.textSearch(request, function(results, status) {
 							if(status === google.maps.places.PlacesServiceStatus.OK) {
-								var dat = self.store.all('search');
-								for(var a = 0; a < dat.content.length; a++) {
-									dat.content[a].deleteRecord();
-								}
+							//	var dat = self.store.all('search');
+							//	for(var a = 0; a < dat.content.length; a++) {
+							//		dat.content[a].deleteRecord();
+							//	}
+								self.set('searchResults', null);
+							//	self.set('newData', 'start');
+								var sr = new Array();
 								for(var i = 0; i < results.length; i++) {
-									self.store.createRecord('search', {
+							//		self.store.createRecord('search', {
+									sr[i] = {
 										sid: results[i].id,
 										reference: results[i].reference,
 										name: results[i].name,
 										address: results[i].formatted_address,
 										lat: results[i].geometry.location.lat(),
 										lng: results[i].geometry.location.lng()
-									});
+									};
 								}
+								self.set('searchResults', sr);
 							}
 						});
 					}
 				} else if($(input).val() === '') {
-					var dat = self.store.all('search');
-						for(var a = 0; a < dat.content.length; a++) {
-						dat.content[a].deleteRecord();
-					}
+					self.set('searchResults', null);
 				}
 				self.set('lastVal', $(input).val());
 			}
