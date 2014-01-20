@@ -23,23 +23,24 @@ var SidebarSearchController = Ember.ArrayController.extend({
 						};
 						locationService.textSearch(request, function(results, status) {
 							if(status === google.maps.places.PlacesServiceStatus.OK) {
-							//	var dat = self.store.all('search');
-							//	for(var a = 0; a < dat.content.length; a++) {
-							//		dat.content[a].deleteRecord();
-							//	}
+								var container = $('.location-search-results').height();
+					            var count = container / 70;
+					            var total = Math.round(count);
 								self.set('searchResults', null);
-							//	self.set('newData', 'start');
 								var sr = new Array();
-								for(var i = 0; i < results.length; i++) {
-							//		self.store.createRecord('search', {
-									sr[i] = {
-										sid: results[i].id,
-										reference: results[i].reference,
-										name: results[i].name,
-										address: results[i].formatted_address,
-										lat: results[i].geometry.location.lat(),
-										lng: results[i].geometry.location.lng()
-									};
+								for(var i = 0; i < total; i++) {
+									if(results[i] === undefined) {
+
+									} else {
+										sr[i] = {
+											sid: results[i].id,
+											reference: results[i].reference,
+											name: results[i].name,
+											address: results[i].formatted_address,
+											lat: results[i].geometry.location.lat(),
+											lng: results[i].geometry.location.lng()
+										};
+									}
 								}
 								self.set('searchResults', sr);
 							}
