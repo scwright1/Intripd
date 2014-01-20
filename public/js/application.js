@@ -286,7 +286,6 @@ var SidebarSearchController = Ember.ArrayController.extend({
 		clear: function() {
 			clearInterval(this.get('timer'));
 			this.set('tick', 0);
-			console.log('tick off');
 		}
 	}
 });
@@ -441,8 +440,12 @@ var SidebarController = App.ApplicationController.extend({
 			var self = this;
 
 			action = self.get('act');
-			el = self.get('trigger');
-			left = $(el).parent().width();
+			if(self.get('trigger') !== null) {
+				el = self.get('trigger');
+				left = $(el).parent().width();
+			} else {
+				left = 100;
+			}
 			width = self.get('w');
 
 			if(action === 'open') {
@@ -463,9 +466,6 @@ var SidebarController = App.ApplicationController.extend({
 					google.maps.event.trigger(map, 'resize');
 				}});
 			}
-		},
-		proof: function() {
-			alert('proof');
 		}
 	}
 });
@@ -477,6 +477,7 @@ var WaypointController = App.ApplicationController.extend({
 	marker: null,
 	actions: {
 		setup: function() {
+			var self = this;
 			var element = '#'+this.get('el');
 			var image = 'img/wpt.png';
 			var lat = $(element).children('.place_lat').data('value');
@@ -495,22 +496,32 @@ var WaypointController = App.ApplicationController.extend({
 	    	$(element).remove();
 
 	    	//set marker for saving out to db
-	    	this.set('marker', {
+	    	var wpt = {
 		    	name: name,
 		    	lat: lat,
 		    	lng: lng,
 		    	address: address,
 		    	creator_uid: App.Session.get('uid'),
 		    	trip_uid: App.Session.get('ac-tr')
-		    });
-		    this.send('push');
-		},
-		push: function() {
-			var marker = this.store.createRecord('waypoint', this.get('marker'));
-			var promise = marker.save();
+		    };
+		    
+		    var wp = this.store.createRecord('waypoint', wpt);
+			var promise = wp.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
 				//load point for the ui element for the waypoint
+				google.maps.event.addListener(marker, 'click', function() {
+					self.set('marker', model);
+					$('#nb-vert > ul > li').each(function() {
+						$(this).removeClass('on');
+					});
+	    			self.get('target').send('editMarker', model);
+	    		});
+	    		self.set('marker', model);
+	    		$('#nb-vert > ul > li').each(function() {
+					$(this).removeClass('on');
+				});
+	    		self.get('target').send('editMarker', model);
 			}
 
 			function reject(reason) {
@@ -541,6 +552,7 @@ App.ProfileModalController = require('./controllers/profile/modal_controller');
 App.AuthLoginController = require('./controllers/auth/login_controller');
 App.AuthRegisterController = require('./controllers/auth/register_controller');
 App.ApiKey = require('./models/api_key');
+App.Marker = require('./models/marker');
 App.Profile = require('./models/profile');
 App.Registration = require('./models/registration');
 App.Search = require('./models/search');
@@ -550,7 +562,6 @@ App.Waypoint = require('./models/waypoint');
 App.ApplicationRoute = require('./routes/application_route');
 App.IndexRoute = require('./routes/index_route');
 App.MapRoute = require('./routes/map_route');
-App.SidebarRoute = require('./routes/sidebar_route');
 App.SidebarTripsRoute = require('./routes/sidebar/trips_route');
 App.SidebarUserRoute = require('./routes/sidebar/user_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
@@ -568,7 +579,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/profile/modal_controller":9,"./controllers/sidebar/search_controller":10,"./controllers/sidebar/trips_controller":11,"./controllers/sidebar/user_controller":12,"./controllers/sidebar_controller":13,"./controllers/waypoint_controller":14,"./models/api_key":16,"./models/profile":17,"./models/registration":18,"./models/search":19,"./models/trip":20,"./models/user":21,"./models/waypoint":22,"./routes/application_route":23,"./routes/auth/login_route":24,"./routes/auth/register_route":25,"./routes/index_route":26,"./routes/map_route":27,"./routes/sidebar/trips_route":28,"./routes/sidebar/user_route":29,"./routes/sidebar_route":30,"./templates":31,"./views/application_view":37,"./views/map_view":38,"./views/sidebar/search_view":40,"./views/sidebar/search_view-old":39,"./views/sidebar/trips_view":41,"./views/sidebar/user_view":42,"./views/sidebar_view":43}],16:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/map_controller":7,"./controllers/menu_controller":8,"./controllers/profile/modal_controller":9,"./controllers/sidebar/search_controller":10,"./controllers/sidebar/trips_controller":11,"./controllers/sidebar/user_controller":12,"./controllers/sidebar_controller":13,"./controllers/waypoint_controller":14,"./models/api_key":16,"./models/marker":17,"./models/profile":18,"./models/registration":19,"./models/search":20,"./models/trip":21,"./models/user":22,"./models/waypoint":23,"./routes/application_route":24,"./routes/auth/login_route":25,"./routes/auth/register_route":26,"./routes/index_route":27,"./routes/map_route":28,"./routes/sidebar/trips_route":29,"./routes/sidebar/user_route":30,"./templates":31,"./views/application_view":37,"./views/map_view":38,"./views/sidebar/search_view":40,"./views/sidebar/search_view-old":39,"./views/sidebar/trips_view":41,"./views/sidebar/user_view":42,"./views/sidebar_view":43}],16:[function(require,module,exports){
 var ApiKey = Ember.Object.extend({
 	token: '',
 	uid: null
@@ -578,6 +589,18 @@ module.exports = ApiKey;
 
 
 },{}],17:[function(require,module,exports){
+var Marker = DS.Model.extend({
+	uid: DS.attr('string'),
+	name: DS.attr('string'),
+	lat: DS.attr('string'),
+	lng: DS.attr('string'),
+	address: DS.attr('string'),
+	creator_uid: DS.attr('string'),
+	trip_uid: DS.attr('string')
+});
+
+module.exports = Marker;
+},{}],18:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -589,14 +612,14 @@ var Profile = DS.Model.extend({
 });
 
 module.exports = Profile;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var UserRegistration = DS.Model.extend({
 	email: DS.attr('string'),
 	password: DS.attr('string')
 });
 
 module.exports = UserRegistration;
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var Search = DS.Model.extend({
 	sid: DS.attr('string'),
 	reference: DS.attr('string'),
@@ -608,7 +631,7 @@ var Search = DS.Model.extend({
 
 
 module.exports = Search;
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var Trip = DS.Model.extend({
 	uid: DS.attr('string'),
 	creator_uid: DS.attr('string'),
@@ -622,7 +645,7 @@ var Trip = DS.Model.extend({
 });
 
 module.exports = Trip;
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var User = DS.Model.extend({
 	email: DS.attr('string'),
 	password: DS.attr('string'),
@@ -632,7 +655,7 @@ var User = DS.Model.extend({
 module.exports = User;
 
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var Waypoint = DS.Model.extend({
 	uid: DS.attr('string'),
 	name: DS.attr('string'),
@@ -644,7 +667,7 @@ var Waypoint = DS.Model.extend({
 });
 
 module.exports = Waypoint;
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var AppInit = require('../config/session_manager');
 
 var ApplicationRoute = Ember.Route.extend({
@@ -698,7 +721,7 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-},{"../config/session_manager":3}],24:[function(require,module,exports){
+},{"../config/session_manager":3}],25:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('token')) {
@@ -714,7 +737,7 @@ var AuthLoginRoute = Ember.Route.extend({
 module.exports = AuthLoginRoute;
 
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var AuthRegisterRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('token')) {
@@ -728,7 +751,7 @@ var AuthRegisterRoute = Ember.Route.extend({
 });
 
 module.exports = AuthRegisterRoute;
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var IndexRoute = Ember.Route.extend({
   model: function() {
     var store = this.get('store');
@@ -736,8 +759,9 @@ var IndexRoute = Ember.Route.extend({
 });
 
 module.exports = IndexRoute;
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
+	marker: null,
 	actions: {
 		loadModule: function(module, mod, key, func) {
 			//because we're not linking to the sidebar items via linkTo, we need to fire 
@@ -764,6 +788,15 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			controller.set('el', id);
 			controller.send('setup');
 
+		},
+		editMarker: function(marker) {
+			this.set('marker', marker);
+			var controller = this.controllerFor('sidebar');
+			controller.set('act', 'change');
+			controller.set('w', 350);
+			controller.set('trigger', null);
+			controller.send('menu');
+			this.render('waypoint', {into: 'sidebar', outlet: 'sidebar-content'});
 		}
 	},
 	setupController: function() {
@@ -780,26 +813,16 @@ var MapRoute = App.AuthenticatedRoute.extend({
 
 
 module.exports = MapRoute;
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var SidebarTripsRoute = Ember.Route.extend({
 });
 
 module.exports = SidebarTripsRoute;
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var SidebarUserRoute = Ember.Route.extend({
 });
 
 module.exports = SidebarUserRoute;
-},{}],30:[function(require,module,exports){
-var SidebarRoute = Ember.Route.extend({
-	actions: {
-		l: function() {
-			alert('data');
-		}
-	}
-});
-
-module.exports = SidebarRoute;
 },{}],31:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
@@ -1038,6 +1061,24 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 
   data.buffer.push("<div id=\"tripbar\">\n	<p>Tripbar</p>\n</div>");
+  
+});
+
+Ember.TEMPLATES['waypoint'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<p>Hi</p>\n");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "marker.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "marker.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  return buffer;
   
 });
 

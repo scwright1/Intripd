@@ -14,7 +14,6 @@ var waypointSchema = mongoose.Schema({
 
 waypointSchema.statics.Create = function(uid, waypointData, done) {
 	var waypoint = this;
-	console.log(waypointData);
 	if(!uid) {
 		return done(400);
 	} else {
@@ -27,11 +26,22 @@ waypointSchema.statics.Create = function(uid, waypointData, done) {
 			lng : waypointData.lng,
 			address : waypointData.address,
 			trip_uid : waypointData.trip_uid
-		}, function(err, t) {
+		}, function(err, w) {
 			if(err) {
 				return done(err);
 			} else {
-				return done(200);
+				var wpt = {
+					'uid': w.uid,
+					'id': w._id,
+					'creator_uid': w.creator_uid,
+					'name': w.name,
+					'creation_date': w.creation_date,
+					'trip_uid': w.trip_uid,
+					'lat': w.lat,
+					'lng': w.lng,
+					'address': w.address
+				};
+				return done(200, w);
 			}
 		});
 	}

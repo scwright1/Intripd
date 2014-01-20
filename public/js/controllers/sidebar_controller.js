@@ -34,8 +34,12 @@ var SidebarController = App.ApplicationController.extend({
 			var self = this;
 
 			action = self.get('act');
-			el = self.get('trigger');
-			left = $(el).parent().width();
+			if(self.get('trigger') !== null) {
+				el = self.get('trigger');
+				left = $(el).parent().width();
+			} else {
+				left = 100;
+			}
 			width = self.get('w');
 
 			if(action === 'open') {
@@ -56,9 +60,6 @@ var SidebarController = App.ApplicationController.extend({
 					google.maps.event.trigger(map, 'resize');
 				}});
 			}
-		},
-		proof: function() {
-			alert('proof');
 		}
 	}
 });

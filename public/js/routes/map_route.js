@@ -1,4 +1,5 @@
 var MapRoute = App.AuthenticatedRoute.extend({
+	marker: null,
 	actions: {
 		loadModule: function(module, mod, key, func) {
 			//because we're not linking to the sidebar items via linkTo, we need to fire 
@@ -25,6 +26,15 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			controller.set('el', id);
 			controller.send('setup');
 
+		},
+		editMarker: function(marker) {
+			this.set('marker', marker);
+			var controller = this.controllerFor('sidebar');
+			controller.set('act', 'change');
+			controller.set('w', 350);
+			controller.set('trigger', null);
+			controller.send('menu');
+			this.render('waypoint', {into: 'sidebar', outlet: 'sidebar-content'});
 		}
 	},
 	setupController: function() {

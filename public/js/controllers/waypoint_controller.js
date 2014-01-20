@@ -3,6 +3,7 @@ var WaypointController = App.ApplicationController.extend({
 	marker: null,
 	actions: {
 		setup: function() {
+			var self = this;
 			var element = '#'+this.get('el');
 			var image = 'img/wpt.png';
 			var lat = $(element).children('.place_lat').data('value');
@@ -21,22 +22,32 @@ var WaypointController = App.ApplicationController.extend({
 	    	$(element).remove();
 
 	    	//set marker for saving out to db
-	    	this.set('marker', {
+	    	var wpt = {
 		    	name: name,
 		    	lat: lat,
 		    	lng: lng,
 		    	address: address,
 		    	creator_uid: App.Session.get('uid'),
 		    	trip_uid: App.Session.get('ac-tr')
-		    });
-		    this.send('push');
-		},
-		push: function() {
-			var marker = this.store.createRecord('waypoint', this.get('marker'));
-			var promise = marker.save();
+		    };
+		    
+		    var wp = this.store.createRecord('waypoint', wpt);
+			var promise = wp.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
 				//load point for the ui element for the waypoint
+				google.maps.event.addListener(marker, 'click', function() {
+					self.set('marker', model);
+					$('#nb-vert > ul > li').each(function() {
+						$(this).removeClass('on');
+					});
+	    			self.get('target').send('editMarker', model);
+	    		});
+	    		self.set('marker', model);
+	    		$('#nb-vert > ul > li').each(function() {
+					$(this).removeClass('on');
+				});
+	    		self.get('target').send('editMarker', model);
 			}
 
 			function reject(reason) {
