@@ -20,8 +20,11 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			}
 			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 		},
-		load: function() {
-			console.log('this');
+		dropMarker: function(id) {
+			var controller = this.controllerFor('waypoint');
+			controller.set('el', id);
+			controller.send('setup');
+
 		}
 	},
 	setupController: function() {

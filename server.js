@@ -49,6 +49,7 @@ require('./app/router/map-root.js')(server);
 require('./app/router/sessions.js')(server);
 require('./app/router/user.js')(server);
 require('./app/router/trip.js')(server);
+require('./app/router/waypoint.js')(server);
 
 //start the server
 http.createServer(server).listen(config.port, function() {
