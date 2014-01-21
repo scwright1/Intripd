@@ -1,5 +1,6 @@
 var Waypoint = DS.Model.extend({
 	uid: DS.attr('string'),
+	sid: DS.attr('string'),
 	name: DS.attr('string'),
 	lat: DS.attr('string'),
 	lng: DS.attr('string'),

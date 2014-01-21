@@ -10,6 +10,7 @@ var WaypointController = App.ApplicationController.extend({
 			var lng = $(element).children('.place_lng').data('value');
 			var name = $(element).children('.place_text').children('.place_name').data('value');
 			var address = $(element).children('.place_text').children('.place_address').data('value');
+			var sid = $(element).children('.place_id').data('value');
 			var latLng = new google.maps.LatLng(lat, lng);
 			var marker = new google.maps.Marker({
 		    	position: latLng,
@@ -24,6 +25,7 @@ var WaypointController = App.ApplicationController.extend({
 	    	//set marker for saving out to db
 	    	var wpt = {
 		    	name: name,
+		    	sid: sid,
 		    	lat: lat,
 		    	lng: lng,
 		    	address: address,

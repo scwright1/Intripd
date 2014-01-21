@@ -3,6 +3,7 @@ var mongoose 		= require('mongoose'),
 
 var waypointSchema = mongoose.Schema({
 	uid: {type: String},
+	sid: {type: String},
 	trip_uid: {type: String},
 	creator_uid: {type: String},
 	name: {type: String},
@@ -20,6 +21,7 @@ waypointSchema.statics.Create = function(uid, waypointData, done) {
 		Waypoint.create({
 			uid : uuid.v4(),
 			creator_uid: uid,
+			sid: waypointData.sid,
 			name : waypointData.name,
 			creation_date : new Date(),
 			lat : waypointData.lat,
@@ -33,6 +35,7 @@ waypointSchema.statics.Create = function(uid, waypointData, done) {
 				var wpt = {
 					'uid': w.uid,
 					'id': w._id,
+					'sid': w.sid,
 					'creator_uid': w.creator_uid,
 					'name': w.name,
 					'creation_date': w.creation_date,
