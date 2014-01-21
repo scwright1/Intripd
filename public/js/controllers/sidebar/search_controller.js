@@ -121,6 +121,9 @@ var SidebarSearchController = Ember.ArrayController.extend({
 		clear: function() {
 			clearInterval(this.get('timer'));
 			this.set('tick', 0);
+		},
+		reset: function() {
+			this.set('searchResults', null);
 		}
 	}
 });

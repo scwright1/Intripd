@@ -5,7 +5,7 @@
 		<div class="location-search-results">
 			{{#each searchResults}}
 				<a>
-					<div class='location-search-results-entry' {{bindAttr id='reference'}}  {{action 'dropMarker' sid}}>
+					<div class='location-search-results-entry' {{bindAttr id='reference'}}  {{action 'dropMarker' sid reference}}>
 						<div class='place_image'>
 							<i class='fa fa-spinner fa-spin' style='margin: 21px; color: #e4e4e4'></i>
 							<img {{bindAttr src='image'}} width='58px' height='56px' hidden='hidden'/>

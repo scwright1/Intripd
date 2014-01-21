@@ -5,6 +5,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			//because we're not linking to the sidebar items via linkTo, we need to fire 
 			//up their model pre-processing manually here
 			var model = null;
+			var controller = this.controllerFor(module);
 			if(mod !== 'null') {
 				if(key !== 'null') {
 					//tofix - do not hardcode creator_uid
@@ -12,19 +13,18 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				} else {
 					model = this.store.find(mod, App.Session.get('uid'));
 				}
-				var controller = this.controllerFor(module);
 				controller.set('model', model);
-
-				if(func !== 'null') {
-					controller.send(func);
-				}
+			}
+			if(func !== 'null') {
+				controller.send(func);
 			}
 			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 		},
-		dropMarker: function(id) {
-			markers.push(id);
+		dropMarker: function(sid, ref) {
+			markers.push(sid);
 			var controller = this.controllerFor('waypoint');
-			controller.set('el', id);
+			controller.set('el', ref);
+			controller.set('sid', sid);
 			controller.send('setup');
 
 		},

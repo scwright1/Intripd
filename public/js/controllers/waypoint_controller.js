@@ -1,5 +1,6 @@
 var WaypointController = App.ApplicationController.extend({
 	el: null,
+	sid: null,
 	marker: null,
 	actions: {
 		setup: function() {
@@ -32,7 +33,6 @@ var WaypointController = App.ApplicationController.extend({
 		    	creator_uid: App.Session.get('uid'),
 		    	trip_uid: App.Session.get('ac-tr')
 		    };
-		    
 		    var wp = this.store.createRecord('waypoint', wpt);
 			var promise = wp.save();
 			promise.then(fulfill, reject);
