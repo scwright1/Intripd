@@ -584,15 +584,23 @@ var WaypointController = App.ApplicationController.extend({
 				google.maps.event.addListener(marker, 'click', function() {
 					self.set('marker', model);
 					$('#nb-vert > ul > li').each(function() {
-						$(this).removeClass('on');
+						if($(this).data('menu') === 'waypoint') {
+							$(this).addClass('on');
+						} else {
+							$(this).removeClass('on');
+						}
 					});
-	    			self.get('target').send('editMarker', model);
+	    			self.get('target').send('editMarker', model, 'open');
 	    		});
 	    		self.set('marker', model);
 	    		$('#nb-vert > ul > li').each(function() {
-					$(this).removeClass('on');
+	    			if($(this).data('menu') === 'waypoint') {
+	    				$(this).addClass('on');
+	    			} else {
+						$(this).removeClass('on');
+	    			}
 				});
-	    		self.get('target').send('editMarker', model);
+	    		self.get('target').send('editMarker', model, 'change');
 			}
 
 			function reject(reason) {
@@ -862,10 +870,10 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			controller.send('setup');
 
 		},
-		editMarker: function(marker) {
+		editMarker: function(marker, action) {
 			this.set('marker', marker);
 			var controller = this.controllerFor('sidebar');
-			controller.set('act', 'change');
+			controller.set('act', action);
 			controller.set('w', 350);
 			controller.set('trigger', null);
 			controller.send('menu');
@@ -1117,7 +1125,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", "trip", "c", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint'>\n			<img src='img/waypoints.png' width='24px' alt='Waypoint' />\n		</li>\n		<li data-menu='media'>\n			<img src='img/media.png' width='24px' alt='Media' />\n		</li>\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
+  data.buffer.push(">\n			<img src='img/trips.png' width='24px' alt='Trips' />\n		</li>\n		<li data-menu='waypoint' data-width='350' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.waypoints", "null", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n			<img src='img/waypoints.png' width='24px' alt='Waypoint' />\n		</li>\n		<!--<li data-menu='media'>\n			<img src='img/media.png' width='24px' alt='Media' />\n		</li>-->\n	</ul>\n	<div class='static'>\n		<img src='img/logo.png' width='24px' alt='Intripd' />\n	</div>\n</div>\n<div id='menu' data-value='content'>\n	");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -1375,6 +1387,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(">Logout</button>\n		</div>\n	</div>");
   return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar/waypoints'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("<p>Hello</p>");
   
 });
 

@@ -41,15 +41,23 @@ var WaypointController = App.ApplicationController.extend({
 				google.maps.event.addListener(marker, 'click', function() {
 					self.set('marker', model);
 					$('#nb-vert > ul > li').each(function() {
-						$(this).removeClass('on');
+						if($(this).data('menu') === 'waypoint') {
+							$(this).addClass('on');
+						} else {
+							$(this).removeClass('on');
+						}
 					});
-	    			self.get('target').send('editMarker', model);
+	    			self.get('target').send('editMarker', model, 'open');
 	    		});
 	    		self.set('marker', model);
 	    		$('#nb-vert > ul > li').each(function() {
-					$(this).removeClass('on');
+	    			if($(this).data('menu') === 'waypoint') {
+	    				$(this).addClass('on');
+	    			} else {
+						$(this).removeClass('on');
+	    			}
 				});
-	    		self.get('target').send('editMarker', model);
+	    		self.get('target').send('editMarker', model, 'change');
 			}
 
 			function reject(reason) {

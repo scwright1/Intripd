@@ -28,10 +28,10 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			controller.send('setup');
 
 		},
-		editMarker: function(marker) {
+		editMarker: function(marker, action) {
 			this.set('marker', marker);
 			var controller = this.controllerFor('sidebar');
-			controller.set('act', 'change');
+			controller.set('act', action);
 			controller.set('w', 350);
 			controller.set('trigger', null);
 			controller.send('menu');
