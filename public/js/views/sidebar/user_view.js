@@ -5,6 +5,7 @@ var SidebarUserView = Ember.View.extend({
 	},
 	willInsertElement: function() {
 		var self = this;
+		self.get('controller').set('location', loc);
 	}
 });
 

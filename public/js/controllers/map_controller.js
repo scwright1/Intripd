@@ -1,4 +1,5 @@
 var MapController = App.ApplicationController.extend({
+	location: null,
 	actions: {
 		pollData: function() {
 			var data = { data: { d: 'dummy' } };

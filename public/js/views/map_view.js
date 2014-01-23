@@ -1,6 +1,7 @@
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['map-view'],
+    location: null,
 	didInsertElement: function() {
 		var self = this;
 		self._super();
@@ -111,6 +112,8 @@ var MapView = Ember.View.extend({
     	map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
         //setup location search service
         locationService = new google.maps.places.PlacesService(map);
+        geocodingService = new google.maps.Geocoder();
+        this.getLocation();
 	},
 	loadGoogleMaps: function() {
 		var self = this;
@@ -119,10 +122,39 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&libraries=places&callback=map_callback";
+        //?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM
+		script.src="https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
-	}
+	},
+    getLocation: function() {
+        var self = this;
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(self.showPosition);
+        } else {
+            console.log('Geolocation is not supported by this browser');
+        }
+    },
+    showPosition: function(position) {
+        var self = this;
+        var image = 'img/home-marker.png';
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var userPosition = new google.maps.LatLng(lat,lng);
+        geocodingService.geocode({'latLng': userPosition}, function(results, status) {
+            if(status == google.maps.GeocoderStatus.OK) {
+                if(results[1]) {
+                    marker = new google.maps.Marker({
+                        icon: image,
+                        position: userPosition,
+                        map: map
+                    });
+                    loc = results[3].formatted_address;
+                }
+            } else {
+            }
+        });
+    }
 });
 
 module.exports = MapView;

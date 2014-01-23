@@ -184,6 +184,7 @@ module.exports = AuthRegisterController;
 
 },{}],7:[function(require,module,exports){
 var MapController = App.ApplicationController.extend({
+	location: null,
 	actions: {
 		pollData: function() {
 			var data = { data: { d: 'dummy' } };
@@ -444,6 +445,7 @@ var SidebarUserController = App.ApplicationController.extend({
 	needs: 'sidebar',
 	w: null,
 	trigger: null,
+	location: null,
 	actions: {
 		menu: function() {
 			var sidebarController = this.get('controllers.sidebar');
@@ -1353,23 +1355,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<!--<div class=\"container\">\n	<h4>");
+  data.buffer.push("	<div class='user-content'>\n		<div class='user-pm-count'><b>0</b> new Private Messages</div>\n		<div class='user-location'><img style='margin: -2px 4px 0px;' src='img/loc.png' height='12px' />");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h4>\n	<h6>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h6>\n	<a href=\"#\" ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">Logout</a>\n</div>-->\n\n	<div class='user-content'>\n		<div class='user-pm-count'><b>0</b> new Private Messages</div>\n		<div class='user-image'></div>\n		<div class='user-name'>");
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "location", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</div>\n		<div class='user-image'></div>\n		<div class='user-name'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -48526,6 +48516,7 @@ module.exports = ApplicationView;
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['map-view'],
+    location: null,
 	didInsertElement: function() {
 		var self = this;
 		self._super();
@@ -48636,6 +48627,8 @@ var MapView = Ember.View.extend({
     	map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
         //setup location search service
         locationService = new google.maps.places.PlacesService(map);
+        geocodingService = new google.maps.Geocoder();
+        this.getLocation();
 	},
 	loadGoogleMaps: function() {
 		var self = this;
@@ -48644,10 +48637,39 @@ var MapView = Ember.View.extend({
 		}
 		var script = document.createElement("script");
 		script.type="text/javascript";
-		script.src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM&sensor=true&libraries=places&callback=map_callback";
+        //?key=AIzaSyCaD6yRrIC4oscatZhkSumJTxdqXMzsoxM
+		script.src="https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places&callback=map_callback";
 		var mapGlobal = document.getElementById('map-container');
 		mapGlobal.appendChild(script);
-	}
+	},
+    getLocation: function() {
+        var self = this;
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(self.showPosition);
+        } else {
+            console.log('Geolocation is not supported by this browser');
+        }
+    },
+    showPosition: function(position) {
+        var self = this;
+        var image = 'img/home-marker.png';
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        var userPosition = new google.maps.LatLng(lat,lng);
+        geocodingService.geocode({'latLng': userPosition}, function(results, status) {
+            if(status == google.maps.GeocoderStatus.OK) {
+                if(results[1]) {
+                    marker = new google.maps.Marker({
+                        icon: image,
+                        position: userPosition,
+                        map: map
+                    });
+                    loc = results[3].formatted_address;
+                }
+            } else {
+            }
+        });
+    }
 });
 
 module.exports = MapView;
@@ -48821,6 +48843,7 @@ var SidebarUserView = Ember.View.extend({
 	},
 	willInsertElement: function() {
 		var self = this;
+		self.get('controller').set('location', loc);
 	}
 });
 

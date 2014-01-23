@@ -2,6 +2,7 @@ var SidebarUserController = App.ApplicationController.extend({
 	needs: 'sidebar',
 	w: null,
 	trigger: null,
+	location: null,
 	actions: {
 		menu: function() {
 			var sidebarController = this.get('controllers.sidebar');
