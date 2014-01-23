@@ -3,4 +3,4 @@ var infowindow;
 var markers = new Array();
 var locationService;
 var geocodingService;
-var loc;
+var loc = 'location not found';
