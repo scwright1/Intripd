@@ -1,4 +1,4 @@
-	<div class='user-content'>
+<!--	<div class='user-content'>
 		<div class='user-pm-count'><b>0</b> new Private Messages</div>
 		<div class='user-location'><img style='margin: -2px 4px 0px;' src='img/loc.png' height='12px' />{{location}}</div>
 		<div class='user-image'></div>
@@ -16,8 +16,19 @@
 			<button class='btn btn-danger btn-xs' style='float: left'><i class='fa fa-bug'></i> Found A Bug?</button>
 			<button class='btn btn-info' style='float: right' {{action 'logout'}}>Logout</button>
 		</div>
-	</div> <!--
+	</div> -->
 	<div class='user'>
 		<div class='user-inner'>
+			<div class='user-metrics'>
+				<div class='user-pm-count'><b>0</b> new Private Messages</div><div style='clear: both'></div>
+				<div class='user-location'><img src='img/loc.png' height='12px' />{{location}}</div>
+			</div>
+			<div class='user-primary-info'>
+				<div class='user-image'><img src='img/user.png' width='80px' height='80px' /></div>
+			</div>
+			<div class='buttonbox'>
+				<button class='btn btn-danger btn-xs' style='float: left'><i class='fa fa-bug'></i> Found A Bug?</button>
+				<button class='btn btn-info' style='float: right' {{action 'logout'}}>Logout</button>
+			</div>
 		</div>
-	</div> -->
+	</div>
