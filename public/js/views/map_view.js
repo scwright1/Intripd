@@ -114,6 +114,7 @@ var MapView = Ember.View.extend({
         locationService = new google.maps.places.PlacesService(map);
         geocodingService = new google.maps.Geocoder();
         this.getLocation();
+        this.get('controller').controllerFor('waypoint').send('pull');
 	},
 	loadGoogleMaps: function() {
 		var self = this;

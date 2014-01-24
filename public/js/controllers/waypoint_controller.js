@@ -3,10 +3,36 @@ var WaypointController = App.ApplicationController.extend({
 	sid: null,
 	marker: null,
 	actions: {
+		pull: function() {
+			var self = this;
+			//load all trips into table for this user
+			var waypoints = this.store.find('waypoint', {trip_uid: App.Session.get('ac-tr')});
+			waypoints.then(fulfill, reject);
+			function fulfill(waypoints) {
+				var image = 'img/wpt.png';
+				for(var i = 0; i < waypoints.content.length; i++) {
+					var record = waypoints.content[i]._data;
+					var lat = parseFloat(record.lat);
+					var lng = parseFloat(record.lng);
+					var latLng = new google.maps.LatLng(lat,lng);
+					var marker = new google.maps.Marker({
+						icon: image,
+		    			position: latLng,
+		      			map: map,
+		      			animation: google.maps.Animation.DROP,
+		      			title: record.name
+		  			});
+				}
+			}
+
+			function reject(reason) {
+				console.log(reason);
+			}
+		},
 		setup: function() {
 			var self = this;
-			var element = '#'+this.get('el');
 			var image = 'img/wpt.png';
+			var element = '#'+this.get('el');
 			var lat = $(element).children('.place_lat').data('value');
 			var lng = $(element).children('.place_lng').data('value');
 			var name = $(element).children('.place_text').children('.place_name').data('value');
