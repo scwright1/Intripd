@@ -553,20 +553,17 @@ var WaypointController = App.ApplicationController.extend({
 			//load all trips into table for this user
 			var waypoints = this.store.find('waypoint', {trip_uid: App.Session.get('ac-tr')});
 			waypoints.then(fulfill, reject);
-			function fulfill(waypoints) {
+			function fulfill(wps) {
 				var image = 'img/wpt.png';
-				for(var i = 0; i < waypoints.content.length; i++) {
-					var record = waypoints.content[i]._data;
-					var lat = parseFloat(record.lat);
-					var lng = parseFloat(record.lng);
-					var latLng = new google.maps.LatLng(lat,lng);
+				for(var i = 0; i < wps.content.length; i++) {
+					var record = wps.objectAt(i);
 					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(record._data.lat, record._data.lng),
+						title: record._data.name,
+						map: map,
 						icon: image,
-		    			position: latLng,
-		      			map: map,
-		      			animation: google.maps.Animation.DROP,
-		      			title: record.name
-		  			});
+		      			animation: google.maps.Animation.DROP
+					});
 				}
 			}
 
@@ -48675,7 +48672,9 @@ var MapView = Ember.View.extend({
         locationService = new google.maps.places.PlacesService(map);
         geocodingService = new google.maps.Geocoder();
         this.getLocation();
-        this.get('controller').controllerFor('waypoint').send('pull');
+        if(App.Session.get('ac-tr') !== null) {
+            this.get('controller').controllerFor('waypoint').send('pull');
+        }
 	},
 	loadGoogleMaps: function() {
 		var self = this;

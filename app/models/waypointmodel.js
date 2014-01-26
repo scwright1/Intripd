@@ -81,5 +81,33 @@ waypointSchema.statics.getWaypoints = function(trip_uid, done) {
 	}
 }
 
+waypointSchema.statics.getWaypoint = function(uid, done) {
+	var Waypoint = mongoose.model('Waypoint', waypointSchema);
+	if(!uid) {
+		return done(400);
+	} else {
+		Waypoint.findOne({uid: uid}, function(err, waypoint) {
+			var tmp = null;
+			if((err) || (waypoint === null)) {
+				return done(400);
+			} else {
+				var tmp = {
+					'uid': waypoint.uid,
+					'id': waypoint._id,
+					'sid': waypoint.sid,
+					'creator_uid': waypoint.creator_uid,
+					'name': waypoint.name,
+					'creation_date': waypoint.creation_date,
+					'trip_uid': waypoint.trip_uid,
+					'lat': waypoint.lat,
+					'lng': waypoint.lng,
+					'address': waypoint.address
+				};
+			}
+			return done(200, tmp);
+		});
+	}
+}
+
 var Waypoint = mongoose.model('Waypoint', waypointSchema);
 module.exports = Waypoint;

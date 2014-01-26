@@ -1,6 +1,6 @@
 var map;
 var infowindow;
-var markers = new Array();
+var markers = {};
 var locationService;
 var geocodingService;
 var loc = 'location not found';

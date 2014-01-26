@@ -21,4 +21,15 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	server.get('/api/waypoints/:uid', Session.checkSession, function(req, res) {
+		Waypoint.getWaypoint(req.params.uid, function(response, data) {
+			if(response === 200) {
+				var ret = {
+					'waypoint': data
+				};
+				res.send(ret);
+			}
+		});
+	});
 }
