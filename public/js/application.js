@@ -564,12 +564,27 @@ var WaypointController = App.ApplicationController.extend({
 						icon: image,
 		      			animation: google.maps.Animation.DROP
 					});
+					self.send('generatePoint', marker, record);
 				}
 			}
 
 			function reject(reason) {
 				console.log(reason);
 			}
+		},
+		generatePoint: function(marker, model) {
+			var self = this;
+			google.maps.event.addListener(marker, 'click', function() {
+				self.set('marker', model);
+				$('#nb-vert > ul > li').each(function() {
+					if($(this).data('menu') === 'waypoint') {
+						$(this).addClass('on');
+					} else {
+						$(this).removeClass('on');
+					}
+				});
+				self.get('target').send('editMarker', model, 'open');
+			});
 		},
 		setup: function() {
 			var self = this;
