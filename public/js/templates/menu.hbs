@@ -1,1 +1,19 @@
-{{#linkTo "index"}}Home{{/linkTo}} | {{#linkTo "auth.login"}}Login{{/linkTo}} | {{#linkTo "auth.register"}}Register{{/linkTo}} {{#if isAuthenticated}} | <a href="#" {{action 'logout'}}>Logout</a>{{/if}}
+<nav class="navbar navbar-default navbar-fixed-top gradient" role="navigation">
+	<div class="navbar-header">
+    	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-links">
+      		<span class="sr-only">Toggle navigation</span>
+      		<i class="fa fa-bars"></i>
+    	</button>
+    	{{#link-to 'index' class="navbar-brand"}}Brand{{/link-to}}
+  	</div>
+  	<div class="collapse navbar-collapse" id="nav-links">
+	    <ul class="nav navbar-nav navbar-right">
+	    	{{#if isAuthenticated}}
+	      		<li class='nav-link'><a href='#' {{action 'logout'}}>Logout</a></li>
+	      	{{else}}
+	      		<li class='nav-link'>{{#link-to "auth.login"}}Login{{/link-to}}</li>
+	      		<li class='nav-link'>{{#link-to "auth.register"}}Register{{/link-to}}</li>
+	      	{{/if}}
+	    </ul>
+  	</div><!-- /.navbar-collapse -->
+</nav>
