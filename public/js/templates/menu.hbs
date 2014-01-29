@@ -1,18 +1,19 @@
-<nav class="navbar navbar-default navbar-fixed-top gradient" role="navigation">
+<nav class="navbar navbar-default navbar-static-top gradient" role="navigation">
 	<div class="navbar-header">
     	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-links">
       		<span class="sr-only">Toggle navigation</span>
       		<i class="fa fa-bars"></i>
     	</button>
-    	{{#link-to 'index' class="navbar-brand"}}Intripd{{/link-to}}
+    	{{#link-to 'index' class="navbar-brand"}}<img src='img/logo.png' height='48px' alt='Intripd' />{{/link-to}}
   	</div>
   	<div class="collapse navbar-collapse" id="nav-links">
 	    <ul class="nav navbar-nav navbar-right">
 	    	{{#if isAuthenticated}}
-	      		<li class='nav-link'><a href='#' {{action 'logout'}}>Logout</a></li>
+	    		<li class='nav-link'><div class='small-user-img'><img src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>{{profile.firstName}}</b>&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' {{action 'logout'}}><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>
 	      	{{else}}
-	      		<li class='nav-link'>{{#link-to "auth.login"}}Login{{/link-to}}</li>
-	      		<li class='nav-link'>{{#link-to "auth.register"}}Register{{/link-to}}</li>
+	      		<li class='nav-link'>{{#link-to "auth.login" class='user-text'}}Login{{/link-to}}</li>
+	      		<li class='nav-link user-text' style='padding-right:15px !important;'> | </li>
+	      		<li class='nav-link'>{{#link-to "auth.register" class='user-text'}}Register{{/link-to}}</li>
 	      	{{/if}}
 	    </ul>
   	</div><!-- /.navbar-collapse -->
