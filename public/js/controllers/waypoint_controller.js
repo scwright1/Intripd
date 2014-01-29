@@ -3,10 +3,48 @@ var WaypointController = App.ApplicationController.extend({
 	sid: null,
 	marker: null,
 	actions: {
+		pull: function() {
+			var self = this;
+			//load all trips into table for this user
+			var waypoints = this.store.find('waypoint', {trip_uid: App.Session.get('ac-tr')});
+			waypoints.then(fulfill, reject);
+			function fulfill(wps) {
+				var image = 'img/wpt.png';
+				for(var i = 0; i < wps.content.length; i++) {
+					var record = wps.objectAt(i);
+					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(record._data.lat, record._data.lng),
+						title: record._data.name,
+						map: map,
+						icon: image,
+		      			animation: google.maps.Animation.DROP
+					});
+					self.send('generatePoint', marker, record);
+				}
+			}
+
+			function reject(reason) {
+				console.log(reason);
+			}
+		},
+		generatePoint: function(marker, model) {
+			var self = this;
+			google.maps.event.addListener(marker, 'click', function() {
+				self.set('marker', model);
+				$('#nb-vert > ul > li').each(function() {
+					if($(this).data('menu') === 'waypoint') {
+						$(this).addClass('on');
+					} else {
+						$(this).removeClass('on');
+					}
+				});
+				self.get('target').send('editMarker', model, 'open');
+			});
+		},
 		setup: function() {
 			var self = this;
-			var element = '#'+this.get('el');
 			var image = 'img/wpt.png';
+			var element = '#'+this.get('el');
 			var lat = $(element).children('.place_lat').data('value');
 			var lng = $(element).children('.place_lng').data('value');
 			var name = $(element).children('.place_text').children('.place_name').data('value');

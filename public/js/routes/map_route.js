@@ -9,7 +9,11 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			if(mod !== 'null') {
 				if(key !== 'null') {
 					//tofix - do not hardcode creator_uid
-					model = this.store.find(mod, {creator_uid: App.Session.get('uid')});
+					if(key === 'c') {
+						model = this.store.find(mod, {creator_uid: App.Session.get('uid')});
+					} else if(key === 't') {
+						model = this.store.find(mod, {trip_uid: App.Session.get('ac-tr')});
+					}
 				} else {
 					model = this.store.find(mod, App.Session.get('uid'));
 				}
