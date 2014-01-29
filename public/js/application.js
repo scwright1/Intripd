@@ -988,7 +988,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  data.buffer.push("Brand");
+  data.buffer.push("Intripd");
   }
 
 function program3(depth0,data) {
