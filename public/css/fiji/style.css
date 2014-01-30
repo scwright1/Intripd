@@ -6733,6 +6733,10 @@ h6,
   left: 175px;
 }
 /*Import Geneva Stylesheets*/
+/* 
+ * Common definitions
+ */
+/*flat colours*/
 .navbar {
   height: 80px;
   background: none;
@@ -6777,10 +6781,6 @@ h6,
   padding: 30px 0px !important;
   text-shadow: 0px 0px 2px #2e3a41;
 }
-/* 
- * Common definitions
- */
-/*flat colours*/
 #splash {
   height: 100%;
   width: 100%;
@@ -6863,8 +6863,9 @@ h6,
 .next > a {
   color: #e4e6e7;
 }
-#content-1 {
-  height: 100%;
+.feature-panel {
+  padding-top: 75px;
+  padding-bottom: 75px;
 }
 #nb-vert {
   z-index: 99;

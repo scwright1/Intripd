@@ -85,6 +85,7 @@
 .next > a {
   color: #e4e6e7;
 }
-#content-1 {
-  height: 100%;
+.feature-panel {
+  padding-top: 75px;
+  padding-bottom: 75px;
 }

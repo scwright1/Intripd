@@ -1020,7 +1020,7 @@ function program1(depth0,data) {
   hashContexts = {};
   stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#content-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='content-1'>\n</div>");
+  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#feature-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='feature-1'>\n	<div class='feature-panel'>\n	</div>\n</div>");
   return buffer;
   
 });
@@ -1054,7 +1054,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  data.buffer.push("<img src='img/logo.png' height='48px' alt='Intripd' />");
+  data.buffer.push("<img src='img/site-logo.png' height='48px' alt='Intripd' />");
   }
 
 function program3(depth0,data) {
