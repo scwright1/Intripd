@@ -19,7 +19,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 			        	attemptedTransition.retry();
 			        	App.Session.set('attemptedTransition', null);
 			        } else {
-			        	self.transitionToRoute('map');
+			        	self.transitionToRoute('index');
 			        }
 				}
 				self.set('flash', response.message);

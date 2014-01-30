@@ -138,7 +138,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 			        	attemptedTransition.retry();
 			        	App.Session.set('attemptedTransition', null);
 			        } else {
-			        	self.transitionToRoute('map');
+			        	self.transitionToRoute('index');
 			        }
 				}
 				self.set('flash', response.message);
@@ -959,7 +959,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n\n");
+  data.buffer.push("\n");
   return buffer;
   
 });
@@ -970,15 +970,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
+  data.buffer.push("<div id='splash'>\n	<div class='darken gradient'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n<div class=\"container\">\n	<div class=\"row\">\n		<div class=\"col-md-4\"></div>\n		<div class=\"auth-container col-md-4\">\n			");
+  data.buffer.push("\n		<div class='container'>\n			<div class=\"row\">\n				<div class=\"col-md-4\"></div>\n				<div class=\"auth-container col-md-4\">\n					");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n		</div>\n	</div>\n</div>\n<script src=\"scripts/auth.js\"></script>");
+  data.buffer.push("\n				</div>\n			</div>\n		</div>\n	</div>\n</div>\n<script src=\"scripts/auth.js\"></script>");
   return buffer;
   
 });
@@ -1001,15 +1002,25 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['index'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("\n		<div class='click-to-go'>\n		</div>\n		");
+  }
 
-  data.buffer.push("<div id=\"splash\">\n	");
+  data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n	<div class='grab-text'>\n		Exploring the world is meant to be shared.\n	</div>\n	<div class='next'>\n		<i class='fa fa-chevron-down'></i>\n	</div>\n</div>\n<div id='content-1'>\n</div>");
+  data.buffer.push("\n		");
+  hashTypes = {};
+  hashContexts = {};
+  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#content-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='content-1'>\n</div>");
   return buffer;
   
 });
@@ -1048,20 +1059,31 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
-  var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	    		<li class='nav-link'><div class='small-user-img'><img src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>");
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
+  data.buffer.push("\n	    		<li class='nav-link'><div class='small-user-img'><img style='margin-left: -1px;margin-top: -5px;'src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</b>&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' ");
+  data.buffer.push("</b>&nbsp;&nbsp;|&nbsp;&nbsp;");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "map", options) : helperMissing.call(depth0, "link-to", "map", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>\n	      	");
   return buffer;
   }
+function program4(depth0,data) {
+  
+  
+  data.buffer.push("<i class='fa fa-map-marker'></i> <b>App</b>");
+  }
 
-function program5(depth0,data) {
+function program6(depth0,data) {
   
   var buffer = '', stack1, stack2, hashContexts, hashTypes, options;
   data.buffer.push("\n	      		<li class='nav-link'>");
@@ -1069,7 +1091,7 @@ function program5(depth0,data) {
   hashTypes = {'class': "STRING"};
   options = {hash:{
     'class': ("user-text")
-  },inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  },inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.login", options) : helperMissing.call(depth0, "link-to", "auth.login", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("</li>\n	      		<li class='nav-link user-text' style='padding-right:15px !important;'> | </li>\n	      		<li class='nav-link'>");
@@ -1077,22 +1099,22 @@ function program5(depth0,data) {
   hashTypes = {'class': "STRING"};
   options = {hash:{
     'class': ("user-text")
-  },inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  },inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.register", options) : helperMissing.call(depth0, "link-to", "auth.register", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("</li>\n	      	");
   return buffer;
   }
-function program6(depth0,data) {
+function program7(depth0,data) {
   
   
-  data.buffer.push("Login");
+  data.buffer.push("<i class='fa fa-user'></i> <b>Login</b>");
   }
 
-function program8(depth0,data) {
+function program9(depth0,data) {
   
   
-  data.buffer.push("Register");
+  data.buffer.push("<i class='fa fa-edit'></i> <b>Register</b>");
   }
 
   data.buffer.push("<nav class=\"navbar navbar-default navbar-static-top gradient\" role=\"navigation\">\n	<div class=\"navbar-header\">\n    	<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#nav-links\">\n      		<span class=\"sr-only\">Toggle navigation</span>\n      		<i class=\"fa fa-bars\"></i>\n    	</button>\n    	");
@@ -1106,7 +1128,7 @@ function program8(depth0,data) {
   data.buffer.push("\n  	</div>\n  	<div class=\"collapse navbar-collapse\" id=\"nav-links\">\n	    <ul class=\"nav navbar-nav navbar-right\">\n	    	");
   hashTypes = {};
   hashContexts = {};
-  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n	    </ul>\n  	</div><!-- /.navbar-collapse -->\n</nav>");
   return buffer;

@@ -1,10 +1,20 @@
-<div id="splash">
-	{{render menu}}
-	<div class='grab-text'>
-		Exploring the world is meant to be shared.
-	</div>
-	<div class='next'>
-		<i class='fa fa-chevron-down'></i>
+<div id="splash" class="section" data-type="background" data-speed="5">
+	<div class='darken gradient'>
+		{{render menu}}
+		{{#if isAuthenticated}}
+		<div class='click-to-go'>
+		</div>
+		{{/if}}
+		<div class='grab-text'>
+			Exploring the world is meant to be shared.
+			<div class='sub-text'>
+			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.
+			</div>
+		</div>
+		<div class='next' class="section" data-type="background" data-speed="10">
+			<div class='next-text'>Interested? Let us show you what we're planning...</div>
+			<a href='#content-1'><i class='fa fa-chevron-down'></i></a>
+		</div>
 	</div>
 </div>
 <div id='content-1'>

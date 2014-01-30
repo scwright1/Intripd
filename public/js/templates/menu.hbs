@@ -9,11 +9,11 @@
   	<div class="collapse navbar-collapse" id="nav-links">
 	    <ul class="nav navbar-nav navbar-right">
 	    	{{#if isAuthenticated}}
-	    		<li class='nav-link'><div class='small-user-img'><img src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>{{profile.firstName}}</b>&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' {{action 'logout'}}><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>
+	    		<li class='nav-link'><div class='small-user-img'><img style='margin-left: -1px;margin-top: -5px;'src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>{{profile.firstName}}</b>&nbsp;&nbsp;|&nbsp;&nbsp;{{#link-to "map"}}<i class='fa fa-map-marker'></i> <b>App</b>{{/link-to}}&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' {{action 'logout'}}><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>
 	      	{{else}}
-	      		<li class='nav-link'>{{#link-to "auth.login" class='user-text'}}Login{{/link-to}}</li>
+	      		<li class='nav-link'>{{#link-to "auth.login" class='user-text'}}<i class='fa fa-user'></i> <b>Login</b>{{/link-to}}</li>
 	      		<li class='nav-link user-text' style='padding-right:15px !important;'> | </li>
-	      		<li class='nav-link'>{{#link-to "auth.register" class='user-text'}}Register{{/link-to}}</li>
+	      		<li class='nav-link'>{{#link-to "auth.register" class='user-text'}}<i class='fa fa-edit'></i> <b>Register</b>{{/link-to}}</li>
 	      	{{/if}}
 	    </ul>
   	</div><!-- /.navbar-collapse -->
