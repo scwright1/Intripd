@@ -1,4 +1,14 @@
-<p>Hello</p>
-{{#each}}
-	{{name}}
-{{/each}}
+<div class='row'>
+	<div class='col-xs-1'></div>
+	<div class='col-xs-10'>
+		<table id='waypoints-table' class='table table-condensed table-striped table-hover'>
+			<tbody>
+				{{#each}}
+				<tr>
+					<td>{{name}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+</div>

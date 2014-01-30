@@ -107,7 +107,7 @@ module.exports = SessionManager;
 var ApplicationController = Ember.ObjectController.extend({
 	needs: 'sidebar.user',
 	isAuthenticated: function() {
-		return App.Session.isAuthenticated()
+		return App.Session.isAuthenticated();
 	}.property('App.Session.token'),
 	profile: function() {
 		var user = this.store.find('profile', App.Session.get('uid'));
@@ -1002,25 +1002,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['index'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  
-  data.buffer.push("\n		<div class='click-to-go'>\n		</div>\n		");
-  }
 
   data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n		");
-  hashTypes = {};
-  hashContexts = {};
-  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
-  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#feature-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='feature-1'>\n	<div class='feature-panel'>\n	</div>\n</div>");
+  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#feature-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='feature-1'>\n	<div class='feature-panel'>\n	</div>\n</div>\n<div id='feature-2' class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n	</div>\n</div>");
   return buffer;
   
 });
@@ -1074,7 +1064,7 @@ function program3(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>\n	      	");
+  data.buffer.push("><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>\n	    		<div class='click-to-go'>\n					<img src='img/click-me.png' alt='click' />\n				</div>\n	      	");
   return buffer;
   }
 function program4(depth0,data) {
@@ -1384,15 +1374,7 @@ function program1(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h4>\n				<h6>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.start_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h6>\n				<h6>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.end_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h6>\n				<div style='display: none'>");
+  data.buffer.push("</h4>\n				<div style='display: none'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.uid", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1432,11 +1414,7 @@ function program1(depth0,data) {
     'placeholder': ("dd/mm/yyyy")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<button id='open-item-menu' class=\"btn btn-success btn-block\" type='submit' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadItemMenu", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">New Trip</button>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table id='trips-table' class='table table-condensed table-striped table-hover'>\n					<tbody>\n						");
+  data.buffer.push("\n					</div>\n					<div class='form-group'>\n						<button class=\"btn btn-success btn-block\" name='submit' type='submit'>Submit</button>\n					</div>\n				</form>\n			</div>\n		</div>\n		<div class='row'>\n			<div class='col-xs-1'></div>\n			<div class='col-xs-10'>\n				<table id='trips-table' class='table table-condensed table-striped table-hover'>\n					<tbody>\n						");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
@@ -1505,19 +1483,20 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	");
+  data.buffer.push("\n				<tr>\n					<td>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("</td>\n				</tr>\n				");
   return buffer;
   }
 
-  data.buffer.push("<p>Hello</p>\n");
+  data.buffer.push("<div class='row'>\n	<div class='col-xs-1'></div>\n	<div class='col-xs-10'>\n		<table id='waypoints-table' class='table table-condensed table-striped table-hover'>\n			<tbody>\n				");
   hashTypes = {};
   hashContexts = {};
   stack1 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n			</tbody>\n		</table>\n	</div>\n</div>");
   return buffer;
   
 });
