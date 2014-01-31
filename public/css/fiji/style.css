@@ -6733,6 +6733,10 @@ h6,
   left: 175px;
 }
 /*Import Geneva Stylesheets*/
+/* 
+ * Common definitions
+ */
+/*flat colours*/
 .navbar {
   height: 80px;
   background: none;
@@ -6866,6 +6870,15 @@ h6,
   padding-top: 175px;
   padding-bottom: 175px;
 }
+.footer-panel {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: #2e3a41;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: #e4e6e7;
+  text-shadow: 0px 0px 2px #2e3a41;
+}
 #feature-2 {
   height: 100%;
   width: 100%;
@@ -6880,10 +6893,6 @@ h6,
   background-size: cover;
   position: relative;
 }
-/* 
- * Common definitions
- */
-/*flat colours*/
 #nb-vert {
   z-index: 99;
   left: 0;

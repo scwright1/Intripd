@@ -8,6 +8,9 @@ App.Router.map(function() {
 
 	this.route('map');
 
+	this.route('tos');
+	this.route('privacy');
+
 	this.resource('marker');
 
 	this.resource('sidebar', function() {
