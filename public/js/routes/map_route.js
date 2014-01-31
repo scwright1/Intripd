@@ -25,7 +25,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 			this.render(module, {into: 'sidebar', outlet: 'sidebar-content'});
 		},
 		dropMarker: function(sid, ref) {
-			markers.push(sid);
+			//markers.push(sid);
 			var controller = this.controllerFor('waypoint');
 			controller.set('el', ref);
 			controller.set('sid', sid);

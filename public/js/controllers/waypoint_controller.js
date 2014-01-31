@@ -4,6 +4,12 @@ var WaypointController = App.ApplicationController.extend({
 	marker: null,
 	actions: {
 		pull: function() {
+			if(m.length > 0) {
+				for(var a = 0; a < m.length; a++) {
+					m[a].setMap(null);
+				}
+				m.length = 0;
+			}
 			var self = this;
 			//load all waypoints into table for this trip
 			var waypoints = this.store.find('waypoint', {trip_uid: App.Session.get('ac-tr')});
@@ -19,6 +25,7 @@ var WaypointController = App.ApplicationController.extend({
 						icon: image,
 		      			animation: google.maps.Animation.DROP
 					});
+					m.push(marker);
 					self.send('generatePoint', marker, record);
 				}
 			}
@@ -58,6 +65,7 @@ var WaypointController = App.ApplicationController.extend({
 		      	animation: google.maps.Animation.DROP,
 		      	title: name
 		  	});
+		  	m.push(marker);
 		  	map.panTo(latLng);
 	    	$(element).remove();
 

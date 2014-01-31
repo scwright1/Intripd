@@ -8,7 +8,8 @@ var SidebarTripsView = Ember.View.extend({
 	    	format: "dd/mm/yyyy",
 	    	autoclose: true
 	  	});
-	  	//self.get('controller').send('setupActive');
+	  	//reset the info we're gathering for the currently active trip
+	  	self.get('controller').send('info');
 	}
 });
 

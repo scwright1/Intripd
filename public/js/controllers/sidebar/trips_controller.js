@@ -37,7 +37,7 @@ var SidebarTripsController = Ember.ArrayController.extend({
 				App.Session.set('trip', model._data);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
-				self.send('loadTrips');
+				//self.send('loadTrips');
 			}
 
 			function reject(reason) {
@@ -50,13 +50,24 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			trips.then(fulfill, reject);
 
 			function fulfill(models) {
-				$('#trips-table > tbody').empty();
+				$('#trips-list').empty();
 				for(var i = 0; i < models.content.length; i++) {
 					var record = models.content[i]._data;
 					$('#trips-table > tbody').append('<tr><td>'+record.name+'</td></tr>');
 				}
 			}
 
+			function reject(reason) {
+				console.log(reason);
+			}
+		},
+		info: function() {
+			var active = this.store.find('trip', $.cookie('ac-tr'));
+			var self = this;
+			active.then(fulfill, reject);
+			function fulfill(model) {
+				self.set('ac_trip', model._data);
+			}
 			function reject(reason) {
 				console.log(reason);
 			}
@@ -74,10 +85,32 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			}
 		},
 		switch: function(trip) {
+			var self = this;
 			//switch out the currently active trip
-			$.cookie('ac-tr', trip._data.uid);
-			App.Session.set('ac-tr', trip._data.uid);
-			this.send('setupActive');
+			//firstly, remove the currently active trip;
+			App.Session.set('ac-tr', null);
+			$.cookie('ac-tr', '');
+			//unload all waypoints currently stored (so we don't accidentally append waypoints to other trips)
+			self.store.unloadAll('waypoint');
+			//delete all markers currently active
+			if(m.length > 0) {
+				for(var i = 0; i < m.length; i++) {
+					m[i].setMap(null);
+				}
+				m.length = 0;
+			}
+
+			//once we think this is null, go and generate the new points
+			if((App.Session.get('ac-tr') !== null) || ($.cookie('ac-tr') !== '') || (m.length !== 0)) {
+				alert("Something went wrong, we couldn't clear out the old trip!");
+				alert(App.Session.get('ac-tr'));
+				alert($.cookie('ac-tr'));
+				alert(m.length);
+			} else {
+				$.cookie('ac-tr', trip._data.uid);
+				App.Session.set('ac-tr', trip._data.uid);
+				self.send('setupActive');
+			}
 		}
 	}
 });
