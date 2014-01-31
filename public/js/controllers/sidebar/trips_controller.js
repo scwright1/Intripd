@@ -1,5 +1,5 @@
 var SidebarTripsController = Ember.ArrayController.extend({
-	needs: 'sidebar',
+	needs: ['sidebar','waypoint'],
 	ac_trip: null,
 	name: '',
 	start: '',
@@ -50,10 +50,10 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			trips.then(fulfill, reject);
 
 			function fulfill(models) {
-				$('.create_trip > .row > .col-xs-10 > table').empty();
+				$('#trips-table > tbody').empty();
 				for(var i = 0; i < models.content.length; i++) {
 					var record = models.content[i]._data;
-					$('.create_trip > .row > .col-xs-10 > table').append('<tr><td>'+record.name+'</td></tr>');
+					$('#trips-table > tbody').append('<tr><td>'+record.name+'</td></tr>');
 				}
 			}
 
@@ -67,10 +67,17 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			active.then(fulfill, reject);
 			function fulfill(model) {
 				self.set('ac_trip', model._data);
+				self.get('controllers.waypoint').send('pull');
 			}
 			function reject(reason) {
 				console.log(reason);
 			}
+		},
+		switch: function(trip) {
+			//switch out the currently active trip
+			$.cookie('ac-tr', trip._data.uid);
+			App.Session.set('ac-tr', trip._data.uid);
+			this.send('setupActive');
 		}
 	}
 });

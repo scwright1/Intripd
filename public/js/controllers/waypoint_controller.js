@@ -5,7 +5,7 @@ var WaypointController = App.ApplicationController.extend({
 	actions: {
 		pull: function() {
 			var self = this;
-			//load all trips into table for this user
+			//load all waypoints into table for this trip
 			var waypoints = this.store.find('waypoint', {trip_uid: App.Session.get('ac-tr')});
 			waypoints.then(fulfill, reject);
 			function fulfill(wps) {
