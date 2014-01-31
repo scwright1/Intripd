@@ -43,11 +43,16 @@ var MapRoute = App.AuthenticatedRoute.extend({
 		}
 	},
 	setupController: function() {
+		var self = this;
 		//run-once: make sure the user has completed their profile
-		var model_promise = this.store.find('profile', App.Session.get('uid'));
-		var controller = this.controllerFor('sidebar.user');
+		var model_promise = self.store.find('profile', App.Session.get('uid'));
+		var controller = self.controllerFor('sidebar.user');
 		controller.set('model', model_promise);
 		controller.send('initUserProfile');
+		var extend = self.store.find('extend', App.Session.get('uid'));
+		var extController = self.controllerFor('profile.user');
+		extController.set('model', extend);
+		extController.send('setup');
 	},
 	model: function() {
 		return Ember.Object.create({});

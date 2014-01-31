@@ -22,7 +22,7 @@ var AuthRegisterController = Ember.ObjectController.extend({
 				        	attemptedTransition.retry();
 				        	App.Session.set('attemptedTransition', null);
 				        } else {
-				        	self.transitionToRoute('map');
+				        	self.transitionToRoute('index');
 				        }
 		 			}
 		 		});

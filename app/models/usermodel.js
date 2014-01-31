@@ -7,6 +7,7 @@ var mongoose		= require('mongoose'),
 	hash 			= require('../helpers/hash'),
     uuid            = require('node-uuid'),
     Profile         = require('./profilemodel');
+    Extend          = require('./extendmodel');
     date            = new Date();
 
 //create the base user schema
@@ -44,7 +45,17 @@ baseCredentialsSchema.statics.signup = function(email, password, done){
                         if(err) {
                             return done(11200, false, {message: 'Profile creation failure'});
                         } else {
-                            done(null, user);
+                            Extend.create({
+                                uid: user.uid,
+                                actr: null,
+                                ac_log: new Date()
+                            }, function(err, extend) {
+                                if(err) {
+                                    return done(11300, false, {message: 'Extend creation failure'});
+                                } else {
+                                    done(null, user);
+                                }
+                            });
                         }
                     });
                 }

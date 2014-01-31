@@ -37,6 +37,16 @@ var SidebarTripsController = Ember.ArrayController.extend({
 				App.Session.set('trip', model._data);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
+				var extend = self.store.find('extend', App.Session.get('uid'));
+				extend.then(f,r);
+				function f(m) {
+					m.set('actr', model._data.uid);
+					m.save();
+				}
+
+				function r(reason) {
+					alert(reason);
+				}
 				//self.send('loadTrips');
 			}
 
