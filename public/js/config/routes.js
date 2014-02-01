@@ -11,7 +11,7 @@ App.Router.map(function() {
 	this.route('tos');
 	this.route('privacy');
 
-	this.resource('marker');
+	//this.resource('marker');
 
 	this.resource('sidebar', function() {
 		this.route('user');
