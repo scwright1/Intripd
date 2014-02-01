@@ -36,14 +36,13 @@ App.Router.map(function() {
 
 
 },{"./app":1}],3:[function(require,module,exports){
-
 var SessionManager = Ember.Object.extend({
+	rem: false,
+	trip: null,
 	init: function() {
 		this._super();
 		this.set('token', $.cookie('ato'), {expires: 365});
 		this.set('uid', $.cookie('uid'), {expires: 365});
-		this.set('rem', false);
-		this.set('trip', null);
 		this.set('ac-tr', $.cookie('ac-tr'), {expires: 365});
 	},
 
@@ -1083,7 +1082,7 @@ function program3(depth0,data) {
   data.buffer.push("Privacy");
   }
 
-  data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n		");
+  data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"10\">\n	<div class='darken gradient'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};

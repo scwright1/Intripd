@@ -1,11 +1,10 @@
-
 var SessionManager = Ember.Object.extend({
+	rem: false,
+	trip: null,
 	init: function() {
 		this._super();
 		this.set('token', $.cookie('ato'), {expires: 365});
 		this.set('uid', $.cookie('uid'), {expires: 365});
-		this.set('rem', false);
-		this.set('trip', null);
 		this.set('ac-tr', $.cookie('ac-tr'), {expires: 365});
 	},
 

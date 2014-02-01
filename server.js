@@ -5,17 +5,16 @@ var express 	    = require('express'),
     mongoose      = require('mongoose'),
     mongodb       = require('mongodb'),
     passport      = require('passport'),
-    RedisStore    = require('connect-redis')(express);
-    config        = require('./config')();
+    RedisStore    = require('connect-redis')(express),
+    config        = require('./config')(),
+    User          = require('./app/models/usermodel'),
+    server        = express();
 
-var User = require('./app/models/usermodel');
-
-var server        = express();
 //export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'
 //connect to Mongo Database and check that we've connected OK.
 mongoose.connect('mongodb://' + config.mongo.host + '/' + config.mongo.db);
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function callback() {
   //database connection open
   console.log('Mongoose connection open at ' + db.host + ':' + db.port);
@@ -31,12 +30,6 @@ server.use(express.json());
 server.use(express.methodOverride());
 //use cookieparser for session storage
 server.use(express.cookieParser('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
-//setup secret key for session hash and add to RedisStore for persistent session storage across server restarts
-//server.use(express.session({
-//  secret:'qL17C8iQnxPuDg50mYFDk56sdR0KuUm3',
-//  store: new RedisStore({
-//  })
-//}));
 //initialize passport with config options defined above
 server.use(passport.initialize());
 server.use(passport.session());

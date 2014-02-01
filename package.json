@@ -1,6 +1,6 @@
 {
-	"name": "Ember",
-	"version": "0.0.1",
+	"name": "Intripd",
+	"version": "0.1.4",
 	"description": "",
 	"dependencies": {
 		"express": "*",
