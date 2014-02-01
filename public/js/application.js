@@ -1050,21 +1050,6 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
-Ember.TEMPLATES['index-old'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n<h2>Index</h2>\n\n");
-  return buffer;
-  
-});
-
 Ember.TEMPLATES['index'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
@@ -1235,51 +1220,6 @@ function program1(depth0,data) {
   hashContexts = {};
   stack1 = helpers.each.call(depth0, "searchresult", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n</div>");
-  return buffer;
-  
-});
-
-Ember.TEMPLATES['sidebar-old'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
-  data.buffer.push("<div id=\"navbar-vertical\">\n	<div id=\"navbar-extend-button\">\n		<div class=\"active-button\">\n			<!--<img src='img/extend.png' height='16px' width='16px' />-->\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='search' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", "null", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/search.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='profile' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", "profile", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/profile.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<!-- <div class=\"menu-item\" data-item='social'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/social.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div> -->\n	<div class=\"menu-item\" data-item='trips' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", "trip", "creator_uid", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-item-icon\">\n			<img src=\"img/trips.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<!--<div class=\"menu-item\" data-item='locations'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/map-icon.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>\n	<div class=\"menu-item\" data-item='media'>\n		<div class=\"menu-item-icon\">\n			<img src=\"img/camera.png\" height=\"24px\" width=\"24px\" />\n		</div>\n	</div>-->\n	<div class=\"home-static\" data-item=\"home\">\n		<div class=\"menu-item-icon home-icon\">\n			<img src=\"img/logo.png\" width=\"24px\" />\n		</div>\n	</div>\n</div>\n<div id=\"navbar-extended\" class=\"extended\">\n	<div style=\"height: 64px\"></div>\n	<div class=\"menu-item-text\" data-item='search' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.search", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-extended-text\">SEARCH</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='profile' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-extended-text\">ME</div>\n	</div>\n	<!-- <div class=\"menu-item-text\" data-item='social'>\n		<div class=\"menu-extended-text\">SOCIAL</div>\n	</div> -->\n	<div class=\"menu-item-text\" data-item='trips' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n		<div class=\"menu-extended-text\">TRIPS</div>\n	</div>\n	<!--<div class=\"menu-item-text\" data-item='locations'>\n		<div class=\"menu-extended-text\">LOCATIONS</div>\n	</div>\n	<div class=\"menu-item-text\" data-item='media'>\n		<div class=\"menu-extended-text\">MEDIA</div>\n	</div>-->\n</div>\n<div id=\"content-menu\">\n	");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "sidebar-content", options) : helperMissing.call(depth0, "outlet", "sidebar-content", options))));
-  data.buffer.push("\n</div>\n<div id='item-specific-menu'>\n	");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "specific-item-menu", options) : helperMissing.call(depth0, "outlet", "specific-item-menu", options))));
   data.buffer.push("\n</div>");
   return buffer;
   

@@ -1,2 +1,0 @@
-#!/bin/bash
-fsmonitor -p -d public/js '!index.js' '!templates.js' '!application.js' ember build -d
