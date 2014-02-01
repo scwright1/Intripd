@@ -428,34 +428,7 @@ var SidebarTripsController = Ember.ArrayController.extend({
 				App.Session.set('trip', model._data);
 				App.Session.set('ac-tr', model._data.uid);
 				$.cookie('ac-tr', model._data.uid, {expires:365});
-				var extend = self.store.find('extend', App.Session.get('uid'));
-				extend.then(f,r);
-				function f(m) {
-					m.set('actr', model._data.uid);
-					m.save();
-				}
-
-				function r(reason) {
-					alert(reason);
-				}
-				//self.send('loadTrips');
-			}
-
-			function reject(reason) {
-				console.log(reason);
-			}
-		},
-		loadTrips: function() {
-			//load all trips into table for this user
-			var trips = this.store.find('trip', {creator_uid: App.Session.get('uid')});
-			trips.then(fulfill, reject);
-
-			function fulfill(models) {
-				$('#trips-list').empty();
-				for(var i = 0; i < models.content.length; i++) {
-					var record = models.content[i]._data;
-					$('#trips-table > tbody').append('<tr><td>'+record.name+'</td></tr>');
-				}
+				self.send('setupActive');
 			}
 
 			function reject(reason) {
@@ -478,6 +451,16 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			var self = this;
 			active.then(fulfill, reject);
 			function fulfill(model) {
+				var extend = self.store.find('extend', App.Session.get('uid'));
+				extend.then(f,r);
+				function f(m) {
+					m.set('actr', model._data.uid);
+					m.save();
+				}
+
+				function r(reason) {
+					alert(reason);
+				}
 				self.set('ac_trip', model._data);
 				self.get('controllers.waypoint').send('pull');
 			}
