@@ -5,7 +5,6 @@ var express 	    = require('express'),
     mongoose      = require('mongoose'),
     mongodb       = require('mongodb'),
     passport      = require('passport'),
-    RedisStore    = require('connect-redis')(express),
     config        = require('./config')(),
     User          = require('./app/models/usermodel'),
     server        = express();

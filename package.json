@@ -1,6 +1,6 @@
 {
 	"name": "Intripd",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "",
 	"dependencies": {
 		"express": "*",
@@ -9,7 +9,6 @@
 		"mongoose": "*",
 		"passport": "*",
     	"passport-local": "*",
-    	"connect-redis": "*",
 		"ember-tools": "*",
 		"node-uuid": "*",
 		"jwt-simple": "*"
