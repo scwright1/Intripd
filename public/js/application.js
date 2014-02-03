@@ -1124,27 +1124,27 @@ function program1(depth0,data) {
 function program3(depth0,data) {
   
   var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
-  data.buffer.push("\n	    		<li class='nav-link'><div class='small-user-img'><img style='margin-left: -1px;margin-top: -5px;'src='img/user.png' width='20px' height='20px' /></div><div class='user-text'>Welcome back, <b>");
+  data.buffer.push("\n	    		<li class='nav-link'>\n	    			<div class='small-user-img'>\n	    				<img style='margin-left: -1px;margin-top: -5px;'src='img/user.png' width='20px' height='20px' /></div>\n	    				<div class='user-text'>\n	    					<div class='user-text-reverse-flux'>|&nbsp;&nbsp;</div>\n	    					<div class='user-text-responsive'>Welcome back,&nbsp;</div>\n	    					<div class='user-text-flux'>\n	    						<b>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</b>&nbsp;&nbsp;|&nbsp;&nbsp;");
+  data.buffer.push("</b>&nbsp;&nbsp;|&nbsp;&nbsp;\n	    					</div>\n	    					");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "map", options) : helperMissing.call(depth0, "link-to", "map", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("&nbsp;&nbsp;|&nbsp;&nbsp;<a class='link' href='#' ");
+  data.buffer.push("\n	    					<a class='link' href='#' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><i class='fa fa-power-off'></i>&nbsp;Logout</a></div></li>\n	    		<div class='click-to-go'>\n					<img src='img/click-me.png' alt='click' />\n				</div>\n	      	");
+  data.buffer.push(">\n	    						<div class='user-text-element'>&nbsp;&nbsp;|&nbsp;&nbsp;\n	    							<i class='fa fa-power-off'></i>\n	    						</div>\n	    						<div class='user-text-responsive'>&nbsp;Logout</div>\n	    					</a>\n	    				</div>\n	    			</li>\n	    		<div class='click-to-go'>\n					<img src='img/click-me.png' alt='click' />\n				</div>\n	      	");
   return buffer;
   }
 function program4(depth0,data) {
   
   
-  data.buffer.push("<i class='fa fa-map-marker'></i> <b>App</b>");
+  data.buffer.push("\n	    						<div class='user-text-element'>\n	    							<i class='fa fa-map-marker'></i>\n	    						</div>\n	    						<div class='user-text-responsive'>\n	    							<b>&nbsp;App</b>\n	    						</div>\n	    					");
   }
 
 function program6(depth0,data) {
@@ -1172,7 +1172,7 @@ function program6(depth0,data) {
 function program7(depth0,data) {
   
   
-  data.buffer.push("<i class='fa fa-user'></i> <b>Login</b>");
+  data.buffer.push("<i class='fa fa-user'></i> <div class='user-text-responsive'><b>Login</b></div>");
   }
 
 function program9(depth0,data) {
@@ -1181,7 +1181,7 @@ function program9(depth0,data) {
   data.buffer.push("<i class='fa fa-edit'></i> <b>Register</b>");
   }
 
-  data.buffer.push("<nav class=\"navbar navbar-default navbar-static-top gradient\" role=\"navigation\">\n	<div class=\"navbar-header\">\n    	<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#nav-links\">\n      		<span class=\"sr-only\">Toggle navigation</span>\n      		<i class=\"fa fa-bars\"></i>\n    	</button>\n    	");
+  data.buffer.push("<nav class=\"navbar navbar-default navbar-static-top gradient\" role=\"navigation\">\n	<div class=\"navbar-header\">\n    	");
   hashContexts = {'class': depth0};
   hashTypes = {'class': "STRING"};
   options = {hash:{
@@ -1189,12 +1189,12 @@ function program9(depth0,data) {
   },inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "index", options) : helperMissing.call(depth0, "link-to", "index", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n  	</div>\n  	<div class=\"collapse navbar-collapse\" id=\"nav-links\">\n	    <ul class=\"nav navbar-nav navbar-right\">\n	    	");
+  data.buffer.push("\n  	</div>\n  	<div id=\"nav-links\">\n	    <ul class=\"nav navbar-nav navbar-right\">\n	    	");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n	    </ul>\n  	</div><!-- /.navbar-collapse -->\n</nav>");
+  data.buffer.push("\n	    </ul>\n  	</div>\n</nav>");
   return buffer;
   
 });
