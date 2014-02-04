@@ -6561,6 +6561,14 @@ h6,
   left: 175px;
 }
 /*Import Geneva Stylesheets*/
+/* 
+ * Common definitions
+ */
+/*flat colours*/
+@font-face {
+  font-family: Entypo;
+  src: url(../../fonts/entypo.woff);
+}
 .navbar {
   height: 80px;
   background: none;
@@ -6660,14 +6668,6 @@ h6,
   .user-text-reverse-flux {
     display: inline;
   }
-}
-/* 
- * Common definitions
- */
-/*flat colours*/
-@font-face {
-  font-family: Entypo;
-  src: url(../../fonts/entypo.woff);
 }
 #splash {
   height: 100%;
@@ -6828,6 +6828,18 @@ h6,
 }
 #thisyear {
   display: inline;
+}
+.feature-text {
+  padding: 30px;
+}
+.feature-text > h2 {
+  font-weight: 300;
+}
+.feature-text > h5 {
+  font-weight: 400;
+}
+.center {
+  text-align: center;
 }
 #nb-vert {
   z-index: 99;
