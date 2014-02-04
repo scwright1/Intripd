@@ -145,3 +145,6 @@
   background-size: cover;
   position: relative;
 }
+#thisyear {
+  display: inline;
+}
