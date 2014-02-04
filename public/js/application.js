@@ -1067,12 +1067,12 @@ function program3(depth0,data) {
   data.buffer.push("Privacy");
   }
 
-  data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"10\">\n	<div class='darken gradient'>\n		");
+  data.buffer.push("<div id=\"splash\" class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n		<div class='grab-text'>\n			Exploring the world is meant to be shared.\n			<div class='sub-text'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.\n			</div>\n		</div>\n		<div class='next' class=\"section\" data-type=\"background\" data-speed=\"10\">\n			<div class='next-text'>Interested? Let us show you what we're planning...</div>\n			<a href='#feature-1'><i class='fa fa-chevron-down'></i></a>\n		</div>\n	</div>\n</div>\n<div id='feature-1'>\n	<div class='feature-panel'>\n	</div>\n</div>\n<div id='feature-2' class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n	</div>\n</div>\n<footer>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a href='http://www.facebook.com/intripd'><img src='img/facebook.jpg' alt='Facebook' height='48px' width='48px' /></a>\n				<a href='http://www.twitter.com/intripd'><img src='img/twitter.jpg' alt='Twitter' height='48px' width='48px' /></a>\n				<a href='http://www.pinterest.com/intripd'><img src='img/pinterest.png' alt='Pinterest' height='48px' width='48px' /></a>\n			</div>\n			<div class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<h6> &copy; 2012 - 2014. Intripd. All rights reserved. | ");
+  data.buffer.push("\n		<div class='grab-text'>\n			Plan, Share, Explore.\n		</div>\n		<div class='next'>\n			<a href='#feature-1'>&#59236;</a>\n		</div>\n	</div>\n</div>\n<div id='feature-1'>\n	<div class='feature-panel'>\n	</div>\n</div>\n<div id='feature-2' class=\"section\" data-type=\"background\" data-speed=\"5\">\n	<div class='darken gradient'>\n	</div>\n</div>\n<footer>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a href='http://www.facebook.com/intripd'><img src='img/facebook.jpg' alt='Facebook' height='48px' width='48px' /></a>\n				<a href='http://www.twitter.com/intripd'><img src='img/twitter.jpg' alt='Twitter' height='48px' width='48px' /></a>\n				<a href='http://www.pinterest.com/intripd'><img src='img/pinterest.png' alt='Pinterest' height='48px' width='48px' /></a>\n			</div>\n			<div class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<h6> &copy; 2012 - 2014. Intripd. All rights reserved. | ");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -1084,7 +1084,7 @@ function program3(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "privacy", options) : helperMissing.call(depth0, "link-to", "privacy", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("</h6>\n				<sub>intripd-geneva-pre4-#31060cfc97 | <i class='fa fa-html5'></i> & <i class='fa fa-css3'></i></sub>\n			</div>\n		</div>\n	</div>\n</footer>");
+  data.buffer.push("</h6>\n				<sub>intripd-geneva-pre5-# | <i class='fa fa-html5'></i> & <i class='fa fa-css3'></i></sub>\n			</div>\n		</div>\n	</div>\n</footer>");
   return buffer;
   
 });
