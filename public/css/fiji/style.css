@@ -6838,8 +6838,15 @@ h6,
 .feature-text > h5 {
   font-weight: 400;
 }
+.panel-text {
+  top: 50%;
+  left: 50%;
+}
 .center {
   text-align: center;
+}
+.light {
+  color: #e4e6e7 !important;
 }
 #nb-vert {
   z-index: 99;
