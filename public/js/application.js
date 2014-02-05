@@ -50084,6 +50084,7 @@ var MapView = Ember.View.extend({
 		window.location.reload();
 	},
 	initiateMap: function() {
+        google.maps.visualRefresh = true;
 		var mapOptions = {
       		center: new google.maps.LatLng(26.055889, -5.989990),
       		zoom: 3,
