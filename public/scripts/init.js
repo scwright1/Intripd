@@ -25,14 +25,14 @@ $(document).ready(function(){
 
           // Move the background
           $bgobj.css({ backgroundPosition: coords });
-      }); 
-  });    
+      });
+  });
 });
 
 $(function() {
 	$('#profile-init').modal({
 		show: false,
 		backdrop: 'static',
-  		keyboard: false
+    keyboard: false
 	});
 });

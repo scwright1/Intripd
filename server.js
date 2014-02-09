@@ -1,13 +1,13 @@
 /* Node.js entry */
 
-var express 	    = require('express'),
-	  http          = require('http'),
-    mongoose      = require('mongoose'),
-    mongodb       = require('mongodb'),
-    passport      = require('passport'),
-    config        = require('./config')(),
-    User          = require('./app/models/usermodel'),
-    server        = express();
+var express    = require('express'),
+    http       = require('http'),
+    mongoose   = require('mongoose'),
+    mongodb    = require('mongodb'),
+    passport   = require('passport'),
+    config     = require('./config')(),
+    User       = require('./app/models/usermodel'),
+    server     = express();
 
 //export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'
 //connect to Mongo Database and check that we've connected OK.
