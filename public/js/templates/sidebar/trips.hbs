@@ -1,1 +1,15 @@
 <h6>{{ac_trip.name}}</h6>
+{{#each}}
+	<div {{bindAttr id='uid'}} class="trip-entry" {{action "switch" this on='click'}}>
+	  <div class='trip-entry-top'>
+	    {{name}}
+	  </div>
+	  <div class='trip-entry-bottom'>
+	    <div class='trip-entry-timeline-point left-point'></div>
+	    <div class='trip-entry-timeline'></div>
+	    <div class='trip-entry-timeline-point right-point'></div>
+	    <div class='trip-entry-start-date'>{{start_date}}</div>
+	    <div class='trip-entry-end-date'>{{end_date}}</div>
+	  </div>
+	</div>
+{{/each}}

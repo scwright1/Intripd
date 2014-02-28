@@ -153,33 +153,73 @@
 }
 
 .trip-entry {
-	height: 70px;
-	width: 100%;
-	background: @color-slate - #030303;
-	margin-bottom: 10px;
+  background: @color-slate - #040404;
+  height: 70px;
+  width: 340px;
+  margin: 5px 30px;
 }
 
 .trip-entry-top {
-	font-size: 16px;
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 300;
-	color: #9f9f93;
-}
-
-.trip-entry-name {
-	padding: 8px;
+  padding: 6px;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  color: #666666;
+  font-weight: 300;
+  height: 24px;
+  width: 100%;
+  line-height: 24px;
 }
 
 .trip-entry-bottom {
-}
-
-.ti {
-	float: left;
+  width: 100%;
+  position: relative;
+  padding-top: 12px;
 }
 
 .trip-entry-timeline-point {
-	border-radius: 10px;
-	width: 20px;
-	height: 20px;
-	border: 4px solid #afcd45;
+  border-radius: 10px;
+  width: 20px;
+  height: 20px;
+  border: 4px solid #94a12c;
+}
+
+.left-point {
+  left: 0;
+  position: absolute;
+  margin-left: 20px;
+}
+
+.right-point {
+  right: 0;
+  position: absolute;
+  margin-right: 20px;
+}
+
+.trip-entry-timeline {
+  height: 4px;
+  margin-left: 40px;
+  position: absolute;
+  top: 20px;
+  width: 260px;
+  background: #94a12c;
+}
+
+.trip-entry-start-date {
+  position: absolute;
+  top: 24px;
+  left: 44px;
+  font-weight: 600;
+  font-family: 'Open Sans' sans-serif;
+  font-size: 10px;
+  color: #7a767a;
+}
+
+.trip-entry-end-date {
+  position: absolute;
+  top: 24px;
+  right: 44px;
+  font-weight: 600;
+  font-family: 'Open Sans' sans-serif;
+  font-size: 10px;
+  color: #7a767a;
 }
