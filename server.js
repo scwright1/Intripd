@@ -9,16 +9,37 @@ var express    = require('express'),
     User       = require('./app/models/usermodel'),
     server     = express();
 
+http.createServer(express);
+
+console.logCopy = console.log.bind(console);
+
+console.log = function()
+{
+    if (arguments.length)
+    {
+        var timestamp = '[' + Date.now() + '] ';
+        this.logCopy(timestamp, arguments);
+    }
+};
+
+//start the server
+server.listen(config.port, function() {
+  if(config.mode === "development") {
+    console.log('Intripd starting on port ' + config.port);
+  }
+});
+
 //export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'
 //connect to Mongo Database and check that we've connected OK.
 mongoose.connect('mongodb://' + config.mongo.host + '/' + config.mongo.db);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
-db.once('open', function callback() {
-  //database connection open
-  console.log('Mongoose connection open at ' + db.host + ':' + db.port);
-  console.log('Using database ' + db.name);
-});
+if(config.mode === "development") {
+  db.once('open', function callback() {
+    console.log('Mongoose connection open at ' + db.host + ':' + db.port);
+    console.log('Using database ' + db.name);
+  });
+}
 
 //set up passport configuration prior to initialize
 require('./app/controllers/passport')(passport);
@@ -43,7 +64,12 @@ require('./app/router/user.js')(server);
 require('./app/router/trip.js')(server);
 require('./app/router/waypoint.js')(server);
 
-//start the server
-http.createServer(server).listen(config.port, function() {
-  console.log('Intripd starting on port ' + config.port);
-});
+//flowerbox
+console.log('==============================');
+console.log('=                            =');
+console.log('= App Started Successfully!  =');
+console.log('= Intripd "geneva" release.  =');
+console.log('= (c) 2014 Intripd.          =');
+console.log('= All Rights Reserved.       =');
+console.log('=                            =');
+console.log('==============================');
