@@ -1239,7 +1239,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.user", "profile", "null", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips' data-width='350' ");
+  data.buffer.push(">\n			<img src='img/profile.png' width='24px' alt='Profile' />\n		</li>\n		<li data-menu='trips' data-width='400' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadModule", "sidebar.trips", "trip", "c", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1383,7 +1383,7 @@ function program1(depth0,data) {
   
 });
 
-Ember.TEMPLATES['sidebar/trips'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+Ember.TEMPLATES['sidebar/trips-legacy'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, stack2, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
@@ -1403,19 +1403,11 @@ function program1(depth0,data) {
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "switch", "", {hash:{
     'on': ("click")
   },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n											<div class=\"trip-entry-top\">\n												<div class=\"trip-entry-name\">");
+  data.buffer.push(">\n											<div class=\"trip-entry-top\">\n												<div class=\"trip-entry-name\" style='float:left'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n											</div>\n											<div class=\"trip-entry-bottom\">\n												<div class=\"ti trip-entry-travellers\"><i class='fa fa-user'></i> 1</div>\n												<div class='trip-entry-start-hidden' hidden='hidden'>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "start_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n												<div class='trip-entry-end-hidden' hidden='hidden'>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "end_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n												<div class=\"ti trip-entry-start\"></div>\n												<div class=\"ti trip-entry-end\"></div>\n											</div>\n										</div>\n									");
+  data.buffer.push("</div>\n												<div class=\"trip-entry-travellers\" style='float:right; font-size: 14px; font-weight: 400; padding: 9px 6px'><i class='fa fa-user' style='font-size: 16px; color: #313540'></i> 4</div>\n												<div class=\"trip-entry-waypoints\" style='float:right; font-size: 14px; font-weight: 400; padding: 9px 0px;'><i class='fa fa-map-marker' style='font-size:16px; color: #313540'></i> 11</div>\n											</div>\n											<div class='trip-entry-bottom'>\n												<div class='trip-entry-timeline-point'></div>\n											</div>\n										</div>\n									");
   return buffer;
   }
 
@@ -1469,6 +1461,21 @@ function program1(depth0,data) {
   stack2 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n								</div>\n							</div>\n						</div>\n					</div>\n				</div>\n			</div>\n		</div>\n	</div>");
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar/trips'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("<h6>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "ac_trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>");
   return buffer;
   
 });

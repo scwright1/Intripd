@@ -1,0 +1,74 @@
+	
+	<div class="create_trip">
+		<div class="row">
+			<div class='col-xs-1'></div>
+			<div class='col-xs-10'>
+				<h6>{{ac_trip.name}}</h6>
+				<div style='display: none'>{{ac_trip.uid}}</div>
+			</div>
+		</div>
+		<div class='row'>
+			<div class='col-xs-1'></div>
+			<div class='col-xs-10'>
+				<div class="panel-group" id="trips-group">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="pane-title">
+								<a data-toggle="collapse" data-parent="#trips-group" href="#new-trip">
+								Create A Trip
+								</a> 
+							</h4>
+						</div>
+						<div id="new-trip" class="panel-collapse collapse">
+							<div class="panel-body">
+								<form id="create_trip_form" role='form' {{action 'createTrip' on='submit'}}>
+									<div class='form-group'>
+										<label for='name'>Trip Name</label>
+										{{input value=name type='text' class='form-control' placeholder="Trip Name"}}
+									</div>
+									<div class='form-group'>
+										<label for='start'>Start Date (optional)</label>
+										{{input value=start class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+									</div>
+									<div class='form-group'>
+										<label for='end'>End Date (optional)</label>
+										{{input value=end class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+									</div>
+									<div class='form-group'>
+										<button class="btn btn-success btn-block" name='submit' type='submit'>Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="pane-title">
+								<a data-toggle="collapse" data-parent="#trips-group" href="#trip-table">
+								Select A Trip
+								</a> 
+							</h4>
+						</div>
+						<div id="trip-table" class="panel-collapse collapse in">
+							<div class="panel-body">
+								<div id="trips-list">
+									{{#each}}
+										<div {{bindAttr id='uid'}} class="trip-entry" {{action "switch" this on='click'}}>
+											<div class="trip-entry-top">
+												<div class="trip-entry-name" style='float:left'>{{name}}</div>
+												<div class="trip-entry-travellers" style='float:right; font-size: 14px; font-weight: 400; padding: 9px 6px'><i class='fa fa-user' style='font-size: 16px; color: #313540'></i> 4</div>
+												<div class="trip-entry-waypoints" style='float:right; font-size: 14px; font-weight: 400; padding: 9px 0px;'><i class='fa fa-map-marker' style='font-size:16px; color: #313540'></i> 11</div>
+											</div>
+											<div class='trip-entry-bottom'>
+												<div class='trip-entry-timeline-point'></div>
+											</div>
+										</div>
+									{{/each}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

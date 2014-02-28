@@ -1,9 +1,1 @@
-@import url(http://fonts.googleapis.com/css?family=Montserrat|Open+Sans:400,300,600,700);
-/* 
- * Common definitions
- */
-/*flat colours*/
-@font-face {
-  font-family: Entypo;
-  src: url(../../fonts/entypo.woff);
-}
+@import url(http://fonts.googleapis.com/css?family=Montserrat|Open+Sans:400,300,600,700);@font-face{font-family:Entypo;src:url(../../fonts/entypo.woff)}
