@@ -79,6 +79,8 @@ var SidebarTripsController = Ember.ArrayController.extend({
 		},
 		switch: function(trip) {
 			var self = this;
+			$('.trip-entry').removeClass('trip-entry-active').addClass('trip-entry-inactive');
+			$('#'+trip._data.uid).removeClass('trip-entry-inactive').addClass('trip-entry-active');
 			//switch out the currently active trip
 			//firstly, remove the currently active trip;
 			App.Session.set('ac-tr', null);

@@ -458,6 +458,8 @@ var SidebarTripsController = Ember.ArrayController.extend({
 		},
 		switch: function(trip) {
 			var self = this;
+			$('.trip-entry').removeClass('trip-entry-active').addClass('trip-entry-inactive');
+			$('#'+trip._data.uid).removeClass('trip-entry-inactive').addClass('trip-entry-active');
 			//switch out the currently active trip
 			//firstly, remove the currently active trip;
 			App.Session.set('ac-tr', null);
@@ -1531,7 +1533,7 @@ function program1(depth0,data) {
   data.buffer.push(escapeExpression(helpers.bindAttr.call(depth0, {hash:{
     'id': ("uid")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" class=\"trip-entry\" ");
+  data.buffer.push(" class=\"trip-entry trip-entry-inactive\" ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "switch", "", {hash:{

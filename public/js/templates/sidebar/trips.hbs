@@ -1,6 +1,6 @@
 <h6>{{ac_trip.name}}</h6>
 {{#each}}
-	<div {{bindAttr id='uid'}} class="trip-entry" {{action "switch" this on='click'}}>
+	<div {{bindAttr id='uid'}} class="trip-entry trip-entry-inactive" {{action "switch" this on='click'}}>
 	  <div class='trip-entry-top'>
 	    {{name}}
 	  </div>
