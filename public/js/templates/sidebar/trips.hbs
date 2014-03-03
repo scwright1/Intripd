@@ -8,8 +8,10 @@
 	    <div class='trip-entry-timeline-point left-point'></div>
 	    <div class='trip-entry-timeline'></div>
 	    <div class='trip-entry-timeline-point right-point'></div>
-	    <div class='trip-entry-start-date'>{{start_date}}</div>
-	    <div class='trip-entry-end-date'>{{end_date}}</div>
+	    <input class='trip-entry-start-date-iso' type='hidden' {{bindAttr data-isodate='start_date'}}>
+	    <input class='trip-entry-end-date-iso' type='hidden' {{bindAttr data-isodate='end_date'}}>
+	    <div class='trip-entry-start-date' {{bindAttr data-isodate='start_date'}}>{{tripdate start_date}}</div>
+	    <div class='trip-entry-end-date' {{bindAttr data-isodate='end_date'}}>{{tripdate end_date}}</div>
 	  </div>
 	</div>
 {{/each}}

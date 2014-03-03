@@ -11,6 +11,7 @@
     	"passport-local": "*",
 		"ember-tools": "*",
 		"node-uuid": "*",
-		"jwt-simple": "*"
+		"jwt-simple": "*",
+		"flox-node": "*"
 	}
 }
