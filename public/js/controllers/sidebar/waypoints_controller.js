@@ -9,8 +9,8 @@ var SidebarWaypointsController = Ember.ArrayController.extend({
 			waypointController.set('marker', w);
 			//issue the change function against the route
 			_this.get('target').send('editMarker', w, 'change');
-			//TODO
-			//zoom and center the marker - coz pretty
+			map.setCenter(new google.maps.LatLng(w._data.lat, w._data.lng));
+			map.setZoom(13);
 		}
 	}
 

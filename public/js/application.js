@@ -536,8 +536,8 @@ var SidebarWaypointsController = Ember.ArrayController.extend({
 			waypointController.set('marker', w);
 			//issue the change function against the route
 			_this.get('target').send('editMarker', w, 'change');
-			//TODO
-			//zoom and center the marker - coz pretty
+			map.setCenter(new google.maps.LatLng(w._data.lat, w._data.lng));
+			map.setZoom(13);
 		}
 	}
 
@@ -1341,7 +1341,6 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<p>Hi</p>\n");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "marker.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1349,6 +1348,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "marker.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n<div class='waypoint-comment-form'>\n	<textarea placeholder='Add a Comment...'></textarea>\n</div>");
   return buffer;
   
 });
