@@ -1,4 +1,34 @@
 <h6>{{ac_trip.name}}</h6>
+<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="pane-title">
+								<a data-toggle="collapse" data-parent="#trips-group" href="#new-trip">
+								Create A Trip
+								</a> 
+							</h4>
+						</div>
+						<div id="new-trip" class="panel-collapse collapse">
+							<div class="panel-body">
+								<form id="create_trip_form" role='form' {{action 'createTrip' on='submit'}}>
+									<div class='form-group'>
+										<label for='name'>Trip Name</label>
+										{{input value=name type='text' class='form-control' placeholder="Trip Name"}}
+									</div>
+									<div class='form-group'>
+										<label for='start'>Start Date (optional)</label>
+										{{input value=start class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+									</div>
+									<div class='form-group'>
+										<label for='end'>End Date (optional)</label>
+										{{input value=end class='date form-control' type='text' placeholder="dd/mm/yyyy"}}
+									</div>
+									<div class='form-group'>
+										<button class="btn btn-success btn-block" name='submit' type='submit'>Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 {{#each}}
 	<div {{bindAttr id='uid'}} class="trip-entry trip-entry-inactive" {{action "switch" this on='click'}}>
 	  <div class='trip-entry-top'>

@@ -4,7 +4,7 @@
 		<table id='waypoints-table' class='table table-condensed table-striped table-hover'>
 			<tbody>
 				{{#each}}
-				<tr>
+				<tr {{bindAttr data-uid='uid'}} {{action 'select' this on='click'}}>
 					<td>{{name}}</td>
 				</tr>
 				{{/each}}

@@ -23,7 +23,7 @@ var WaypointController = App.ApplicationController.extend({
 						title: record._data.name,
 						map: map,
 						icon: image,
-		      			animation: google.maps.Animation.DROP
+		    			animation: google.maps.Animation.DROP
 					});
 					m.push(marker);
 					self.send('generatePoint', marker, record);
