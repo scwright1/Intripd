@@ -1,7 +1,7 @@
 //require local passport strategy and User model (already defined)
 var mongoose		= require('mongoose'),
 	LocalStrategy	= require('passport-local').Strategy,
-	User 			= mongoose.model('User');
+	User			= mongoose.model('User');
 
 module.exports = function(passport) {
 
@@ -27,4 +27,4 @@ module.exports = function(passport) {
     function(email, password, done) {
             User.authUser(email, password, done);
     }));
-}
+};

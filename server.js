@@ -1,7 +1,6 @@
 /* Node.js entry */
 
 var express    = require('express'),
-    //http       = require('http'),
     mongoose   = require('mongoose'),
     mongodb    = require('mongodb'),
     passport   = require('passport'),
@@ -9,8 +8,6 @@ var express    = require('express'),
     User       = require('./app/models/usermodel'),
     flox       = require('flox-node')({}),
     server     = express();
-
-//http.createServer(express);
 
 //start the server
 server.listen(config.port, function() {
