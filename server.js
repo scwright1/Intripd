@@ -29,11 +29,9 @@ process.on('unhandledException', function(err) {
 });
 
 //start the server
-try {
-	server.listen(config.port, function(){console.log('Intripd starting on port ' + config.port);});
-} catch(e) {
-	console.error('Failed to start Server on port ' + config.port + ' due to ' + e);
-}
+server.listen(config.port, function(){
+	console.log('Intripd starting on port ' + config.port);
+});
 
 //connect to Mongo Database and check that we've connected OK.
 mongoose.connect('mongodb://' + config.mongo.host + '/' + config.mongo.db);
