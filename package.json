@@ -1,9 +1,24 @@
 {
 	"name": "Intripd",
-	"version": "0.1.5",
-	"description": "",
+	"version": "0.6.5",
+	"description": "Intripd is a personal and collaborative travel planning application, designed to make all parts of planning a trip a breeze!",
+	"author": "Intripd <support@intripd.com>",
+	"contributors": [
+		{
+			"name": "Stephen Wright",
+			"email": "ste.c.wr@gmail.com"
+		}
+	],
+	"repository":  {
+		"type": "git",
+		"url": "https://github.com/scwright1/Intripd-Ember-Node.git"
+	},
 	"dependencies": {
 		"express": "*",
+		"body-parser": "*",
+		"method-override": "*",
+		"cookie-parser": "*",
+		"morgan": "*",
 		"hbs": "*",
 		"mongodb": "*",
 		"mongoose": "*",

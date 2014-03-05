@@ -1,26 +1,16 @@
 /* Node.js entry */
 
 var express    = require('express'),
-    http       = require('http'),
+    //http       = require('http'),
     mongoose   = require('mongoose'),
     mongodb    = require('mongodb'),
     passport   = require('passport'),
     config     = require('./config')(),
     User       = require('./app/models/usermodel'),
+    flox       = require('flox-node')({}),
     server     = express();
 
-http.createServer(express);
-
-console.logCopy = console.log.bind(console);
-
-console.log = function()
-{
-    if (arguments.length)
-    {
-        var timestamp = '[' + Date.now() + '] ';
-        this.logCopy(timestamp, arguments);
-    }
-};
+//http.createServer(express);
 
 //start the server
 server.listen(config.port, function() {
@@ -44,16 +34,20 @@ if(config.mode === "development") {
 //set up passport configuration prior to initialize
 require('./app/controllers/passport')(passport);
 
-server.use(express.logger('dev'));
-server.use(express.urlencoded());
-server.use(express.json());
-server.use(express.methodOverride());
+server.use(express.static(__dirname + '/public'));
+//DEPRECATED - functionality removed from express 4.0.0
+//server.use(express.logger('dev'));
+//server.use(express.json());
+//server.use(express.urlencoded());
+//server.use(express.cookieParser('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
+server.use(require('morgan')('dev'));
+server.use(require('body-parser')());
+server.use(require('method-override')());
 //use cookieparser for session storage
-server.use(express.cookieParser('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
+server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
 //initialize passport with config options defined above
 server.use(passport.initialize());
 server.use(passport.session());
-server.use(express.static(__dirname + '/public'));
 
 //load the routers
 require('./app/router/base.js')(server);
