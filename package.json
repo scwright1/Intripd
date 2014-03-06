@@ -20,6 +20,7 @@
 		"cookie-parser": "*",
 		"morgan": "*",
 		"errorhandler": "*",
+		"async": "*",
 		"hbs": "*",
 		"mongodb": "*",
 		"mongoose": "*",

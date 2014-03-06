@@ -6,7 +6,7 @@
 /*	All rights reserved.									*/
 /*															*/
 /*	filename: server.js										*/
-/*	version: 2.1.6											*/
+/*	version: 2.1.8											*/
 /*	export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'		*/
 /*	export NODE_ENV='development' || 'production'			*/
 /*															*/
@@ -25,6 +25,8 @@ var express		= require('express'),
 	mongodb		= require('mongodb'),
 
 	mongoose	= require('mongoose'),
+
+	async		= require('async'),
 
 	passport	= require('passport'),
 
@@ -119,48 +121,60 @@ db.once('open', function callback() {
 //
 //
 //
-//3) SET THE REMAINING SERVER CONFIGS
-//setup passport
-try{
-	require('./app/controllers/passport')(passport);
-} catch(e) {
-	throw new Error('Cannot setup Auth Middleware: '+e);
-}
-//set up server
-server.use(require('body-parser')());
-server.use(require('method-override')());
-server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
-//initialize passport with config options defined above
-server.use(passport.initialize());
-server.use(passport.session());
-//
-//
-//
-//
-//
-//
-//4) SET UP THE ROUTES
-setTimeout(function() {
-	try {
-		require('./routes')(server, passport);
-	} catch(e) {
-		throw new Error('server.js: '+e);
+//The rest of this needs to be done asynchronously in order to run the errorhandler last
+async.series([
+	//3) SET THE REMAINING SERVER CONFIGS
+	function(callback) {
+		//setup passport
+		try{
+			require('./app/controllers/passport')(passport);
+		} catch(e) {
+			throw new Error('Cannot setup Auth Middleware: '+e);
+		}
+		//set up server
+		server.use(require('body-parser')());
+		server.use(require('method-override')());
+		server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
+		//initialize passport with config options defined above
+		server.use(passport.initialize());
+		server.use(passport.session());
+		if(env === 'development') {
+			console.log('Finished setting up the server config');
+		}
+		callback();
+	},
+	//4) SET UP THE ROUTES
+	function(callback) {
+		try {
+			require('./routes')(server, passport);
+			if(env === 'development') {
+				console.log('Finished setting up the router config');
+			}
+		} catch(e) {
+			throw new Error('server.js: '+e);
+		}
+		callback();
+	},
+	//5) SET UP THE ERROR HANDLING
+	function(callback) {
+		if(env === 'production') {
+			server.use(function(err, req, res, next) {
+				if(!err) return next();
+				//do something more user friendly with the error messages and stacktrace
+				res.send(500, {"error":"uhoh! something pretty funky happened.  Here is the message: "+err.message});
+			});
+		} else {
+			server.use(require('errorhandler')());
+		}
+		if(env === 'development') {
+			console.log('Finished setting up the errorhandler config');
+		}
+		callback();
 	}
-}, 100);
-//TODO
-//
-//
-//
-//
-//
-//
-//4) SET UP THE ERROR HANDLING (MUST BE DONE AFTER ALL OTHER SETUP HAS BEEN DONE TO ALLOW BUBBLING THROUGH NEXT())
-if(env === 'production') {
-	server.use(function(err, req, res, next) {
-		if(!err) return next();
-		//do something more user friendly with the error messages and stacktrace
-		res.send(500, {"error":"uhoh! something pretty funky happened.  Here is the message: "+err.message});
-	});
-} else {
-	server.use(require('errorhandler')());
-}
+],
+function(err, results) {
+	if(err) {
+		console.error(err);
+		process.exit(1);
+	}
+});

@@ -10,7 +10,7 @@ module.exports = function(server, passport) {
 		//require('./app/router/waypoint.js')(server);
 		//
 		//once complete
-		console.log('Setup routes successfully');
+		console.log(' Setup routes successfully');
 	} catch(e) {
 		throw new Error('routes.js: '+e);
 	}
