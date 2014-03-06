@@ -19,6 +19,7 @@
 		"method-override": "*",
 		"cookie-parser": "*",
 		"morgan": "*",
+		"errorhandler": "*",
 		"hbs": "*",
 		"mongodb": "*",
 		"mongoose": "*",

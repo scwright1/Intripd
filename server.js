@@ -6,62 +6,161 @@
 /*	All rights reserved.									*/
 /*															*/
 /*	filename: server.js										*/
-/*	version: 2.0.1											*/
+/*	version: 2.1.6											*/
+/*	export token_KEY='<[63Y4!29R8NZ<Q36@iJX3)QrSPr11'		*/
+/*	export NODE_ENV='development' || 'production'			*/
 /*															*/
 /************************************************************/
 
+//set up the node environment
+var env = process.env.NODE_ENV || 'development';
+
+//set us up the system variables
 var express		= require('express'),
-	mongodb		= require('mongodb'),
-	mongoose	= require('mongoose'),
-	passport	= require('passport'),
+
 	config		= require('./config')(),
-	User		= require('./app/models/usermodel');
+
+	fs			= require('fs'),
+
+	mongodb		= require('mongodb'),
+
+	mongoose	= require('mongoose'),
+
+	passport	= require('passport'),
+
+	user		= require('./app/models/usermodel'),
+
+	db;
 
 //setup debugging
 require('flox-node')({});
 
 //link express to the server
 var server = express();
+//
+//
+//
+//
+//
+//
+//1) SET UP ENVIRONMENT AND LOGGING
+if(env === 'development') {
+	//set up the catch-all for node error handling
+	process.on('uncaughtException', function(err) {
+		console.error('UNHANDLED EXCEPTION: ' + err.message);
+		console.error('========== START STACK =========');
+		console.error(err.stack);
+		console.error('==========  END STACK  =========');
+		process.exit(1);
+	});
 
-//unhandledException catch for methods that fall through try/catch
-process.on('unhandledException', function(err) {
-	console.error('Caught unhandled Exception ' + err);
+	//set up the development debug and start the server in development mode
+	server.listen(config.port, function() {
+		console.log('================= DEVELOPMENT MODE ====================');
+		console.log('Started server in '+config.mode+' mode on port '+config.port);
+	});
+
+	//set up development server configuration
+	server.use(express.static(__dirname + '/public'));
+	server.use(require('morgan')('dev'));
+
+} else if(env === 'production') {
+	//set up the catch-all for node error handling - we shouldn't be seeing unhandled exceptions in production, so persist those out to file
+	process.on('uncaughtException', function(err) {
+		console.error('\x1B[31mFATAL ERROR!\x1B[0m Seen an Uncaught Exception in PRODUCTION mode.  Server will now recycle to compensate!');
+		console.error('Error encountered: ' + err.message);
+		console.error('Sending Stack Track to persistent logging');
+		//send the stacktrace to error_log
+		var date = new Date().toISOString();
+		fs.writeFile("./logs/server_UnhandledException_"+date+'.log', err.stack, function(err) {
+			if(err) {
+				console.error('\x1B[31mWE COULDNT WRITE TO PERSISTENT STORAGE!\x1B[0m');
+				console.error('In the hopes that we will see this, here is the stacktrace...');
+				console.error(err.stack);
+			} else {
+				console.error('stack flushed to persistent storage.  Shutting down...');
+				process.exit(1);
+			}
+		});
+	});
+
+	//set up the production environment
+	server.listen(config.port, function(){
+		console.log('Started server in '+config.mode+' mode on port '+config.port);
+	});
+
+	//set up production server configuration
+	server.use(express.static(__dirname + '/public'));
+	server.use(require('morgan')('tiny'));
+} else {
+	//we handle the situation where the NODE_ENV is set to something we're not expecting.
+	console.error('\x1B[31mSTARTUP FAILURE:\x1B[0m Running in an unsupported configuration.  Please check the NODE_ENV and try again.  NODE_ENV set to "' + process.env.NODE_ENV + '"');
+	process.exit(1);
+}
+//
+//
+//
+//
+//
+//
+//2) SET UP MONGOOSE FOR MONGODB COMMS
+mongoose.connect('mongodb://'+config.mongo.host+'/'+config.mongo.db);
+db = mongoose.connection;
+db.on('error', function(e) {
+	console.error('Mongo Connection Error: '+e);
 });
-
-//start the server
-server.listen(config.port, function(){
-	console.log('Intripd starting on port ' + config.port);
-});
-
-//connect to Mongo Database and check that we've connected OK.
-mongoose.connect('mongodb://' + config.mongo.host + '/' + config.mongo.db);
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function callback() {
-	console.log('Mongoose connection open at ' + db.host + ':' + db.port);
-	console.log('Using database ' + db.name);
+	console.log('Mongo Connection open to '+db.host+' on port '+db.port);
+	console.log('Using Database '+db.name);
 });
-
-//set up passport configuration prior to initialize
-require('./app/controllers/passport')(passport);
-
-server.use(express.static(__dirname + '/public'));
-server.use(require('morgan')('dev'));
+//
+//
+//
+//
+//
+//
+//3) SET THE REMAINING SERVER CONFIGS
+//setup passport
+try{
+	require('./app/controllers/passport')(passport);
+} catch(e) {
+	throw new Error('Cannot setup Auth Middleware: '+e);
+}
+//set up server
 server.use(require('body-parser')());
 server.use(require('method-override')());
-
+server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
 //initialize passport with config options defined above
 server.use(passport.initialize());
 server.use(passport.session());
-
-//load the routers
+//
+//
+//
+//
+//
+//
+//4) SET UP THE ROUTES
 setTimeout(function() {
-	require('./app/router/base.js')(server);
-	require('./app/router/auth.js')(server, passport);
-	require('./app/router/map-root.js')(server);
-	require('./app/router/sessions.js')(server);
-	require('./app/router/user.js')(server);
-	require('./app/router/trip.js')(server);
-	require('./app/router/waypoint.js')(server);
-	console.log('Routers loaded');
-}, 50);
+	try {
+		require('./routes')(server, passport);
+	} catch(e) {
+		throw new Error('server.js: '+e);
+	}
+}, 100);
+//TODO
+//
+//
+//
+//
+//
+//
+//4) SET UP THE ERROR HANDLING (MUST BE DONE AFTER ALL OTHER SETUP HAS BEEN DONE TO ALLOW BUBBLING THROUGH NEXT())
+if(env === 'production') {
+	server.use(function(err, req, res, next) {
+		if(!err) return next();
+		//do something more user friendly with the error messages and stacktrace
+		res.send(500, {"error":"uhoh! something pretty funky happened.  Here is the message: "+err.message});
+	});
+} else {
+	server.use(require('errorhandler')());
+}
