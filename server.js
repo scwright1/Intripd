@@ -164,6 +164,11 @@ if(cluster.isMaster) {
 		function(callback) {
 			try {
 				require('./routes')(server, passport);
+				server.use(function(req, res, next) {
+					server.set('view engine', 'hbs');
+					res.send('404: Page not Found', 404);
+					next();
+				});
 				if(env === 'development') {
 					console.log('Finished setting up the router config');
 				}
