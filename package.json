@@ -21,6 +21,7 @@
 		"morgan": "*",
 		"errorhandler": "*",
 		"async": "*",
+		"cluster": "*",
 		"hbs": "*",
 		"mongodb": "*",
 		"mongoose": "*",
