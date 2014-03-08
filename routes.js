@@ -11,7 +11,7 @@ module.exports = function(server, passport) {
 		//
 		//once complete
 		console.log(' Setup routes successfully');
-	} catch(e) {
-		throw new Error('routes.js: '+e);
+	} catch(err) {
+		throw new Error('routes.js: '+err);
 	}
 };
