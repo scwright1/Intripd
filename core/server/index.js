@@ -6,6 +6,7 @@ var express			= require('express'),
 	config			= require('./config');
 
 function boot(server) {
+	console.log('Hi');
 }
 
 function init() {

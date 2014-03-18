@@ -3,7 +3,11 @@
  *	Server handler
  */
 
-var config			= require('./server/config');
+var config			= require('./server/config'),
+	debug			= require('./server/debug');
+
+//setup debugging
+require('flox-node')({});
 
 /**
  * superfunction
@@ -19,10 +23,9 @@ function server() {
  */
 function start() {
 	config.load().then(function() { 
-		console.log('Server start');
-		var server = require('./server');
-		server();
-	});
+		console.log('Server Start');
+		require('./server')();
+	}).otherwise(debug.logAndExit);
 }
 
 server.start = start;

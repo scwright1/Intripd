@@ -30,6 +30,8 @@
 		"ember-tools": "*",
 		"node-uuid": "*",
 		"jwt-simple": "*",
-		"flox-node": "*"
+		"flox-node": "*",
+		"underscore": "*",
+		"colors": "*"
 	}
 }
