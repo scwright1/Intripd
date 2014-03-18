@@ -2,8 +2,15 @@
  * Server start entry point (base config and load)
  */
 
-function server() {
-	console.log('hi');
+var express			= require('express'),
+	config			= require('./config');
+
+function boot(server) {
 }
 
-module.exports = server;
+function init() {
+	var server = express();
+	boot(server);
+}
+
+module.exports = init;

@@ -3,6 +3,8 @@
  *	Server handler
  */
 
+var config			= require('./server/config');
+
 /**
  * superfunction
  * @return {}
@@ -16,9 +18,11 @@ function server() {
  * @return {}
  */
 function start() {
-	console.log('Server start');
-	var server = require('./server');
-	server();
+	config.load().then(function() { 
+		console.log('Server start');
+		var server = require('./server');
+		server();
+	});
 }
 
 server.start = start;
