@@ -24,6 +24,7 @@ errors = {
 		//handle everything else
 		throw err;
 	},
+	
 	logMsg: function(type, msg) {
 		if(type === 'warn') {
 			console.log('Warning: '.yellow, msg.yellow);

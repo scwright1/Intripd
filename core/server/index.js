@@ -3,20 +3,18 @@
  */
 
 var express			= require('express'),
-	config			= require('./config');
-
-process.on('uncaughtException', function(err, req, res, next) {
-	console.error('UNHANDLED EXCEPTION: ' + err.message);
-	console.error('========== START STACK =========');
-	console.error(err.stack);
-	console.error('==========  END STACK  =========');
-	process.exit(1);
-});
+	config			= require('./config'),
+	debug			= require('./debug'),
+	mongodb			= require('mongodb'),
+	mongoose		= require('mongoose'),
+	_				= require('underscore'),
+	db,
+	configuration;
 
 function boot(server) {
-	setTimeout(function () {
-      throw new Error('User generated fault.');
-   },5000);
+}
+
+function loadDB() {
 }
 
 function init() {
