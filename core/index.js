@@ -23,8 +23,9 @@ function server() {
  */
 function start() {
 	config.load().then(function() { 
-		console.log('Server Start');
-		require('./server')();
+		console.log('App Starting...');
+		var srv = require('./server');
+		srv();
 	}).otherwise(debug.logAndExit);
 }
 

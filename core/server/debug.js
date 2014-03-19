@@ -36,8 +36,7 @@ errors = {
 				console.log('Error: '.red, msg.red);
 			}
 		} else {
-			console.log('\nInfo: '.blue, msg.blue);
-			console.log('');
+			console.log('Info: '.cyan, msg.cyan);
 		}
 	},
 
