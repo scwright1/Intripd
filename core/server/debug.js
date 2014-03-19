@@ -60,7 +60,7 @@ errors = {
 	//log without throwing an exception of any kind
 	logAndExit: function(msg, type) {
 		if(!type) {
-			this.logMsg('error', msg);
+			this.error(msg);
 		} else {
 			this.logMsg(type, msg);
 		}
@@ -70,7 +70,7 @@ errors = {
 
 	//log and throw an Error (hook back into Node handler)
 	logAndThrow: function(msg) {
-		this.logMsg('error', msg);
+		this.error(msg);
 		this.throwError(msg);
 	}
 };
