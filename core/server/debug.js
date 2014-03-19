@@ -28,28 +28,49 @@ errors = {
 	logMsg: function(type, msg) {
 		if(type === 'warn') {
 			console.log('Warning: '.yellow, msg.yellow);
-			console.log('');
 		} else if(type === "error") {
 			if(!(_.isString(msg))) {
-				console.log('Error: '.red, msg.message.red);
+				console.log('Error:'.red, msg.message.red);
 			} else {
-				console.log('Error: '.red, msg.red);
+				console.log('Error:'.red, msg.red);
 			}
+		} else if(type === "success") {
+			console.log('Success:'.green, msg.green);
 		} else {
-			console.log('Info: '.cyan, msg.cyan);
+			console.log('Info:'.cyan, msg.cyan);
 		}
 	},
 
+	error: function(msg) {
+		this.logMsg('error', msg);
+	},
+
+	warn: function(msg) {
+		this.logMsg('warn', msg);
+	},
+
+	info: function(msg) {
+		this.logMsg('info', msg);
+	},
+
+	success: function(msg) {
+		this.logMsg('success', msg);
+	},
+
 	//log without throwing an exception of any kind
-	logAndExit: function(type, msg) {
-		this.logMsg(type, msg);
+	logAndExit: function(msg, type) {
+		if(!type) {
+			this.logMsg('error', msg);
+		} else {
+			this.logMsg(type, msg);
+		}
 		//exit 0 to supress unnecessary Node issues
 		process.exit(0);
 	},
 
 	//log and throw an Error (hook back into Node handler)
-	logAndThrow: function(type, msg) {
-		this.logMsg(type, msg);
+	logAndThrow: function(msg) {
+		this.logMsg('error', msg);
 		this.throwError(msg);
 	}
 };
@@ -58,6 +79,10 @@ _.bindAll(
 	errors,
 	'throwError',
 	'logMsg',
+	'error',
+	'warn',
+	'info',
+	'success',
 	'logAndExit',
 	'logAndThrow'
 );
