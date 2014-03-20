@@ -8,8 +8,8 @@
 var fs				= require('fs'),
 	path			= require('path'),
 	paths			= require('./paths'),
-	debug			= require('../debug'),
-	when			= require('when');
+	when			= require('when'),
+	console			= require('buggr');
 
 function read(file, env) {
 	return require(file)[env];
@@ -21,16 +21,16 @@ function checkEnvironment() {
 		config;
 
 	if(!env) {
-		return debug.logAndExit("error", 'failed to find an appropriate environment in NODE_ENV.  Please set this environment variable and try again');
+		return console.assert("error", 'failed to find an appropriate environment in NODE_ENV.  Please set this environment variable and try again');
 	} else {
 		try {
 			config = read(paths().config, env);
 		} catch(e) {
 			//todo
-			return debug.logAndThrow('error', e);
+			return console.assert('error', e);
 		}
 		if(!config) {
-			return debug.logAndExit('error', 'Failed to read a valid Config');
+			return console.assert('error', 'Failed to read a valid Config');
 		}
 
 		return when.resolve(config);
@@ -42,7 +42,7 @@ function loadConfig() {
 	pendingConfig = undefined;
 	fs.open(paths().config, 'r', function(err, fd) {
 		if(err) {
-			return debug.logAndExit('error', err);
+			return console.assert('error', err);
 		} else {
 			fs.close(fd);
 			pendingConfig = paths().config;

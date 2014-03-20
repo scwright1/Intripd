@@ -30,7 +30,7 @@
 		"ember-tools": "*",
 		"node-uuid": "*",
 		"jwt-simple": "*",
-		"flox-node": "*",
+		"buggr": "*",
 		"underscore": "*",
 		"colors": "*",
 		"when": "*"

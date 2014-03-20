@@ -4,10 +4,8 @@
  */
 
 var config			= require('./server/config'),
-	debug			= require('./server/debug');
-
-//setup debugging
-require('flox-node')({});
+	debug			= require('./server/debug'),
+	console			= require('buggr');
 
 /**
  * superfunction
@@ -23,7 +21,7 @@ function server() {
  */
 function start() {
 	config.load().then(function() { 
-		console.log('App Starting...');
+		console.emphasis('App Starting...');
 		var srv = require('./server');
 		srv();
 	}).otherwise(debug.logAndExit);
