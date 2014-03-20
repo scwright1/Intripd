@@ -10,7 +10,8 @@ function paths() {
 	return {
 		'root':				rootPath,
 		'server':			serverPath,
-		'config':			path.join(rootPath, 'config.js')
+		'config':			path.join(rootPath, 'config.js'),
+		'logs':				path.resolve(rootPath, 'logs/')
 	}
 }
 

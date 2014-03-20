@@ -4,7 +4,6 @@
  */
 
 var config			= require('./server/config'),
-	debug			= require('./server/debug'),
 	console			= require('buggr');
 
 /**
@@ -24,7 +23,7 @@ function start() {
 		console.emphasis('App Starting...');
 		var srv = require('./server');
 		srv();
-	}).otherwise(debug.logAndExit);
+	});
 }
 
 server.start = start;

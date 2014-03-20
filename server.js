@@ -18,7 +18,7 @@ var env = process.env.NODE_ENV || 'development';
 //set us up the system variables
 var express		= require('express'),
 
-	config		= require('./config')(),
+	config		= require('./config'),
 
 	fs			= require('fs'),
 
