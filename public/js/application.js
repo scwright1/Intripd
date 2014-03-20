@@ -724,6 +724,19 @@ var WaypointController = App.ApplicationController.extend({
 			function reject(reason) {
 				console.log(reason);
 			}
+		},
+		remove: function(marker) {
+			if(confirm('Are you sure you want to remove '+marker._data.name+'?')) {
+				marker.deleteRecord();
+				if(marker.get('isDeleted')) {
+					marker.save();
+					//notification that the delete has succeeded
+				} else {
+					//failed to delete the point
+				}
+			} else {
+				return;
+			}
 		}
 	}
 });
@@ -1348,7 +1361,13 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "marker.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n<div class='waypoint-comment-form'>\n	<textarea placeholder='Add a Comment...'></textarea>\n</div>");
+  data.buffer.push("\n<div class='waypoint-comment-form'>\n	<input type='button' class='btn btn-danger' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "marker", {hash:{
+    'on': ("click")
+  },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(" value='Remove Point' />\n	<textarea placeholder='Add a Comment...'></textarea>\n</div>");
   return buffer;
   
 });

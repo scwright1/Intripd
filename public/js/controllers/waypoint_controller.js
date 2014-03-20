@@ -109,6 +109,19 @@ var WaypointController = App.ApplicationController.extend({
 			function reject(reason) {
 				console.log(reason);
 			}
+		},
+		remove: function(marker) {
+			if(confirm('Are you sure you want to remove '+marker._data.name+'?')) {
+				marker.deleteRecord();
+				if(marker.get('isDeleted')) {
+					marker.save();
+					//notification that the delete has succeeded
+				} else {
+					//failed to delete the point
+				}
+			} else {
+				return;
+			}
 		}
 	}
 });

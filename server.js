@@ -18,7 +18,7 @@ var env = process.env.NODE_ENV || 'development';
 //set us up the system variables
 var express		= require('express'),
 
-	config		= require('./config'),
+	config		= require('./config')[process.env.NODE_ENV],
 
 	fs			= require('fs'),
 
@@ -123,7 +123,12 @@ if(cluster.isMaster) {
 	//
 	//
 	//2) SET UP MONGOOSE FOR MONGODB COMMS
-	mongoose.connect('mongodb://'+config.mongo.host+'/'+config.mongo.db);
+	var options = {
+		user: config.mongo.user,
+		pass: config.mongo.pw
+	};
+	var uri = 'mongodb://'+config.mongo.host+'/'+config.mongo.db;
+	mongoose.connect(uri, options);
 	db = mongoose.connection;
 	db.on('error', function(e) {
 		console.error('Mongo Connection Error: '+e);

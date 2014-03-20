@@ -113,6 +113,8 @@ function loadDB(callback) {
 	});
 }
 
+
+//start
 function init() {
 	configuration = config();
 	if(configuration.mode === 'production') {

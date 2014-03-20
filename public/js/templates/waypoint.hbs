@@ -1,5 +1,6 @@
 {{marker.name}}
 {{marker.address}}
 <div class='waypoint-comment-form'>
+	<input type='button' class='btn btn-danger' {{action 'remove' marker on='click'}} value='Remove Point' />
 	<textarea placeholder='Add a Comment...'></textarea>
 </div>

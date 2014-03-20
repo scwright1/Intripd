@@ -109,5 +109,26 @@ waypointSchema.statics.getWaypoint = function(uid, done) {
 	}
 }
 
+waypointSchema.statics.deleteWaypoint = function(id, done) {
+	var waypoint = mongoose.model('Waypoint', waypointSchema);
+	if(!id) {
+		return done(400);
+	} else {
+		waypoint.findOne({_id: id}, function(err, wpt) {
+			if(err) {
+				return done(400);
+			} else {
+				wpt.remove(function(err, ret) {
+					if(err) {
+						return done(400);
+					} else {
+						return done(200);
+					}
+				});
+			}
+		});
+	}
+}
+
 var Waypoint = mongoose.model('Waypoint', waypointSchema);
 module.exports = Waypoint;

@@ -32,4 +32,9 @@ module.exports = function(server) {
 			}
 		});
 	});
+	server.delete('/api/waypoints/:id', Session.checkSession, function(req, res) {
+		Waypoint.deleteWaypoint(req.params.id, function(response, data) {
+			res.send(response);
+		});
+	});
 }
