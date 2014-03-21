@@ -1,6 +1,7 @@
 var config = {
 	development: {
 		mode:	'development',
+		url:	'http://localhost',
 		port:	3000,
 		mongo: {
 			host:	'127.0.0.1',
@@ -12,6 +13,7 @@ var config = {
 	},
 	production: {
 		mode:	'production',
+		url:	'http://localhost',
 		port:	5000,
 		mongo: {
 			host:	'127.0.0.1',

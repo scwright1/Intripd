@@ -20,7 +20,7 @@ function server() {
  */
 function start() {
 	config.load().then(function() { 
-		console.emphasis('App Starting...');
+		if(process.env.NODE_ENV === 'development') console.emphasis('App Starting...');
 		var srv = require('./server');
 		srv();
 	});

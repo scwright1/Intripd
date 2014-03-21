@@ -10,18 +10,79 @@ var express			= require('express'),
 	fs				= require('fs'),
 	path			= require('path'),
 	async			= require('async'),
+	passport		= require('passport'),
 	db,
 	configuration,
 	dev = true;
 
 function boot(server) {
-	console.warn('Booting Server');
+	console.log('Bringing up System...Stand By...');
+	//load uncaughtExceptions fallback
+	catchExceptions();
+	//force the server to load synchronously
+	//execute callback() once the function is complete to allow the processing to move on
+	async.series([
+		//1 - load the DB
+		function(callback) {
+			loadDB(callback);
+		},
 
+
+		//2 - configure express
+		function(callback) {
+			configServer(server, callback);
+		},
+		//3 - configure passport
+		function(callback) {
+			configAuth(server, callback);
+		},
+
+
+		//4 - configure routes
+		function(callback) {
+			loadRoutes(server, callback);
+		},
+		//5 - configure internal error handler
+		function(callback) {
+			configErrorHandler(server, callback);
+		},
+		//6 - start the server
+		function(callback) {
+			console.info('Finished configuring Server.');
+			console.warn('Completing Server Boot');
+			try {
+				server.listen(configuration.port, function() {
+					if(dev)console.success('✓ OK Boot');
+					printServerInfo();
+					console.info('Server started successfully');
+					//done with this load...next
+					callback();
+				});
+			} catch(e) {
+				console.assert('Well...something went badly wrong.  Looks like:', e);
+			}
+		}
+	],
+	function(err, results) {
+		if(err) {
+			console.assert(err);
+		}
+	});
+}
+
+
+
+
+/**
+ * [catchExceptions - fallback exception handling for error 500 on server]
+ * @return {assert} [return assert and exit]
+ */
+function catchExceptions() {
 	//Process uncaught exceptions (crude but catches the ones that slip through)
 	process.on('uncaughtException', function(err, req, res, next) {
 		console.error('Unhandled Exception');
 		if(dev) {
-			console.assert(err);
+			return console.assert(err);
 		} else {
 			var d = new Date().toISOString();
 			var e_file = path.join(config.paths().logs, 'server_UE_'+d+'.log');
@@ -30,60 +91,44 @@ function boot(server) {
 					//if we can't write to the file in production mode we're kind of buggered for debug, but lets write out to console anyway
 					console.error('✗ Failed to write assertion to file, dumping to screen.')
 					console.warn('Failed to write because', e);
-					console.assert(err);
+					return console.assert(err);
 				} else {
 					console.emphasis('Stack flushed to persistent storage.  Shutting down');
-					console.assert(err);
+					return console.assert(err);
 				}
 			});
 		}
 	});
-
-	//force the server to load synchronously
-	async.series([
-		//1 - start the server
-		function(callback) {
-			server.listen(configuration.port, function() {
-				if(dev)console.success('✓ OK');
-				console.info('Server started successfully');
-
-				//done with this load...next
-				callback();
-			});
-		},
-		//2 - load the DB
-		function(callback) {
-			loadDB(/*done with this load...next*/callback);
-		}
-	],
-	function(err, results) {
-		if(err) {
-			console.assert(err);
-		}
-	});
-
 }
 
 
-//connect to mongodb
+
+
+
+/**
+ * [loadDB description]
+ * @param  {Function} callback [callback to async]
+ * @return {assert or callback}            [return callback if successful, or assert if failed]
+ */
 function loadDB(callback) {
 	var options = {
 		user: configuration.mongo.user,
 		pass: configuration.mongo.pw
 	};
 	var uri = 'mongodb://'+configuration.mongo.host+'/'+configuration.mongo.db;
-	if(dev) console.warn('Connecting to MongoDB:', uri, 'on port', configuration.mongo.port);
+	console.warn('Connecting to MongoDB');
+	if(dev) console.emphasis(uri, 'Port', configuration.mongo.port);
 	mongoose.connect(uri, options);
 	db = mongoose.connection;
 	db.on('error', function(e) {
 		return console.assert(e);
 	});
 	db.once('open', function() {
-		console.success('✓ OK');
+		if(dev) console.success('✓ OK Connect');
 		console.info('Mongo connection established.');
 		//check that we are authenticated correctly
 		//1. check that we can read
-		console.warn('Checking authority of user', '"'+configuration.mongo.user+'"', 'on database');
+		console.warn('Checking authority of user', '"'+configuration.mongo.user+'"');
 		mongoose.connection.db.collectionNames(function(err, names) {
 			if(err) {
 				return console.assert(err);
@@ -105,7 +150,7 @@ function loadDB(callback) {
 					} else {
 						if(dev) console.success('✓ OK Write');
 						console.info('All database checks passed.');
-						callback();
+						return callback();
 					}
 				});
 			}
@@ -114,11 +159,128 @@ function loadDB(callback) {
 }
 
 
-//start
+
+
+
+/**
+ * [configServer description]
+ * @param  {Function} callback [callback to async load]
+ * @param {Object} server [the server object]
+ * @return {callback}            [callback to async load]
+ */
+function configServer(server, callback) {
+	try {
+		console.warn('Configuring Server');
+		server.use(express.static(config.paths().client));
+		if(dev) server.use(require('morgan')('dev'));
+		server.use(require('body-parser')());
+		server.use(require('method-override')());
+		//not convinced we need this
+		server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
+		if(dev) console.success('✓ OK Express.use');
+		return callback();
+	} catch(e) {
+		console.assert('Error in configServer', e);
+	}
+}
+
+
+
+/**
+ * Configure Passport Middleware
+ * @param  {Object}   server   Contains Node.js server object
+ * @param  {Function} callback Callback to async run
+ */
+function configAuth(server, callback) {
+	try {
+		require('./models/user');
+		require('./middleware/passport')(passport);
+		server.use(passport.initialize());
+		server.use(passport.session());
+		if(dev) console.success('✓ OK Passport Auth');
+		return callback();
+	} catch(e) {
+		console.assert('Error in configuring and starting Passport Middleware', e);
+	}
+}
+
+
+
+/**
+ * Load router
+ * @param  {Object}   server   Contains server instance
+ * @param  {Function} callback Callback to async load
+ * @return {Function}            Callback to async load
+ */
+function loadRoutes(server, callback) {
+	try {
+		console.warn('Starting router');
+		require('./routes')(server, passport);
+		server.use(function(req, res, next) {
+			server.set('view engine', 'hbs');
+			res.send('404: Page not Found', 404);
+			next();
+		});
+		return callback();
+	} catch(e) {
+		console.assert('Failed to start router:', e);
+	}
+}
+
+
+
+/**
+ * load ErrorHandler (internal server errors)
+ * @param  {Object}   server   Contains server instance
+ * @param  {Function} callback 
+ */
+function configErrorHandler(server, callback) {
+	if(dev) {
+		try {
+			server.use(require('errorhandler')());
+			return callback();
+		} catch(e) {
+			console.assert('Error Handler Middleware missing or malformed:', e);
+		}
+	} else {
+		server.use(function(err, req, res, next) {
+			if(!err) return next();
+			//do something more user friendly with the error messages and stacktrace
+			res.send(500, {"error":"uhoh! something pretty funky happened.  Here is the message: "+err.message});
+		});
+		return callback();
+	}
+}
+
+
+
+/**
+ * prints out the server information for debugging
+ */
+function printServerInfo() {
+	console.info('Server Details:');
+	console.info();
+	console.info('Server: ',configuration.url);
+	console.info('Port:   ',configuration.port);
+	console.info('DB Name:',configuration.mongo.db);
+	console.info('DB Host:',configuration.mongo.host);
+	console.info('DB Port:',configuration.mongo.port);
+	console.info('DB User:',configuration.mongo.user);
+	console.info();
+}
+
+
+/**
+ * [init application start]
+ */
 function init() {
 	configuration = config();
 	if(configuration.mode === 'production') {
 		dev = false;
+	} else {
+		console.log();
+		console.warn('Starting in Development Mode');
+		console.log();
 	}
 	var server = express();
 
