@@ -218,8 +218,9 @@ function loadRoutes(server, callback) {
 		require('./routes')(server, passport);
 		server.use(function(req, res, next) {
 			server.set('view engine', 'hbs');
-			res.send('404: Page not Found', 404);
-			next();
+			server.set('views', config.paths().server+'/views/errors');
+			//res.send('404: Page not Found', 404);
+			res.render('404', {status: 404, url: req.url});
 		});
 		return callback();
 	} catch(e) {

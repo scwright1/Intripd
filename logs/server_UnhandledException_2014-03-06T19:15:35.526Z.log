@@ -1,3 +1,0 @@
-Error: Holy asynchronous error Batman!
-    at /Users/Stephen/Desktop/Sandbox/Intripd/app/router/error.js:10:10
-    at process._tickCallback (node.js:415:13)
