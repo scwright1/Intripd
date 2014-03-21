@@ -240,7 +240,7 @@ function configErrorHandler(server, callback) {
 			if(!err) return next();
 			//do something more user friendly with the error messages and stacktrace
 			res.statusCode = 500;
-			res.render('500');
+			res.render('500', {message: err.message});
 		});
 		return callback();
 	} catch (e) {
