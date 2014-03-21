@@ -641,6 +641,7 @@ var WaypointController = App.ApplicationController.extend({
 		    			animation: google.maps.Animation.DROP
 					});
 					m.push(marker);
+					mMm[record._data.uid] = marker;
 					self.send('generatePoint', marker, record);
 				}
 			}
@@ -729,7 +730,17 @@ var WaypointController = App.ApplicationController.extend({
 			if(confirm('Are you sure you want to remove '+marker._data.name+'?')) {
 				marker.deleteRecord();
 				if(marker.get('isDeleted')) {
+					var uid = marker._data.uid;
 					marker.save();
+					//remove marker
+					if(uid in mMm) {
+						var pin = mMm[uid];
+						pin.setMap(null);
+						delete mMm[uid];
+						console.log(mMm);
+					} else {
+						throw new Error('Failed to find Marker on deletion');
+					}
 					//notification that the delete has succeeded
 				} else {
 					//failed to delete the point
