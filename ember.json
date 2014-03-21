@@ -1,5 +1,5 @@
 {
-  "jsPath": "public/js",
+  "jsPath": "core/client/lib",
   "modules": "cjs"
 }
 
