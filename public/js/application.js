@@ -730,6 +730,7 @@ var WaypointController = App.ApplicationController.extend({
 			}
 		},
 		remove: function(marker) {
+			var _this = this;
 			if(confirm('Are you sure you want to remove '+marker._data.name+'?')) {
 				marker.id = marker._data.uid;
 				marker.deleteRecord();
@@ -741,7 +742,6 @@ var WaypointController = App.ApplicationController.extend({
 						var pin = mMm[uid];
 						pin.setMap(null);
 						delete mMm[uid];
-						console.log(mMm);
 					} else {
 						throw new Error('Failed to find Marker on deletion');
 					}
