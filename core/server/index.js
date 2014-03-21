@@ -172,6 +172,8 @@ function configServer(server, callback) {
 	try {
 		console.warn('Configuring Server');
 		server.use(express.static(config.paths().client));
+		server.set('view engine', 'hbs');
+		server.set('views', config.paths().server+'/views/errors');
 		if(dev) server.use(require('morgan')('dev'));
 		server.use(require('body-parser')());
 		server.use(require('method-override')());
@@ -217,9 +219,6 @@ function loadRoutes(server, callback) {
 		console.warn('Starting router');
 		require('./routes')(server, passport);
 		server.use(function(req, res, next) {
-			server.set('view engine', 'hbs');
-			server.set('views', config.paths().server+'/views/errors');
-			//res.send('404: Page not Found', 404);
 			res.render('404', {status: 404, url: req.url});
 		});
 		return callback();
@@ -236,20 +235,16 @@ function loadRoutes(server, callback) {
  * @param  {Function} callback 
  */
 function configErrorHandler(server, callback) {
-	if(dev) {
-		try {
-			server.use(require('errorhandler')());
-			return callback();
-		} catch(e) {
-			console.assert('Error Handler Middleware missing or malformed:', e);
-		}
-	} else {
+	try {
 		server.use(function(err, req, res, next) {
 			if(!err) return next();
 			//do something more user friendly with the error messages and stacktrace
-			res.send(500, {"error":"uhoh! something pretty funky happened.  Here is the message: "+err.message});
+			res.statusCode = 500;
+			res.render('500');
 		});
 		return callback();
+	} catch (e) {
+		console.assert(e);
 	}
 }
 
