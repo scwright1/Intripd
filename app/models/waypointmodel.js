@@ -114,7 +114,7 @@ waypointSchema.statics.deleteWaypoint = function(id, done) {
 	if(!id) {
 		return done(400);
 	} else {
-		waypoint.findOne({_id: id}, function(err, wpt) {
+		waypoint.findOne({uid: id}, function(err, wpt) {
 			if(err) {
 				return done(400);
 			} else {

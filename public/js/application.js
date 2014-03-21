@@ -699,6 +699,9 @@ var WaypointController = App.ApplicationController.extend({
 			var promise = wp.save();
 			promise.then(fulfill, reject);
 			function fulfill(model) {
+				//we've successfully saved the model.  First thing's first, create the linkage
+				mMm[model._data.uid] = marker;
+				console.log(mMm);
 				//load point for the ui element for the waypoint
 				google.maps.event.addListener(marker, 'click', function() {
 					self.set('marker', model);
@@ -728,6 +731,7 @@ var WaypointController = App.ApplicationController.extend({
 		},
 		remove: function(marker) {
 			if(confirm('Are you sure you want to remove '+marker._data.name+'?')) {
+				marker.id = marker._data.uid;
 				marker.deleteRecord();
 				if(marker.get('isDeleted')) {
 					var uid = marker._data.uid;
