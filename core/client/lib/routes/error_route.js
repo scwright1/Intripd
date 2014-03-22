@@ -1,6 +1,6 @@
 var ErrorRoute = Ember.Route.extend({
-	renderTemplate: function() {
-    	this.render('error.404');
+	redirect: function() {
+		window.location.replace('404');
   	}
 });
 
