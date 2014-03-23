@@ -107,6 +107,7 @@ var ApplicationController = Ember.ObjectController.extend({
 	actions: {
 		submitBug: function() {
 			var bugdesc = $('#bugdesc').val();
+			var email = $('#bug-email').val();
 			if(bugdesc) {
 				var agentData = "Browser CodeName: " + navigator.appCodeName;
 				agentData+= "\nBrowser Name: " + navigator.appName;
@@ -124,10 +125,11 @@ var ApplicationController = Ember.ObjectController.extend({
 				$.ajax({
 					type: 'POST',
 					url: '/bug',
-					data: {desc: bugdesc, agent: agentData},
+					data: {desc: bugdesc, agent: agentData, email: email},
 					dataType: 'json',
 					complete: function() {
 						$('#bugdesc').val('');
+						$('#bug-email').val('');
 						$('#bug-report-validation').removeClass('bug-validation-active');
 						$('#bugdesc').css('border-color', '#000000');
 						$('#bug-report-validation').html('');
@@ -1157,7 +1159,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<span class='folded-corner' data-toggle=\"modal\" data-target=\"#bugReport\"><img src='img/fold.png' width='75px' height='75px' /><i style='color: #ffffff; font-size: 16px; position: fixed; bottom: 0; left: 0; margin-left: 14px; margin-bottom: 14px; z-index: 1000;' class='fa fa-bug'></i></span>\n<!-- Modal -->\n<div class=\"modal fade\" id=\"bugReport\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"reportLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\" id=\"reportLabel\">Report A Bug</h4>\n      </div>\n      <div class=\"modal-body\" style='height: 300px;'>\n      	<div id='bug-report-validation' style='width: 100%; height: 40px'></div>\n      	<textarea id='bugdesc' style='width: 100%; height: 250px' placeholder='Describe the bug'></textarea>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\" ");
+  data.buffer.push("<span class='folded-corner' data-toggle=\"modal\" data-target=\"#bugReport\"><img src='img/fold.png' width='75px' height='75px' /><i style='color: #ffffff; font-size: 16px; position: fixed; bottom: 0; left: 0; margin-left: 14px; margin-bottom: 14px; z-index: 1000;' class='fa fa-bug'></i></span>\n<!-- Modal -->\n<div class=\"modal fade\" id=\"bugReport\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"reportLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\" id=\"reportLabel\">Report A Bug</h4>\n      </div>\n      <div class=\"modal-body\" style='height: 300px;'>\n      	<div id='bug-report-validation' style='width: 100%; height: 40px'></div>\n      	<input id='bug-email' type='email' placeholder='Email Address (optional)' style='height: 40px; width: 100%; margin: 10px 0px;'></input>\n      	<textarea id='bugdesc' style='width: 100%; height: 190px' placeholder='Describe the bug'></textarea>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\" ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "submitBug", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));

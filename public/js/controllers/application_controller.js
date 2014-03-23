@@ -10,6 +10,7 @@ var ApplicationController = Ember.ObjectController.extend({
 	actions: {
 		submitBug: function() {
 			var bugdesc = $('#bugdesc').val();
+			var email = $('#bug-email').val();
 			if(bugdesc) {
 				var agentData = "Browser CodeName: " + navigator.appCodeName;
 				agentData+= "\nBrowser Name: " + navigator.appName;
@@ -27,10 +28,11 @@ var ApplicationController = Ember.ObjectController.extend({
 				$.ajax({
 					type: 'POST',
 					url: '/bug',
-					data: {desc: bugdesc, agent: agentData},
+					data: {desc: bugdesc, agent: agentData, email: email},
 					dataType: 'json',
 					complete: function() {
 						$('#bugdesc').val('');
+						$('#bug-email').val('');
 						$('#bug-report-validation').removeClass('bug-validation-active');
 						$('#bugdesc').css('border-color', '#000000');
 						$('#bug-report-validation').html('');

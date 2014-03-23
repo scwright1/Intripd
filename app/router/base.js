@@ -7,7 +7,7 @@ module.exports = function(server) {
 	});
 
 	server.post('/bug', function(req, res) {
-		var data = req.body.desc + "\n\n\n=========Agent Report=========\n\n" + req.body.agent;
+		var data = req.body.desc + "\n\n"+req.body.email+"\n\n\n=========Agent Report=========\n\n" + req.body.agent;
 		var htmlData = data.replace(/\n/g, "<br />");
 		var date = new Date();
 		var sendDate = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + " - " + date.getHours() + ":" + date.getMinutes() + ":"+  date.getSeconds();
@@ -24,9 +24,9 @@ module.exports = function(server) {
 
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
-		    from: "Intripd Bug Report <bugs@intripd.com>", // sender address
+		    from: "Intripd Bug Reporter <bugs@intripd.com>", // sender address
 		    to: "ste.c.wr@gmail.com", // list of receivers
-		    subject: "[BUG REPORT] - "+sendDate, // Subject line
+		    subject: "[INTRIPD BUG REPORT] - "+sendDate, // Subject line
 		    text: data,
 		    html: htmlData // html body
 		}
