@@ -1382,7 +1382,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "remove", "marker", {hash:{
     'on': ("click")
   },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" value='Remove Point' />\n	<textarea placeholder='Add a Comment...'></textarea>\n</div>");
+  data.buffer.push(" value='Remove Point' />\n</div>");
   return buffer;
   
 });
