@@ -1,6 +1,6 @@
 {
 	"name": "Intripd",
-	"version": "0.6.5",
+	"version": "0.7.3",
 	"description": "Intripd is a personal and collaborative travel planning application, designed to make all parts of planning a trip a breeze!",
 	"author": "Intripd <support@intripd.com>",
 	"contributors": [
@@ -19,9 +19,7 @@
 		"method-override": "*",
 		"cookie-parser": "*",
 		"morgan": "*",
-		"errorhandler": "*",
 		"async": "*",
-		"cluster": "*",
 		"hbs": "*",
 		"mongodb": "*",
 		"mongoose": "*",
