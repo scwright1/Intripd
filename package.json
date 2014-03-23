@@ -30,9 +30,6 @@
 		"ember-tools": "*",
 		"node-uuid": "*",
 		"jwt-simple": "*",
-		"buggr": "*",
-		"underscore": "*",
-		"colors": "*",
-		"when": "*"
+		"buggr": "*"
 	}
 }
