@@ -122,7 +122,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-1", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1'>\n</div>\n<div id='feature-2'>\n</div>");
+  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1'>\n	<div class='feature-content'>\n		<div class='feature-content-text'>\n			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>\n			<div class='feature-content-desc'></div>\n		</div>\n		<div class='feature-content-graphics'>\n		</div>\n	</div>\n</div>\n<div id='feature-2'>\n</div>");
   return buffer;
   
 });
