@@ -1268,7 +1268,7 @@ function program6(depth0,data) {
 function program7(depth0,data) {
   
   
-  data.buffer.push("<i class='fa fa-user'></i> <div class='user-text-responsive'><b>Login</b></div>");
+  data.buffer.push("<i class='fa fa-user'></i> <i class='user-text-responsive'><b>Login</b></i>");
   }
 
 function program9(depth0,data) {
