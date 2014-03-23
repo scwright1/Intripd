@@ -1,5 +1,5 @@
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-require('../vendor/jquery');
+require('../vendor/jquery.min');
 require('../vendor/jquery.cookie');
 require('../vendor/bootstrap-datepicker');
 require('../vendor/handlebars');
@@ -19,7 +19,7 @@ App.Store = DS.Store.extend({
 });
 
 module.exports = App;
-},{"../vendor/bootstrap-datepicker":9,"../vendor/ember":11,"../vendor/ember-data":10,"../vendor/handlebars":12,"../vendor/jquery":14,"../vendor/jquery.cookie":13}],2:[function(require,module,exports){
+},{"../vendor/bootstrap-datepicker":9,"../vendor/ember":11,"../vendor/ember-data":10,"../vendor/handlebars":12,"../vendor/jquery.cookie":13,"../vendor/jquery.min":14}],2:[function(require,module,exports){
 var App = require('./app');
 
 App.Router.map(function() {
