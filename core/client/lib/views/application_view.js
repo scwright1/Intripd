@@ -1,4 +1,4 @@
-var ApplicationView = Em.View.extend({
+var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window']
 });
 

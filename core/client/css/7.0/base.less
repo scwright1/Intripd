@@ -1,0 +1,29 @@
+@import 'definitions';
+
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	background: @color-dark;
+}
+
+.fill-window {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+
+/* entypo */
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+  text-decoration: none !important;
+  font-style: normal !important;
+  margin-right: 5px;
+}

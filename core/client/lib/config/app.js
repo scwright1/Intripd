@@ -1,4 +1,4 @@
-require('../vendor/jquery.min');
+require('../vendor/jquery');
 require('../vendor/jquery.cookie');
 require('../vendor/bootstrap-datepicker');
 require('../vendor/handlebars');

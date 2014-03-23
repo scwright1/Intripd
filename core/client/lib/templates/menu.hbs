@@ -1,0 +1,12 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+	<div class="navbar-header">
+    	{{#link-to 'index' class="navbar-brand"}}<img src='/img/site-logo.png' height='48px' alt='Intripd' />{{/link-to}}
+  	</div>
+  	<div id="nav-links">
+	    <ul class="nav navbar-nav navbar-right">
+      		<li class='nav-link'>{{#link-to "auth.login" class='user-text'}}<i class='entypo-login'></i> <i class='user-text-responsive'>Login</i>{{/link-to}}</li>
+      		<li class='nav-link user-text' style='padding-right:15px !important;'> | </li>
+      		<li class='nav-link'>{{#link-to "auth.register" class='user-text'}}<i class='entypo-user-add'></i> Register{{/link-to}}</li>
+	    </ul>
+  	</div>
+</nav>
