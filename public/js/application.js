@@ -103,7 +103,46 @@ var ApplicationController = Ember.ObjectController.extend({
 	profile: function() {
 		var user = this.store.find('profile', App.Session.get('uid'));
 		return user;
-	}.property()
+	}.property(),
+	actions: {
+		submitBug: function() {
+			var bugdesc = $('#bugdesc').val();
+			if(bugdesc) {
+				var agentData = "Browser CodeName: " + navigator.appCodeName;
+				agentData+= "\nBrowser Name: " + navigator.appName;
+				agentData+= "\nBrowser Version: " + navigator.appVersion;
+				agentData+= "\nCookies Enabled: " + navigator.cookieEnabled;
+				agentData+= "\nBrowser Language: " + navigator.language;
+				agentData+= "\nBrowser Online: " + navigator.onLine;
+				agentData+= "\nPlatform: " + navigator.platform;
+				agentData+= "\nUser-agent header: " + navigator.userAgent;
+				agentData+= "\nUser-agent language: " + navigator.systemLanguage;
+				agentData+= "\nBrowser Viewport: "+ $(window).width() + 'x' + $(window).height();
+				agentData+= "\nHTML Doc Size: "+ $(document).width() + 'x' + $(document).height();
+				agentData+= "\nScreen Resolution: "+screen.width+'x'+screen.height;
+
+				$.ajax({
+					type: 'POST',
+					url: '/bug',
+					data: {desc: bugdesc, agent: agentData},
+					dataType: 'json',
+					complete: function() {
+						$('#bugdesc').val('');
+						$('#bug-report-validation').removeClass('bug-validation-active');
+						$('#bugdesc').css('border-color', '#000000');
+						$('#bug-report-validation').html('');
+						$('#bugReport').modal('hide');
+						alert('Thankyou! Bug report submitted!');
+					}
+				});
+			}
+			else {
+				$('#bugdesc').css('border-color', '#9f463a');
+				$('#bug-report-validation').html('You must enter a bug description');
+				$('#bug-report-validation').addClass('bug-validation-active');
+			}
+		}
+	}
 });
 
 module.exports = ApplicationController;
@@ -1118,6 +1157,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
+  data.buffer.push("<span class='folded-corner' data-toggle=\"modal\" data-target=\"#bugReport\"><img src='img/fold.png' width='75px' height='75px' /><i style='color: #ffffff; font-size: 16px; position: fixed; bottom: 0; left: 0; margin-left: 14px; margin-bottom: 14px; z-index: 1000;' class='fa fa-bug'></i></span>\n<!-- Modal -->\n<div class=\"modal fade\" id=\"bugReport\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"reportLabel\" aria-hidden=\"true\">\n  <div class=\"modal-dialog\">\n    <div class=\"modal-content\">\n      <div class=\"modal-header\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n        <h4 class=\"modal-title\" id=\"reportLabel\">Report A Bug</h4>\n      </div>\n      <div class=\"modal-body\" style='height: 300px;'>\n      	<div id='bug-report-validation' style='width: 100%; height: 40px'></div>\n      	<textarea id='bugdesc' style='width: 100%; height: 250px' placeholder='Describe the bug'></textarea>\n      </div>\n      <div class=\"modal-footer\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>\n        <button type=\"button\" class=\"btn btn-primary\" ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "submitBug", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">Submit Report</button>\n      </div>\n    </div>\n  </div>\n</div> \n");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1720,7 +1764,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button class=\"sm-soc btn login-facebook btn-social\" disabled=\"disabled\"><span class=\"fa fa-facebook\"></span></button>\n						<button class=\"sm-soc btn login-twitter btn-social\" disabled=\"disabled\"><span class=\"fa fa-twitter\"></span></button>\n						<button class=\"sm-soc btn login-google btn-social\" disabled=\"disabled\"><span class=\"fa fa-google-plus\"></span></button>\n					</div>\n				</div>\n			</div>\n			<div class='buttonbox'>\n				<button class='btn btn-danger btn-xs' style='float: left'><i class='fa fa-bug'></i> Found A Bug?</button>\n				<button class='btn btn-info' style='float: right' ");
+  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button class=\"sm-soc btn login-facebook btn-social\" disabled=\"disabled\"><span class=\"fa fa-facebook\"></span></button>\n						<button class=\"sm-soc btn login-twitter btn-social\" disabled=\"disabled\"><span class=\"fa fa-twitter\"></span></button>\n						<button class=\"sm-soc btn login-google btn-social\" disabled=\"disabled\"><span class=\"fa fa-google-plus\"></span></button>\n					</div>\n				</div>\n			</div>\n			<div class='buttonbox'>\n				<button class='btn btn-info' style='float: right' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1855,23 +1899,25 @@ function program7(depth0,data) {
   stack1 = helpers['if'].call(depth0, "loginFailed", {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n					<div class=\"form-group auth-form-element-group\">\n						<label for=\"email\" class=\"auth-form-label\">Email Address</label>\n						");
-  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0};
-  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING"};
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
   options = {hash:{
     'value': ("email"),
     'class': ("form-control auth-input"),
     'placeholder': ("Email Address"),
-    'type': ("text")
+    'type': ("text"),
+    'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("\n					</div>\n					<div class=\"form-group auth-form-element-group\">\n						<label for=\"password\" class=\"auth-form-label\">Password</label>\n						");
-  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0};
-  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING"};
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING",'autocomplete': "STRING"};
   options = {hash:{
     'value': ("password"),
     'type': ("password"),
     'class': ("form-control auth-input"),
-    'placeholder': ("Password")
+    'placeholder': ("Password"),
+    'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("\n					</div>\n					<div class=\"checkbox auth-form-control-element\">\n						");
