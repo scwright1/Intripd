@@ -20,6 +20,8 @@ module.exports = function(server) {
 		    }
 		});
 
+		var sendmailTransport = nodemailer.createTransport("sendmail");
+
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
 		    from: "Intripd Bug Report <bugs@intripd.com>", // sender address
@@ -30,7 +32,7 @@ module.exports = function(server) {
 		}
 
 		// send mail with defined transport object
-		smtpTransport.sendMail(mailOptions, function(error, response){
+		sendmailTransport.sendMail(mailOptions, function(error, response){
 		    if(error){
 		        console.log(error);
 		    }else{
@@ -38,7 +40,7 @@ module.exports = function(server) {
 		    }
 
 		    // if you don't want to use this transport object anymore, uncomment following line
-		    smtpTransport.close(); // shut down the connection pool, no more messages
+		    sendmailTransport.close(); // shut down the connection pool, no more messages
 		});
 		res.send(200);
 	});
