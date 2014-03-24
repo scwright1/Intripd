@@ -1,0 +1,51 @@
+@import 'definitions';
+
+@media all and (max-width: 768px) {
+	#nav-links {
+		padding-right: 0;
+	}
+
+	.nav > li {
+		float: left;
+	}
+
+	.navbar-header {
+		float: left;
+	}
+
+	.navbar-nav {
+		margin: 0;
+		margin-right: 10px;
+		float: right;
+	}
+
+}
+
+@media all and (min-width: 769px) {
+	#nav-links {
+		padding-right: 40px;
+	}
+}
+
+@media all and (max-width: 720px) {
+	.user-text-responsive {
+		display: none;
+	}
+}
+
+#nav-links > ul > li > a {
+	color: @color-slate;
+	font-weight: 100;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	line-height: 24px;
+	padding-top: 28px;
+	padding-right: 0;
+	padding-left: 20px;
+	transition: color 0.5s ease;
+}
+
+#nav-links > ul > li > a:hover {
+	color: @color-green-bright;
+	transition: color 0.5s ease;
+}

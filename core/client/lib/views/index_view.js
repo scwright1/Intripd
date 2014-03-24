@@ -22,6 +22,12 @@ var IndexView = Ember.View.extend({
 		        $bgobj.css({ backgroundPosition: coords });
 		    });
 		});
+
+		$('.next-panel').mouseenter(function() {
+			$(this).animate({'bottom': '50px'}, 500);
+		}).mouseleave(function() {
+			$(this).animate({'bottom': '40px'}, 500);
+		});
 	}
 });
 

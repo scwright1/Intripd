@@ -18,12 +18,48 @@ body {
 	padding: 0;
 }
 
-@import url(http://weloveiconfonts.com/api/?family=entypo);
+#cookies {
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzlmNDYzYSIgc3RvcC1vcGFjaXR5PSIwLjYiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzlmNDYzYSIgc3RvcC1vcGFjaXR5PSIwLjYiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+	background: -moz-linear-gradient(top,  rgba(159,70,58,0.6) 0%, rgba(159,70,58,0.6) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(159,70,58,0.6)), color-stop(100%,rgba(159,70,58,0.6))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(159,70,58,0.6) 0%,rgba(159,70,58,0.6) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(159,70,58,0.6) 0%,rgba(159,70,58,0.6) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(159,70,58,0.6) 0%,rgba(159,70,58,0.6) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(159,70,58,0.6) 0%,rgba(159,70,58,0.6) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#999f463a', endColorstr='#999f463a',GradientType=0 ); /* IE6-8 */
+	border: 1px solid @color-red;
+	//height: 40px;
+	width: 60%;
+	color: @color-slate;
+	z-index: 10001;
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -30%;
+	font-style: 'Roboto', sans-serif;
+	font-weight: 300;
+	font-size: 12px;
+	padding: 10px;
+	line-height: 26px;
+}
 
-/* entypo */
-[class*="entypo-"]:before {
-  font-family: 'entypo', sans-serif;
-  text-decoration: none !important;
-  font-style: normal !important;
-  margin-right: 5px;
+#cookies > a {
+	color: @color-slate;
+	text-decoration: underline;
+}
+
+#cookies > button {
+	float: right;
+	height: 26px;
+	background: none;
+	border: 1px solid @color-slate;
+	line-height: 22px;
+	transition: background-color 0.5s ease, border-color 0.5s ease;
+}
+
+#cookies > button:hover {
+	border-color: @color-red;
+	background-color: @color-red;
+	transition: background-color 0.5s ease, border-color 0.5s ease;
 }

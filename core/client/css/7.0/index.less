@@ -31,8 +31,8 @@
 
 .splash-get-started:hover {
 	//#afcd45
-	color: #afcd45;
-	border-color: #afcd45;
+	color: @color-green-bright;
+	border-color: @color-green-bright;
 	transition: color 0.5s ease, border-color 0.5s ease;
 }
 
@@ -88,17 +88,9 @@
 	padding: 0;
 	font-size: 72px;
 	left: 50%;
-	width: 200px;
-	margin-left: -100px;
+	width: 68px;
+	margin-left: -34px;
 	text-align: center;
-}
-
-.next-panel-text {
-	font-size: 16px;
-	line-height: 24px;
-	font-weight: 100;
-	margin-bottom: -44px;
-	text-shadow: 0px 0px 4px @color-dark;
 }
 
 .chevron::before {
@@ -116,71 +108,6 @@
     -ms-transform: rotate(135deg);  /* IE 9 */
     -o-transform: rotate(135deg);  /* Opera 10.50-12.00 */
     transform: rotate(135deg);  /* Firefox 16+, IE 10+, Opera 12.10+ */
-}
-
-.nav-link {
-	color: @color-slate !important;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
-	font-size: 14px;
-	display: inherit !important;
-	padding-right: 15px;
-	float: left;
-}
-
-.public-link {
-	padding: none !important;
-	margin: 30px 10px;
-}
-
-.nav>li>.user-text>a {
-	color: @color-slate !important;
-	font-size: 14px;
-	display: inline;
-	text-shadow: 0px 0px 2px @color-dark;
-}
-
-.small-user-img {
-	width: 20px;
-	height: 20px;
-	border-radius: 10px;
-	margin: 30px 10px;
-	float: left;
-	border: 1px solid @color-slate;
-	overflow: hidden;
-}
-
-.user-text {
-	color: @color-slate !important;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
-	font-size: 14px;
-	float: left;
-	padding: 30px 0px !important;
-	text-shadow: 0px 0px 2px @color-dark;
-}
-
-.user-text-element {
-	color: @color-slate !important;
-	font-style: normal !important;
-	float: left;
-}
-
-.user-text-flux {
-	color: @color-slate !important;
-	font-style: normal !important;
-	float: left;
-}
-.user-text-reverse-flux {
-	color: @color-slate !important;
-	font-style: normal !important;
-	float: left;
-	display: none;
-}
-
-.user-text-responsive {
-	font-style: normal !important;
-	text-decoration: none;
 }
 
 @media screen and (min-width: 769px) {
@@ -204,37 +131,12 @@
 	}
 }
 
-@media all and (max-width: 768px) {
-	.user-text-responsive {
-		display: none;
-	}
+/**
+ * Privacy policy and TOS
+ */
 
-	.click-to-go {
-		display: none;
-	}
-
-	#nav-links {
-		float: left;
-		right: 10px;
-		position: absolute;
-	}
-
-	.navbar-header {
-		width: 50%;
-		float: left;
-	}
-
-	.navbar-nav {
-		margin: 0;
-	}
-}
-
-@media all and (max-width: 720px) {
-	.user-text-flux {
-		display: none;
-	}
-
-	.user-text-reverse-flux {
-		display: inline;
-	}
+#privacy-policy {
+	font-weight: 300;
+	font-style: "Roboto", sans-serif;
+	color: @color-slate;
 }
