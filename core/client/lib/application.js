@@ -29,8 +29,11 @@ App.Router.map(function() {
 		this.route('register');
 	});
 
-	this.route('tos');
-	this.route('privacy');
+	this.resource('policies', function() {
+		this.route('tos');
+		this.route('privacy');
+		this.route('cookies');
+	});
 
 	//make sure this route is always last for rendering 404 error page
 	this.route("error", {path: "*path"});
@@ -56,7 +59,7 @@ var IndexController = Ember.ObjectController.extend({
 	actions: {
 		shift: function(destination) {
 			$('html, body').animate({
-				scrollTop: $('#'+destination).offset().top - 50
+				scrollTop: $('#'+destination).offset().top
 			}, 2000);
 		}
 	}
@@ -104,10 +107,33 @@ module.exports = ErrorRoute;
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, self=this, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("change your settings");
+  }
 
-  data.buffer.push("<div id='cookies' class='gradient'>We use cookies to deliver our services.  We assume you are happy with this, or you can <a>change your settings</a> at any time. - <a>More Information</a> <button id='close-cookies' ");
+function program3(depth0,data) {
+  
+  
+  data.buffer.push("More Information");
+  }
+
+  data.buffer.push("<div id='cookies' class='gradient'>We use cookies to deliver our services.  We assume you are happy with this, or you can ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.cookies", options) : helperMissing.call(depth0, "link-to", "policies.cookies", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push(" at any time. - ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.cookies", options) : helperMissing.call(depth0, "link-to", "policies.cookies", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push(" <button id='close-cookies' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "closeCookieNotification", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -119,13 +145,47 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
+Ember.TEMPLATES['footer'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  
+  data.buffer.push("Terms");
+  }
+
+function program3(depth0,data) {
+  
+  
+  data.buffer.push("Privacy");
+  }
+
+  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a href='http://www.facebook.com/intripd'><img src='img/facebook.jpg' alt='Facebook' height='48px' width='48px' /></a>\n				<a href='http://www.twitter.com/intripd'><img src='img/twitter.jpg' alt='Twitter' height='48px' width='48px' /></a>\n				<a href='http://www.pinterest.com/intripd'><img src='img/pinterest.png' alt='Pinterest' height='48px' width='48px' /></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<script type=\"text/javascript\">\n					var today = new Date();\n					document.getElementById(\"thisyear\").innerHTML = today.getFullYear();\n    			</script>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved. | ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.tos", options) : helperMissing.call(depth0, "link-to", "policies.tos", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push(" | ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.privacy", options) : helperMissing.call(depth0, "link-to", "policies.privacy", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("</h6>\n				<sub>intripd-geneva-beta-1 | <span class='icon-html5'></span> <span class='icon-css3'></span> <span class='icon-git'></span></sub>\n			</div>\n		</div>\n	</div>\n</div>");
+  return buffer;
+  
+});
+
 Ember.TEMPLATES['index'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div id='splash' class='section' data-type='background' data-speed='5'>\n	");
+  data.buffer.push("<div id='splash' class='primary-section' data-type='background' data-speed='5'>\n	");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -134,7 +194,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-1", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1'>\n	<div class='feature-content'>\n		<div class='feature-content-text'>\n			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>\n			<div class='feature-content-desc'></div>\n		</div>\n		<div class='feature-content-graphics'>\n		</div>\n	</div>\n</div>\n<div id='feature-2'>\n</div>");
+  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1'>\n	<div class='feature-content'>\n		<div class='feature-content-text centered' style='padding-bottom: 160px;'>\n			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>\n			<div class='feature-content-desc'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.<br /><br />Interested? Let us show you what we're planning...\n			</div>\n		</div>\n		<div class='feature-content-graphics'>\n		</div>\n		<div id='splash-progress' class='next-panel' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-2", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("><span class='chevron dark'></span></div>\n	</div>\n</div>\n<div id='feature-2' class='primary-section' data-type='background' data-speed='5'>\n</div>\n<div id='feature-3'>\n</div>\n<div id='feature-4'>\n</div>\n<div id='feature-5' class='primary-section' data-type='background' data-speed='5'>\n</div>\n");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "footer", options) : helperMissing.call(depth0, "render", "footer", options))));
+  data.buffer.push("\n");
   return buffer;
   
 });
@@ -187,7 +256,7 @@ function program5(depth0,data) {
   
 });
 
-Ember.TEMPLATES['privacy'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+Ember.TEMPLATES['policies/cookies'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
@@ -197,7 +266,30 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n		<div id=\"privacy-policy\">	\n			<div class=\"container\">\n				<h3>Privacy Policy</h3>\n				<strong>Updated: 24th of March, 2014</strong>\n				<p>At Intripd, the privacy of our users is our top priority.  The policy below explains how we collect, use and disclose information on INTRIPD.COM in terms of how you access and use our services.  This policy applies to both our main website (www.intripd.com), as well as our social networking services, being any page or application referred to as \"Intripd\" or \"Intripd.com\".</p>\n\n				<h5>PERSONAL INFORMATION COLLECTION</h5>\n				<p>We currently collect your personal information in two ways.  We will collect the email addresses of those who communicate with us via email, information entered into the service in a voluntary way (such as name, gender, date-of-birth), or through the use of feedback forms and registration forms.  This information is used to improve the content and quality of INTRIPD.COM and our services.  We will also collect anonymous agent information, such as Internet Protocol (IP) address, Operating System, Browser information, and your GPS/Location information (if you allow this feature).\n				No information collected by us is provided or sold to other organisations for commercial purposes, except when we have your permission, or under the following circumstances:\n					<li style=\"padding-left: 10px\">When it is necessary to share information in order to investigate, prevent, or take action regarding to illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violation of Terms of Use, or otherwise required by law; and</li>\n					<li style=\"padding-left: 10px\">In connection with, or during negotiations of, any merger, sale of company assets, financing or acquisition, or in any other situation where personal information may be disclosed or transferred as one of our business assets.</li></p>\n\n				<h5>HOW DO WE USE THE INFORMATION WE COLLECT?</h5>\n					<p><li style=\"padding-left: 10px\">For responding to emails, questions, comments, complaints, or to provide customer service;</li>\n					<li style=\"padding-left: 10px\">For sending confirmations, administrative messages, security alerts, and notifications to facilitate your use of, and our administration and operation of, our services;</li>\n					<li style=\"padding-left: 10px\">For connecting you with your friends (when instructed to by you);</li>\n					<li style=\"padding-left: 10px\">For notifying your connected friends of your actions (when instructed to by you);</li></p>\n\n				<h5>HOW DO WE PROTECT YOUR INFORMATION?</h5>\n				<p>We use industry standard techologies and procedures to help protect your personal information from unlawful or unauthorized access, accidental loss, destruction and damage and misuse.  However, please be aware that no security measures are perfect, and no method of data transmission can be guaranteed against any interception or other type of misuse.</p>\n\n				<h5>COOKIES</h5>\n				<p>We may also automatically collect certain information through the use of \"cookies”. These are small files that your browser places on your computer. We may use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage by our users and web traffic routing on our services, and to improve our services. Most Internet browsers automatically accept cookies. You can instruct your browser, by editing its options, to stop accepting cookies or to prompt you before accepting a cookie from the websites you visit. We rely on cookies for the proper operation of our website; therefore if your browser is set to reject all cookies, INTRIPD and our services will not function properly. Users who refuse cookies assume all responsibility for any resulting loss of functionality.</p>\n\n				<h5>OTHER SITES</h5>\n				<p>On occasion, our services may link to other online content.  Any information you provide on those sites is provided directly to the owner of that site, and is subject to their privacy policy.  We take no responsibility for the privacy and security practices of other services.  (We won't be linking to any sites who have privacy policies we don't agree with, however).</p>\n\n				<h5>CHILDREN</h5>\n				<p>For users accessing our services in the United States of America, INTRIPD and our related services are not directed to children under the age of 13.  We do not knowingly collect any kind of personal information from children under 13 years of age.  If you are under 13, do not use INTRIPD and our services, and do not provide any personal information to us.  If we find that children under 13 have provided us with personal information, we will take appropriate steps to remove that person's information permenantly from our databases.</p>\n\n				<h5>ACCESSING AND MODIFYING YOUR CONTENT</h5>\n				<p>If you would like to delete information held about you and/or your account, you can contact us with a request to do so.  We will take the appropriate steps to delete your data, unless such data is required to be retained persuant to applicable laws, or to protect INTRIPD and our services' rights, property or interests.  Information stored in archives will be retained for our records.</p>\n\n				<h5>QUESTIONS OR CONCERNS</h5>\n				<p>If you have any questions or concerns about our Privacy policy, please send a message to contact@intripd.com.  We will make every effort to resolve your concerns.\n\n				<h5>CHANGES TO THIS PRIVACY POLICY</h5>\n				<p>INTRIPD may modify or update this Privacy Policy from time to time, so please review it periodically.  We may provide you additional forms of notice or updeas as appropriate under the circumstances.  Your continued use of INTRIPD and our services after any modification to this Privacy Policy will constitute your acceptance of such modification.<br /><br /></p>\n			</div>\n		</div>");
+  data.buffer.push("\n		<div class=\"policy\" style='border-bottom: 1px solid #455158;'>\n			<div class=\"container\">\n				<h3>About Cookies on this site</h3>\n				<p>Cookies are small text entries, stored within the browser, used to improve the web services we offer.  They are used primarily to improve the interaction between yourselves and our website.\n				<br /><br />\n				By using cookies, we can do the following:\n				<br/><br />\n				<ul>\n					<li>Enable our services to recognise you and your device so that you can save your personal information for further sessions without having to re-enter it</li>\n					<li>Retain login information (session data), so that your login can persist across multiple sessions of use for the service.</li>\n					<li>Measure statistics about how people are using our services, so that they can be optimised and tailored to the user-load and interaction</li>\n				</ul>\n				<br /><br />\n				Without these cookies, the website and our services will assume that you are a new visitor each time you move to a new page or visit the site.\n				<br /><br />\n				European Union (EU) legislation requires that we let you know about our use of cookies.  Our cookie audit can be found below.\n				<br /><br />\n				We recommend that you allow the cookies we set, as they help us to provide a better service.  <b>We cannot identify you from these cookies, as they are anonymous.</b>\n				<br />\n				<br />\n				</p>\n				<h4>How to remove our Cookies</h4>\n				<p>If you do not want to receive cookes from our website or services, or want to remove cookies, you must select cookie settings under the Internet or Privacy settings in your browser, and then add our url <a>*.intripd.com</a> to the list of websites you do not want to accept cookies from.<br /><br />\n				These are specific instructions for how to remove cookies from each major browser:<br />\n				<a href='http://support.google.com/?hl=en&rd=1' target='_blank'>Android</a><br />\n				<a href='http://support.google.com/chrome/bin/answer.py?hl=en&answer=95647' target='_blank'>Chrome</a><br />\n				<a href='http://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences?redirectlocale=en-US&redirectslug=Enabling+and+disabling+cookies' target='_blank'>Firefox</a><br />\n				<a href='http://support.microsoft.com/kb/196955' target='_blank'>Internet Explorer</a><br />\n				<a href='http://support.apple.com/kb/PH5042' target='_blank'>Safari (Mac OSX)</a><br />\n				<a href='http://support.apple.com/kb/HT1677' target='_blank'>Safari (iOS)</a><br /><br />\n				<i><b>However, it is important to note that if you do this, you will be unable to use the vast majority of our services, as, due to the nature of the services we provide, we necessitate the need for cookies as part of the session.</b></i>\n				<br /><br /></p>\n				<h3>Cookie Audit</h3>\n				<p>Below is a list of cookies currently employed by our site and services (both 1st and 3rd party), and a detailed description of each.<br /><br /></p>\n				<h4>Persistent Cookies</h4><p>These cookies will store information for longer than your current browser session.  They are used for making it easier to enter repeated information, or remember preference settings in subsequent visits.</p>\n				<p><b>Originator: </b>intripd.com<br />\n				<b>Cookie Name: </b>TRP_COOKIENOTIF<br /><br />\n				<b>TTL: </b>1 Year.<br />\n				<b>Can be deleted? </b>Yes<br />\n				<b>Purpose: </b>A cookie used for tracking whether a user has acknowledged the Cookie Policy notification.  Once the user acknowledges the notice, the cookie is set and the notice disappears.  Setting the cookie implies consent to using cookies to track other user data.<br /><br /><br /></p>\n			</div>\n		</div>\n");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "footer", options) : helperMissing.call(depth0, "render", "footer", options))));
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['policies/privacy'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
+  data.buffer.push("\n		<div class=\"policy\" style='border-bottom: 1px solid #455158;'>\n			<div class=\"container\">\n				<h3>Privacy Policy</h3>\n				<strong>Updated: 24th of March, 2014</strong>\n				<p>At Intripd, the privacy of our users is our top priority.  The policy below explains how we collect, use and disclose information on INTRIPD.COM in terms of how you access and use our services.  This policy applies to both our main website (www.intripd.com), as well as our social networking services, being any page or application referred to as \"Intripd\" or \"Intripd.com\".</p>\n\n				<h5>PERSONAL INFORMATION COLLECTION</h5>\n				<p>We currently collect your personal information in two ways.  We will collect the email addresses of those who communicate with us via email, information entered into the service in a voluntary way (such as name, gender, date-of-birth), or through the use of feedback forms and registration forms.  This information is used to improve the content and quality of INTRIPD.COM and our services.  We will also collect anonymous agent information, such as Internet Protocol (IP) address, Operating System, Browser information, and your GPS/Location information (if you allow this feature).\n				No information collected by us is provided or sold to other organisations for commercial purposes, except when we have your permission, or under the following circumstances:\n					<li style=\"padding-left: 10px\">When it is necessary to share information in order to investigate, prevent, or take action regarding to illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violation of Terms of Use, or otherwise required by law; and</li>\n					<li style=\"padding-left: 10px\">In connection with, or during negotiations of, any merger, sale of company assets, financing or acquisition, or in any other situation where personal information may be disclosed or transferred as one of our business assets.</li></p>\n\n				<h5>HOW DO WE USE THE INFORMATION WE COLLECT?</h5>\n					<p><li style=\"padding-left: 10px\">For responding to emails, questions, comments, complaints, or to provide customer service;</li>\n					<li style=\"padding-left: 10px\">For sending confirmations, administrative messages, security alerts, and notifications to facilitate your use of, and our administration and operation of, our services;</li>\n					<li style=\"padding-left: 10px\">For connecting you with your friends (when instructed to by you);</li>\n					<li style=\"padding-left: 10px\">For notifying your connected friends of your actions (when instructed to by you);</li></p>\n\n				<h5>HOW DO WE PROTECT YOUR INFORMATION?</h5>\n				<p>We use industry standard techologies and procedures to help protect your personal information from unlawful or unauthorized access, accidental loss, destruction and damage and misuse.  However, please be aware that no security measures are perfect, and no method of data transmission can be guaranteed against any interception or other type of misuse.</p>\n\n				<h5>COOKIES</h5>\n				<p>We may also automatically collect certain information through the use of \"cookies”. These are small files that your browser places on your computer. We may use both session cookies and persistent cookies to better understand how you interact with our services, to monitor aggregate usage by our users and web traffic routing on our services, and to improve our services. Most Internet browsers automatically accept cookies. You can instruct your browser, by editing its options, to stop accepting cookies or to prompt you before accepting a cookie from the websites you visit. We rely on cookies for the proper operation of our website; therefore if your browser is set to reject all cookies, INTRIPD and our services will not function properly. Users who refuse cookies assume all responsibility for any resulting loss of functionality.</p>\n\n				<h5>OTHER SITES</h5>\n				<p>On occasion, our services may link to other online content.  Any information you provide on those sites is provided directly to the owner of that site, and is subject to their privacy policy.  We take no responsibility for the privacy and security practices of other services.  (We won't be linking to any sites who have privacy policies we don't agree with, however).</p>\n\n				<h5>CHILDREN</h5>\n				<p>For users accessing our services in the United States of America, INTRIPD and our related services are not directed to children under the age of 13.  We do not knowingly collect any kind of personal information from children under 13 years of age.  If you are under 13, do not use INTRIPD and our services, and do not provide any personal information to us.  If we find that children under 13 have provided us with personal information, we will take appropriate steps to remove that person's information permenantly from our databases.</p>\n\n				<h5>ACCESSING AND MODIFYING YOUR CONTENT</h5>\n				<p>If you would like to delete information held about you and/or your account, you can contact us with a request to do so.  We will take the appropriate steps to delete your data, unless such data is required to be retained persuant to applicable laws, or to protect INTRIPD and our services' rights, property or interests.  Information stored in archives will be retained for our records.</p>\n\n				<h5>QUESTIONS OR CONCERNS</h5>\n				<p>If you have any questions or concerns about our Privacy policy, please send a message to contact@intripd.com.  We will make every effort to resolve your concerns.\n\n				<h5>CHANGES TO THIS PRIVACY POLICY</h5>\n				<p>INTRIPD may modify or update this Privacy Policy from time to time, so please review it periodically.  We may provide you additional forms of notice or updeas as appropriate under the circumstances.  Your continued use of INTRIPD and our services after any modification to this Privacy Policy will constitute your acceptance of such modification.<br /><br /></p>\n			</div>\n		</div>\n");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "footer", options) : helperMissing.call(depth0, "render", "footer", options))));
   return buffer;
   
 });
@@ -55072,7 +55164,7 @@ var ApplicationView = Ember.View.extend({
 		//reset cookie notification cookie if it doesn't exist any more
 		var cookie_notification = $.cookie('TRP_COOKIENOTIF');
 		if(typeof cookie_notification === "undefined") {
-			$.cookie('TRP_COOKIENOTIF', true);
+			$.cookie('TRP_COOKIENOTIF', true, { expires: 365 });
 		}
 
 		if(cookie_notification === "true" || (typeof cookie_notification === "undefined")) {
@@ -55092,14 +55184,13 @@ var IndexView = Ember.View.extend({
 	},
 	didInsertElement: function() {
 		$('nav').addClass('animated fadeInDown');
-		$('#splash').addClass('animated fadeIn');
 		$('.grab-line').addClass('animated fadeInDown');
 		$('#splash-progress').addClass('animated fadeInUp');
 		$('#splash-progress').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
 			$('#splash-progress').removeClass('animated fadeInUp').addClass('animated bounce');
 		});
 
-		$('.section[data-type="background"]').each(function(){
+		$('.primary-section').each(function(){
 		    var $bgobj = $(this); // assigning the object
 		    $(window).scroll(function() {
 		        var yPos = -( ($(window).scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));

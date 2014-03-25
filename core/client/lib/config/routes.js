@@ -7,8 +7,11 @@ App.Router.map(function() {
 		this.route('register');
 	});
 
-	this.route('tos');
-	this.route('privacy');
+	this.resource('policies', function() {
+		this.route('tos');
+		this.route('privacy');
+		this.route('cookies');
+	});
 
 	//make sure this route is always last for rendering 404 error page
 	this.route("error", {path: "*path"});

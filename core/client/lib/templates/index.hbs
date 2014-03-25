@@ -1,4 +1,4 @@
-<div id='splash' class='section' data-type='background' data-speed='5'>
+<div id='splash' class='primary-section' data-type='background' data-speed='5'>
 	{{render "menu"}}
 	<div class='grab-line'>
 		Plan, Share, Explore.
@@ -8,13 +8,23 @@
 </div>
 <div id='feature-1'>
 	<div class='feature-content'>
-		<div class='feature-content-text'>
+		<div class='feature-content-text centered' style='padding-bottom: 160px;'>
 			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>
-			<div class='feature-content-desc'></div>
+			<div class='feature-content-desc'>
+			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.<br /><br />Interested? Let us show you what we're planning...
+			</div>
 		</div>
 		<div class='feature-content-graphics'>
 		</div>
+		<div id='splash-progress' class='next-panel' {{action 'shift' 'feature-2'}}><span class='chevron dark'></span></div>
 	</div>
 </div>
-<div id='feature-2'>
+<div id='feature-2' class='primary-section' data-type='background' data-speed='5'>
 </div>
+<div id='feature-3'>
+</div>
+<div id='feature-4'>
+</div>
+<div id='feature-5' class='primary-section' data-type='background' data-speed='5'>
+</div>
+{{render "footer"}}

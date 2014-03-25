@@ -4,7 +4,7 @@ var ApplicationView = Ember.View.extend({
 		//reset cookie notification cookie if it doesn't exist any more
 		var cookie_notification = $.cookie('TRP_COOKIENOTIF');
 		if(typeof cookie_notification === "undefined") {
-			$.cookie('TRP_COOKIENOTIF', true);
+			$.cookie('TRP_COOKIENOTIF', true, { expires: 365 });
 		}
 
 		if(cookie_notification === "true" || (typeof cookie_notification === "undefined")) {

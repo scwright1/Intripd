@@ -2,7 +2,7 @@ var IndexController = Ember.ObjectController.extend({
 	actions: {
 		shift: function(destination) {
 			$('html, body').animate({
-				scrollTop: $('#'+destination).offset().top - 50
+				scrollTop: $('#'+destination).offset().top
 			}, 2000);
 		}
 	}
