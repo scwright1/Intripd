@@ -162,7 +162,7 @@ function program3(depth0,data) {
   data.buffer.push("Privacy");
   }
 
-  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a href='http://www.facebook.com/intripd'><img src='img/facebook.jpg' alt='Facebook' height='48px' width='48px' /></a>\n				<a href='http://www.twitter.com/intripd'><img src='img/twitter.jpg' alt='Twitter' height='48px' width='48px' /></a>\n				<a href='http://www.pinterest.com/intripd'><img src='img/pinterest.png' alt='Pinterest' height='48px' width='48px' /></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<script type=\"text/javascript\">\n					var today = new Date();\n					document.getElementById(\"thisyear\").innerHTML = today.getFullYear();\n    			</script>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved. | ");
+  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='entypo-social facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='entypo-social twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='entypo-social pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<script type=\"text/javascript\">\n					var today = new Date();\n					document.getElementById(\"thisyear\").innerHTML = today.getFullYear();\n    			</script>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved. | ");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -185,7 +185,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div id='splash' class='primary-section' data-type='background' data-speed='5'>\n	");
+  data.buffer.push("<div id='splash' class='section primary-section' data-type='background' data-speed='5'>\n	");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -194,11 +194,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-1", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1'>\n	<div class='feature-content'>\n		<div class='feature-content-text centered' style='padding-bottom: 160px;'>\n			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>\n			<div class='feature-content-desc'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.<br /><br />Interested? Let us show you what we're planning...\n			</div>\n		</div>\n		<div class='feature-content-graphics'>\n		</div>\n		<div id='splash-progress' class='next-panel' ");
+  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-1' class='section'>\n	<div class='feature-content'>\n		<div class='feature-content-text centered' style='padding-bottom: 160px;'>\n			<div class='feature-content-header'>Exploring the world is meant to be shared.</div>\n			<div class='feature-content-desc'>\n			We are building a brand new way for you to create, manage and share your travel plans and adventures. It's going to be stylish, powerful, and completely awesome.<br /><br />Interested? Let us show you what we're planning...\n			</div>\n		</div>\n		<div class='feature-content-graphics'>\n		</div>\n		<div id='splash-progress' class='next-panel' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-2", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><span class='chevron dark'></span></div>\n	</div>\n</div>\n<div id='feature-2' class='primary-section' data-type='background' data-speed='5'>\n</div>\n<div id='feature-3'>\n</div>\n<div id='feature-4'>\n</div>\n<div id='feature-5' class='primary-section' data-type='background' data-speed='5'>\n</div>\n");
+  data.buffer.push("><span class='chevron dark'></span></div>\n	</div>\n</div>\n<div id='feature-2' class='section primary-section' data-type='background' data-speed='5'>\n	<div class='feature-content'>\n		<div class='feature-content-text'>\n			<div class='feature-content-header'>\n			It's all about you.\n			</div>\n			<div class='feature-content-desc'>\n			<h4>Tools to help your world go round.</h4>\n<br />\nFrom the first city search to the last photo upload, Intripd makes managing your trips and vacations a breeze. Keep tabs on every aspect of your planning, from hotel bookings to day trips, flight times to photo opportunities, and everything in between.\n			</div>\n			<div class='feature-content-graphics'>\n			</div>\n		</div>\n	</div>\n	<div id='splash-progress' class='next-panel' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-3", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("><span class='chevron'></span></div>\n</div>\n<div id='feature-3' class='section'>\n</div>\n<div id='feature-4' class='section'>\n</div>\n<div id='feature-5' class='section primary-section' data-type='background' data-speed='5'>\n</div>\n");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -55202,9 +55206,28 @@ var IndexView = Ember.View.extend({
 		});
 
 		$('.next-panel').mouseenter(function() {
-			$(this).animate({'bottom': '50px'}, 500);
+			var bottom = parseInt($(this).css('bottom'));
+			var newBottom = bottom + 10;
+			$(this).animate({'bottom': newBottom + 'px'}, 500);
 		}).mouseleave(function() {
-			$(this).animate({'bottom': '40px'}, 500);
+			var bottom = parseInt($(this).css('bottom'));
+			var newBottom = bottom - 10;
+			$(this).animate({'bottom': newBottom+'px'}, 500);
+		});
+
+		$(document).scroll(function () {
+			var sp = $(this).scrollTop();
+			if(sp >= $('#feature-2').offset().top) {
+				//do feature-2 view logic
+				$('#feature-2').find('.feature-content-header').css('display', 'block');
+				$('#feature-2').find('.feature-content-header').addClass('animated fadeInLeft');
+				setTimeout(function() {
+					$('#feature-2').find('.feature-content-desc').css('display', 'block');
+					$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
+				}, 500);
+			} else if(sp >= $('#feature-5').offset().top) {
+				//do feature-5 view logic
+			}
 		});
 	}
 });
