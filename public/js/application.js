@@ -562,19 +562,11 @@ var SidebarUserController = App.ApplicationController.extend({
 			}
 		},
 		connectFacebook: function() {
-			$.getScript('//connect.facebook.net/en_UK/all.js', function(){
-    			FB.init({appId: '179145525561301'});
-    			FB.getLoginStatus(function(response) {
-    				if(response.status === 'connected') {
-    					console.log(response.authResponse.userID);
-    					console.log(response.authResponse.accessToken);
-    				} else if(response.status === 'not_authorized') {
-    					alert('failed to authorize');
-    				} else {
-    					alert('general failure');
-    				}
-    			});
-    		});
+			FB.login(function(response) {
+				if(response.authResponse) {
+					$('#fb-connect').attr('disabled', 'disabled');
+				}
+			});
 		}
 	}
 });
@@ -1182,7 +1174,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "outlet", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\n<div id='fb-root'></div>\n");
   return buffer;
   
 });
@@ -1781,7 +1773,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button class=\"sm-soc btn login-facebook btn-social\" ");
+  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button id='fb-connect' class=\"sm-soc btn login-facebook btn-social\" ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "connectFacebook", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -52388,7 +52380,16 @@ Handlebars.template = Handlebars.VM.template;
 
 },{}],41:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
-	classNames: ['map-view']
+	classNames: ['map-view'],
+	didInsertElement: function() {
+		$.getScript('//connect.facebook.net/en_UK/all.js', function() {
+            FB.init({
+                appId      : '179145525561301',
+                status     : true,
+                xfbml      : true
+            });
+        });
+	}
 });
 
 module.exports = ApplicationView;
@@ -52730,6 +52731,13 @@ var SidebarUserView = Ember.View.extend({
 	willInsertElement: function() {
 		var self = this;
 		self.get('controller').set('location', loc);
+	},
+	didInsertElement: function() {
+		FB.getLoginStatus(function(response) {
+			if(response.status === 'connected') {
+				$('#fb-connect').attr('disabled', 'disabled');
+			}
+		});
 	}
 });
 

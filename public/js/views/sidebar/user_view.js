@@ -6,6 +6,13 @@ var SidebarUserView = Ember.View.extend({
 	willInsertElement: function() {
 		var self = this;
 		self.get('controller').set('location', loc);
+	},
+	didInsertElement: function() {
+		FB.getLoginStatus(function(response) {
+			if(response.status === 'connected') {
+				$('#fb-connect').attr('disabled', 'disabled');
+			}
+		});
 	}
 });
 

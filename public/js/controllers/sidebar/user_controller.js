@@ -28,19 +28,11 @@ var SidebarUserController = App.ApplicationController.extend({
 			}
 		},
 		connectFacebook: function() {
-			$.getScript('//connect.facebook.net/en_UK/all.js', function(){
-    			FB.init({appId: '179145525561301'});
-    			FB.getLoginStatus(function(response) {
-    				if(response.status === 'connected') {
-    					console.log(response.authResponse.userID);
-    					console.log(response.authResponse.accessToken);
-    				} else if(response.status === 'not_authorized') {
-    					alert('failed to authorize');
-    				} else {
-    					alert('general failure');
-    				}
-    			});
-    		});
+			FB.login(function(response) {
+				if(response.authResponse) {
+					$('#fb-connect').attr('disabled', 'disabled');
+				}
+			});
 		}
 	}
 });
