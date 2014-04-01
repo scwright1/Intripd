@@ -26,6 +26,21 @@ var SidebarUserController = App.ApplicationController.extend({
 				App.Session.reset();
 				this.transitionTo('index');
 			}
+		},
+		connectFacebook: function() {
+			$.getScript('//connect.facebook.net/en_UK/all.js', function(){
+    			FB.init({appId: '179145525561301'});
+    			FB.getLoginStatus(function() {
+    				if(response.status === 'connected') {
+    					console.log(response.authResponse.userID);
+    					console.log(response.authResponse.accessToken);
+    				} else if(response.status === 'not_authorized') {
+    					alert('failed to authorize');
+    				} else {
+    					alert('general failure');
+    				}
+    			});
+    		});
 		}
 	}
 });

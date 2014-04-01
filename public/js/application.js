@@ -560,6 +560,21 @@ var SidebarUserController = App.ApplicationController.extend({
 				App.Session.reset();
 				this.transitionTo('index');
 			}
+		},
+		connectFacebook: function() {
+			$.getScript('//connect.facebook.net/en_UK/all.js', function(){
+    			FB.init({appId: '179145525561301'});
+    			FB.getLoginStatus(function() {
+    				if(response.status === 'connected') {
+    					console.log(response.authResponse.userID);
+    					console.log(response.authResponse.accessToken);
+    				} else if(response.status === 'not_authorized') {
+    					alert('failed to authorize');
+    				} else {
+    					alert('general failure');
+    				}
+    			});
+    		});
 		}
 	}
 });
@@ -1766,7 +1781,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "email", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button class=\"sm-soc btn login-facebook btn-social\" disabled=\"disabled\"><span class=\"fa fa-facebook\"></span></button>\n						<button class=\"sm-soc btn login-twitter btn-social\" disabled=\"disabled\"><span class=\"fa fa-twitter\"></span></button>\n						<button class=\"sm-soc btn login-google btn-social\" disabled=\"disabled\"><span class=\"fa fa-google-plus\"></span></button>\n					</div>\n				</div>\n			</div>\n			<div class='buttonbox'>\n				<button class='btn btn-info' style='float: right' ");
+  data.buffer.push("</div>\n			</div>\n			<div class='user-extended-info'>\n				<div class='user-settings'>\n					<div class=\"auth-text-override\">\n						<div class=\"soc-connect\">Connect your social account</div>\n						<button class=\"sm-soc btn login-facebook btn-social\" ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "connectFacebook", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("><span class=\"fa fa-facebook\"></span></button>\n						<button class=\"sm-soc btn login-twitter btn-social\" disabled=\"disabled\"><span class=\"fa fa-twitter\"></span></button>\n						<button class=\"sm-soc btn login-google btn-social\" disabled=\"disabled\"><span class=\"fa fa-google-plus\"></span></button>\n					</div>\n				</div>\n			</div>\n			<div class='buttonbox'>\n				<button class='btn btn-info' style='float: right' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));

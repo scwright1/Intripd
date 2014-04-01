@@ -32,6 +32,8 @@ var express		= require('express'),
 
 	passport	= require('passport'),
 
+	FB			= require('fb'),
+
 	user		= require('./app/models/usermodel'),
 
 	threads		= require('os').cpus().length,
@@ -40,6 +42,10 @@ var express		= require('express'),
 
 //setup debugging
 require('flox-node')({});
+
+if(!config.facebook.appId || !config.facebook.appSecret) {
+	throw new Error('failed to find Facebook appId or appSecret');
+}
 
 if(cluster.isMaster) {
 	for(var i = 0; i < threads; i++) {
