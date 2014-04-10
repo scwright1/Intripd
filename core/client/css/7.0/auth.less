@@ -1,0 +1,163 @@
+@import 'definitions';
+
+.login-container {
+	height: 400px;
+	background: @color-slate;
+	margin: 40px auto;
+}
+
+.auth-header {
+	height: 99px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid @color-green;
+	line-height: 99px;
+	font-size: 32px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	text-align: center;
+	color: @color-olive;
+}
+
+.auth-desc {
+	height: 70px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 70px;
+	text-align: center;
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	color: @color-olive;
+}
+
+#login-form > .form-group > .input-group {
+	background: #f4f4f0;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	height: 60px;
+	transition: background-color 0.5s ease;
+}
+
+#login-form > .form-group > .input-group:hover {
+	background: #f4f4f0 + #090909;
+	transition: background-color 0.5s ease;
+}
+
+#login-form > .form-group > .input-group > input {
+	height: 100%;
+	background: none;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	padding-left: 10px;
+	outline: none !important;
+	box-shadow: none;
+	color: #9f9f93;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 600;
+	font-size: 12px;
+	width: 300px;
+}
+
+#login-form > button {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	width: 100%;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: @color-green;
+	text-transform: uppercase;
+}
+
+#login-form > .form-group > .input-group > .input-group-addon {
+	background: none;
+	border: none;
+	border-radius: none;
+	color: #9f9f93;
+	width: 50px;
+}
+
+#login-form > .form-group > .input-group > input:focus {
+	outline: none !important;
+	box-shadow: none;
+	text-transform: none;
+	background: #f4f4f0 + #090909;
+
+}
+
+#login-form > .form-group > .input-group > span {
+	font-family: FontAwesome;
+}
+
+.forgot-password {
+	float: right;
+	padding-right: 25px;
+	text-transform: uppercase;
+	color: #cfcfc5;
+	font-size: 10px;
+	font-weight: bold;
+	font-family: "Open Sans", sans-serif;
+}
+
+#login-form > label {
+	font-size: 10px;
+	color: #cfcfc5;
+	text-transform: uppercase;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	padding-left: 25px;
+}
+
+#remember + label:before {
+	position: relative;
+	top: 1px;
+	font-size: 14px;
+	transition: color 0.5s ease;
+}
+
+#remember-check {
+	position: relative;
+	bottom: 4px;
+}
+
+#remember:checked + label:before {
+	color: @color-green;
+	transition: color 0.5s ease;
+}
+
+@media all and (min-width: 769px) {
+	.login-container {
+		width: 350px;
+	}
+}
+
+@media all and (max-width: 768px) {
+	.login-container {
+		width: 100%;
+	}
+}
+
+/*** custom checkboxes ***/
+
+input[type=checkbox] { display:none; } /* to hide the checkbox itself */
+input[type=checkbox] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+input[type=checkbox] + label:before { content: "\f10c";} /* unchecked icon */
+input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between checkbox and label */
+
+input[type=checkbox]:checked + label:before { content: "\f05d";} /* checked icon */
+input[type=checkbox]:checked + label:before { letter-spacing: 10px; } /* allow space for check mark */
