@@ -25,6 +25,10 @@ var config = {
 			user:	'mule',
 			pw:		'~{5<+>crt1$YGr',
 			db: 	'IDB'
+		},
+		facebook: {
+			appId:			process.env.FACEBOOK_APPID		|| '179145525561301',
+			appSecret:		process.env.FACEBOOK_APPSECRET	|| 'a9651eed53cf873cd794c6f79ea7dc64'
 		}
 	}
 };
