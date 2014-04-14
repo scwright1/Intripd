@@ -12,22 +12,22 @@ var IndexView = Ember.View.extend({
 		});
 
 		$('.primary-section').each(function(){
-		    var $bgobj = $(this); // assigning the object
-		    $(window).scroll(function() {
-		        var yPos = -( ($(window).scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
-		        // Put together our final background position
-		        var coords = '50% '+ yPos + 'px';
-		        // Move the background
-		        $bgobj.css({ backgroundPosition: coords });
-		    });
+				var $bgobj = $(this); // assigning the object
+				$(window).scroll(function() {
+					var yPos = -( ($(window).scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
+					// Put together our final background position
+					var coords = '50% '+ yPos + 'px';
+					// Move the background
+					$bgobj.css({ backgroundPosition: coords });
+			});
 		});
 
 		$('.next-panel').mouseenter(function() {
-			var bottom = parseInt($(this).css('bottom'));
+			var bottom = parseInt($(this).css('bottom'), 10);
 			var newBottom = bottom + 10;
 			$(this).animate({'bottom': newBottom + 'px'}, 500);
 		}).mouseleave(function() {
-			var bottom = parseInt($(this).css('bottom'));
+			var bottom = parseInt($(this).css('bottom'), 10);
 			var newBottom = bottom - 10;
 			$(this).animate({'bottom': newBottom+'px'}, 500);
 		});
@@ -42,8 +42,6 @@ var IndexView = Ember.View.extend({
 					$('#feature-2').find('.feature-content-desc').css('display', 'block');
 					$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
 				}, 500);
-			} else if(sp >= $('#feature-5').offset().top) {
-				//do feature-5 view logic
 			}
 		});
 	}

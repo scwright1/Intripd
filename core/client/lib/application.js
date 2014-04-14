@@ -25,11 +25,11 @@ module.exports = App;
 registerImplementation of hashbang url
  */
 
-(function() {
+ (function() {
 
 var get = Ember.get, set = Ember.set;
 
-Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({ 
+var hashbangLocation = Ember.HashLocation.extend({ 
 
     getURL: function() {
         return get(this, 'location').hash.substr(2);
@@ -44,7 +44,7 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
         var self = this;
         var guid = Ember.guidFor(this);
 
-        Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
+            Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
                 Ember.run(function() {
                     var path = location.hash.substr(2);
                     if (get(self, 'lastSetURL') === path) { return; }
@@ -53,14 +53,16 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
 
                     callback(location.hash.substr(2));
                 });
-        });
-    },
+            });
+        },
 
-    formatURL: function(url) {
-        return '#!'+url;
-    }
+        formatURL: function(url) {
+            return '#!'+url;
+        }
 
-}));
+    });
+
+App.register('location:hashbang', hashbangLocation);
 
 })();
 },{}],2:[function(require,module,exports){
@@ -446,22 +448,22 @@ var IndexView = Ember.View.extend({
 		});
 
 		$('.primary-section').each(function(){
-		    var $bgobj = $(this); // assigning the object
-		    $(window).scroll(function() {
-		        var yPos = -( ($(window).scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
-		        // Put together our final background position
-		        var coords = '50% '+ yPos + 'px';
-		        // Move the background
-		        $bgobj.css({ backgroundPosition: coords });
-		    });
+				var $bgobj = $(this); // assigning the object
+				$(window).scroll(function() {
+					var yPos = -( ($(window).scrollTop() - $bgobj.offset().top) / $bgobj.data('speed'));
+					// Put together our final background position
+					var coords = '50% '+ yPos + 'px';
+					// Move the background
+					$bgobj.css({ backgroundPosition: coords });
+			});
 		});
 
 		$('.next-panel').mouseenter(function() {
-			var bottom = parseInt($(this).css('bottom'));
+			var bottom = parseInt($(this).css('bottom'), 10);
 			var newBottom = bottom + 10;
 			$(this).animate({'bottom': newBottom + 'px'}, 500);
 		}).mouseleave(function() {
-			var bottom = parseInt($(this).css('bottom'));
+			var bottom = parseInt($(this).css('bottom'), 10);
 			var newBottom = bottom - 10;
 			$(this).animate({'bottom': newBottom+'px'}, 500);
 		});
@@ -476,8 +478,6 @@ var IndexView = Ember.View.extend({
 					$('#feature-2').find('.feature-content-desc').css('display', 'block');
 					$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
 				}, 500);
-			} else if(sp >= $('#feature-5').offset().top) {
-				//do feature-5 view logic
 			}
 		});
 	}

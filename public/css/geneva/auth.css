@@ -1,0 +1,28 @@
+@import url(http://fonts.googleapis.com/css?family=Montserrat|Open+Sans:400,300,600,700);
+/* 
+ * Common definitions
+ */
+/*flat colours*/
+@font-face {
+  font-family: Entypo;
+  src: url(../../fonts/entypo.woff);
+}
+#auth-login {
+  background: #e4e6e7;
+  height: 200px;
+  top: 50%;
+  margin-top: -100px;
+  position: absolute;
+}
+@media all and (min-width: 769px) {
+  #auth-login {
+    width: 500px;
+    left: 50%;
+    margin-left: -250px;
+  }
+}
+@media all and (max-width: 768px) {
+  #auth-login {
+    width: 100%;
+  }
+}
