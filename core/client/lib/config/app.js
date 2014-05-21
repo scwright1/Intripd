@@ -24,7 +24,7 @@ module.exports = App;
 registerImplementation of hashbang url
  */
 
-(function() {
+ (function() {
 
 var get = Ember.get, set = Ember.set;
 
