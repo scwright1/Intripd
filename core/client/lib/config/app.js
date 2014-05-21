@@ -28,7 +28,7 @@ registerImplementation of hashbang url
 
 var get = Ember.get, set = Ember.set;
 
-Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({ 
+var hashbangLocation = Ember.HashLocation.extend({ 
 
     getURL: function() {
         return get(this, 'location').hash.substr(2);
@@ -43,7 +43,7 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
         var self = this;
         var guid = Ember.guidFor(this);
 
-        Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
+            Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
                 Ember.run(function() {
                     var path = location.hash.substr(2);
                     if (get(self, 'lastSetURL') === path) { return; }
@@ -52,13 +52,15 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
 
                     callback(location.hash.substr(2));
                 });
-        });
-    },
+            });
+        },
 
-    formatURL: function(url) {
-        return '#!'+url;
-    }
+        formatURL: function(url) {
+            return '#!'+url;
+        }
 
-}));
+    });
+
+App.register('location:hashbang', hashbangLocation);
 
 })();

@@ -29,7 +29,7 @@ registerImplementation of hashbang url
 
 var get = Ember.get, set = Ember.set;
 
-Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({ 
+var hashbangLocation = Ember.HashLocation.extend({ 
 
     getURL: function() {
         return get(this, 'location').hash.substr(2);
@@ -44,7 +44,7 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
         var self = this;
         var guid = Ember.guidFor(this);
 
-        Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
+            Ember.$(window).bind('hashchange.ember-location-'+guid, function() {
                 Ember.run(function() {
                     var path = location.hash.substr(2);
                     if (get(self, 'lastSetURL') === path) { return; }
@@ -53,14 +53,16 @@ Ember.Location.registerImplementation('hashbang', Ember.HashLocation.extend({
 
                     callback(location.hash.substr(2));
                 });
-        });
-    },
+            });
+        },
 
-    formatURL: function(url) {
-        return '#!'+url;
-    }
+        formatURL: function(url) {
+            return '#!'+url;
+        }
 
-}));
+    });
+
+App.register('location:hashbang', hashbangLocation);
 
 })();
 },{}],2:[function(require,module,exports){
@@ -100,10 +102,12 @@ var ApplicationController = Ember.Controller.extend({
 module.exports = ApplicationController;
 },{}],4:[function(require,module,exports){
 var AuthLoginController = Ember.ObjectController.extend({
-	remember: false,
+	remember: true,
 	actions: {
 		login: function() {
-			alert('no login function here yet');
+			var self = this;
+			data = this.getProperties('email', 'password', 'remember');
+			console.log(data);
 		}
 	}
 });
@@ -134,6 +138,7 @@ App.IndexController = require('./controllers/index_controller');
 App.AuthLoginController = require('./controllers/auth/login_controller');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
+App.AuthLoginRoute = require('./routes/auth/login_route');
 App.ApplicationView = require('./views/application_view');
 App.IndexView = require('./views/index_view');
 
@@ -142,7 +147,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":3,"./controllers/auth/login_controller":4,"./controllers/index_controller":5,"./routes/application_route":7,"./routes/error_route":8,"./templates":9,"./views/application_view":10,"./views/index_view":11}],7:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":3,"./controllers/auth/login_controller":4,"./controllers/index_controller":5,"./routes/application_route":7,"./routes/auth/login_route":8,"./routes/error_route":9,"./templates":10,"./views/application_view":11,"./views/index_view":12}],7:[function(require,module,exports){
 var ApplicationRoute = Ember.Route.extend({
 	init: function() {
 		this._super();
@@ -151,6 +156,14 @@ var ApplicationRoute = Ember.Route.extend({
 
 module.exports = ApplicationRoute;
 },{}],8:[function(require,module,exports){
+var AuthLoginRoute = Ember.Route.extend({
+	model: function() {
+		return Ember.Object.create({});
+	}
+});
+
+module.exports = AuthLoginRoute;
+},{}],9:[function(require,module,exports){
 var ErrorRoute = Ember.Route.extend({
 	redirect: function() {
 		window.location.replace('404');
@@ -158,7 +171,7 @@ var ErrorRoute = Ember.Route.extend({
 });
 
 module.exports = ErrorRoute;
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -209,25 +222,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  data.buffer.push("Terms");
-  }
-
-function program3(depth0,data) {
-  
-  
   data.buffer.push("Privacy");
   }
 
   data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='entypo-social facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='entypo-social twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='entypo-social pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<script type=\"text/javascript\">\n					var today = new Date();\n					document.getElementById(\"thisyear\").innerHTML = today.getFullYear();\n    			</script>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved. | ");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.tos", options) : helperMissing.call(depth0, "link-to", "policies.tos", options));
-  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push(" | ");
   hashTypes = {};
   hashContexts = {};
-  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.privacy", options) : helperMissing.call(depth0, "link-to", "policies.privacy", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("</h6>\n				<sub>intripd-geneva-beta-1 | <span class='icon-html5'></span> <span class='icon-css3'></span> <span class='icon-git'></span></sub>\n			</div>\n		</div>\n	</div>\n</div>");
@@ -246,7 +248,8 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n	<div class='grab-line'>\n		Plan, Share, Explore.\n		<div class='splash-get-started'>Get Started</div>\n	</div>\n	<div id='splash-progress' class='next-panel' ");
+  data.buffer.push("\n	<div class='grab-line'>\n		Plan, Share, Explore.\n		");
+  data.buffer.push("\n	</div>\n	<div id='splash-progress' class='next-panel' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "shift", "feature-1", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -394,14 +397,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("\n			</div>\n		</div>\n		");
   hashContexts = {'type': depth0,'id': depth0,'checked': depth0};
-  hashTypes = {'type': "STRING",'id': "STRING",'checked': "STRING"};
+  hashTypes = {'type': "STRING",'id': "STRING",'checked': "ID"};
   options = {hash:{
     'type': ("checkbox"),
     'id': ("remember"),
     'checked': ("remember")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("<label id='remember-check' for='remember'>Remember Me</label>\n		<a class='forgot-password' href='#'>Forgotten Your Password?</a>\n		<button type='submit'>Sign In</button>\n	</form>\n</div>\n\n");
+  data.buffer.push("<label id='remember-check' for='remember'>Remember Me</label>\n		<a class='forgot-password' href='#' style='display: none'>Forgotten Your Password?</a>\n		<button type='submit'>Sign In</button>\n	</form>\n</div>\n\n");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -412,7 +415,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -431,7 +434,7 @@ var ApplicationView = Ember.View.extend({
 });
 
 module.exports = ApplicationView;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
