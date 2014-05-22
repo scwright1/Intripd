@@ -6,6 +6,26 @@
 	margin: 40px auto;
 }
 
+.register-container {
+	height: 400px;
+	background: @color-slate;
+	margin: 40px auto;
+}
+
+.register-form-container {
+	width: 100%;
+}
+
+.register-form-container-left {
+	width: 49%;
+	float: left;
+}
+
+.register-form-container-right {
+	width: 49%;
+	float: right;
+}
+
 .auth-header {
 	height: 99px;
 	width: 100%;
@@ -83,7 +103,89 @@
 
 #login-form > button:hover {
 	transition: background-color 0.5s ease;
-	background: @color-green + #090909;
+	background: @color-green - #090909;
+}
+
+.register-form-container > div > .form-group > .input-group {
+	background: #f4f4f0;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	height: 60px;
+	transition: background-color 0.5s ease;
+}
+
+.register-form-container > div > .form-group > .input-group:hover {
+	background: #f4f4f0 + #090909;
+	transition: background-color 0.5s ease;
+}
+
+.register-form-container > div > .form-group > .input-group > input {
+	height: 100%;
+	background: none;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	padding-left: 10px;
+	outline: none !important;
+	box-shadow: none;
+	color: #9f9f93;
+	font-family: "Open Sans", sans-serif;
+	font-weight: 600;
+	font-size: 12px;
+	width: 300px;
+}
+
+.register-form-container > div > .form-group > .input-group > .input-group-addon {
+	background: none;
+	border: none;
+	border-radius: none;
+	color: #9f9f93;
+	width: 50px;
+}
+
+.register-form-container > div > .form-group > .input-group > input:focus {
+	outline: none !important;
+	box-shadow: none;
+	text-transform: none;
+	background: #f4f4f0 + #090909;
+
+}
+
+.register-form-container > div > .form-group > .input-group > span {
+	font-family: FontAwesome;
+}
+
+.register-form-container-right > button {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	width: 100%;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: @color-green;
+	text-transform: uppercase;
+	transition: background-color 0.5s ease;
+}
+
+.register-form-container-right > button:hover {
+	transition: background-color 0.5s ease;
+	background: @color-green - #090909;
+}
+
+.register-form-container > div > label {
+	font-size: 10px;
+	color: #cfcfc5;
+	text-transform: uppercase;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	padding-left: 25px;
 }
 
 #login-form > .form-group > .input-group > .input-group-addon {
@@ -145,6 +247,10 @@
 @media all and (min-width: 769px) {
 	.login-container {
 		width: 350px;
+	}
+
+	.register-container {
+		width: 720px;
 	}
 }
 

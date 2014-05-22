@@ -426,6 +426,12 @@ function program3(depth0,data) {
   data.buffer.push("\n              <span class='entypo login nav-icon'></span> <span class='user-text-responsive'>Login</span>\n            ");
   }
 
+function program5(depth0,data) {
+  
+  
+  data.buffer.push("\n              <span class='entypo add-user nav-icon'></span> Register\n            ");
+  }
+
   data.buffer.push("<nav class=\"navbar navbar-default navbar-static-top\" role=\"navigation\">\n	<div class=\"navbar-header\">\n    	");
   hashContexts = {'class': depth0};
   hashTypes = {'class': "STRING"};
@@ -440,8 +446,13 @@ function program3(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.login", options) : helperMissing.call(depth0, "link-to", "auth.login", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n          </li>\n      		");
-  data.buffer.push("\n	    </ul>\n  	</div>\n</nav>");
+  data.buffer.push("\n          </li>\n      		<li class='nav-link'>\n            ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.register", options) : helperMissing.call(depth0, "link-to", "auth.register", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("\n          </li>\n	    </ul>\n  	</div>\n</nav>");
   return buffer;
   
 });
@@ -532,6 +543,80 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("<label id='remember-check' for='remember'>Remember Me</label>\n		<a class='forgot-password' href='#' style='display: none'>Forgotten Your Password?</a>\n		<button type='submit'>Sign In</button>\n	</form>\n</div>\n\n");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "footer", options) : helperMissing.call(depth0, "render", "footer", options))));
+  return buffer;
+  
+});
+
+Ember.TEMPLATES['auth/register'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
+  data.buffer.push("\n\n<div class='register-container'>\n	<div class='auth-header'>Register</div>\n	<div class='auth-desc'>Get signed up and get Planning!</div>\n	<form id='register-form' class='register-form-container'>\n		<div class='register-form-container-left'>\n			<div class='form-group'>\n				<div class='input-group'>\n					<span class='input-group-addon'>&#xf007;</span>\n					");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("firstname"),
+    'class': ("form-control"),
+    'placeholder': ("First Name"),
+    'type': ("text"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n			</div>\n			<div class='form-group'>\n				<div class='input-group'>\n					<span class='input-group-addon'>&#xf007;</span>\n					");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("lastname"),
+    'type': ("text"),
+    'class': ("form-control"),
+    'placeholder': ("Last Name"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n			</div>\n			<div class='form-group'>\n				<div class='input-group'>\n					<span class='input-group-addon'>&#xf0e0;</span>\n					");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("email"),
+    'type': ("email"),
+    'class': ("form-control"),
+    'placeholder': ("Email Address"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n			</div>\n		</div>\n		<div class='register-form-container-right'>\n			<div class='form-group'>\n				<div class='input-group'>\n					<span class='input-group-addon'>&#xf023;</span>\n					");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("password"),
+    'class': ("form-control"),
+    'placeholder': ("Password"),
+    'type': ("password"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n			</div>\n			<div class='form-group'>\n				<div class='input-group'>\n					<span class='input-group-addon'>&#xf023;</span>\n					");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("password-confirm"),
+    'type': ("password"),
+    'class': ("form-control"),
+    'placeholder': ("Confirm Password"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n				</div>\n			</div>\n			<button type='submit'>Register</button>\n		</div>\n	</form>\n</div>\n\n");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
