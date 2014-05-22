@@ -4,7 +4,6 @@ var AuthLoginController = Ember.ObjectController.extend({
 		login: function() {
 			var self = this;
 			data = this.getProperties('email', 'password', 'remember');
-			console.log(data);
 		}
 	}
 });
