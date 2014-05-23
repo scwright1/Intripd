@@ -53,7 +53,7 @@
 	color: @color-olive;
 }
 
-#login-form > .form-group > .input-group {
+.form-group > .input-group {
 	background: #f4f4f0;
 	border: 0;
 	margin: 0;
@@ -62,12 +62,12 @@
 	transition: background-color 0.5s ease;
 }
 
-#login-form > .form-group > .input-group:hover {
+.form-group > .input-group:hover {
 	background: #f4f4f0 + #090909;
 	transition: background-color 0.5s ease;
 }
 
-#login-form > .form-group > .input-group > input {
+.form-group > .input-group > input {
 	height: 100%;
 	background: none;
 	border: none;
@@ -106,37 +106,7 @@
 	background: @color-green - #090909;
 }
 
-.register-form-container > div > .form-group > .input-group {
-	background: #f4f4f0;
-	border: 0;
-	margin: 0;
-	padding: 0;
-	height: 60px;
-	transition: background-color 0.5s ease;
-}
-
-.register-form-container > div > .form-group > .input-group:hover {
-	background: #f4f4f0 + #090909;
-	transition: background-color 0.5s ease;
-}
-
-.register-form-container > div > .form-group > .input-group > input {
-	height: 100%;
-	background: none;
-	border: none;
-	line-height: 60px;
-	padding: 0;
-	padding-left: 10px;
-	outline: none !important;
-	box-shadow: none;
-	color: #9f9f93;
-	font-family: "Open Sans", sans-serif;
-	font-weight: 600;
-	font-size: 12px;
-	width: 300px;
-}
-
-.register-form-container > div > .form-group > .input-group > .input-group-addon {
+.form-group > .input-group > .input-group-addon {
 	background: none;
 	border: none;
 	border-radius: none;
@@ -144,7 +114,7 @@
 	width: 50px;
 }
 
-.register-form-container > div > .form-group > .input-group > input:focus {
+.form-group > .input-group > input:focus {
 	outline: none !important;
 	box-shadow: none;
 	text-transform: none;
@@ -152,7 +122,7 @@
 
 }
 
-.register-form-container > div > .form-group > .input-group > span {
+.form-group > .input-group > span {
 	font-family: FontAwesome;
 }
 
@@ -179,33 +149,13 @@
 	background: @color-green - #090909;
 }
 
-.register-form-container > div > label {
+label {
 	font-size: 10px;
 	color: #cfcfc5;
 	text-transform: uppercase;
 	font-family: "Open Sans", sans-serif;
 	font-weight: bold;
 	padding-left: 25px;
-}
-
-#login-form > .form-group > .input-group > .input-group-addon {
-	background: none;
-	border: none;
-	border-radius: none;
-	color: #9f9f93;
-	width: 50px;
-}
-
-#login-form > .form-group > .input-group > input:focus {
-	outline: none !important;
-	box-shadow: none;
-	text-transform: none;
-	background: #f4f4f0 + #090909;
-
-}
-
-#login-form > .form-group > .input-group > span {
-	font-family: FontAwesome;
 }
 
 .forgot-password {
@@ -216,15 +166,6 @@
 	font-size: 10px;
 	font-weight: bold;
 	font-family: "Open Sans", sans-serif;
-}
-
-#login-form > label {
-	font-size: 10px;
-	color: #cfcfc5;
-	text-transform: uppercase;
-	font-family: "Open Sans", sans-serif;
-	font-weight: bold;
-	padding-left: 25px;
 }
 
 #remember + label:before {
