@@ -35,7 +35,7 @@ userSchema.statics.register = function(email, password, done) {
 				created: new Date()
 			}, function(err, user) {
 				if(err) {
-					return done(10002, {message: 'Internal Error, Email address is already in use'});
+					return done(10002, false, {message: 'Sorry, That email address is already in use!'});
 				} else {
 					//create a profile
 					done(null, user);
