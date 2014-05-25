@@ -203,9 +203,9 @@ var AuthRegisterController = Em.ObjectController.extend({
 			if(!__data.firstname || !__data.lastname || !__data.email || !__data.password) {
 				this.set('flash', 'You are missing information!');
 			} else if(__data.password !== __pwd_check) {
-				//todo - passwords don't match
 				this.set('flash', "Your passwords do not match!");
 			} else {
+				this.set('flash', null);
 				//todo - post data to register
 				$.post('/api/auth/register', __data).done(function(resp) {
 					if(resp.code !== 200) {
@@ -614,21 +614,25 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
-  var hashTypes, hashContexts;
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("<div class='auth-desc-flash'><b>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "flash", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</b></div>");
+  return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
-  data.buffer.push("Get signed up and get Planning! | Already got an Account? ");
+  data.buffer.push("<div class='auth-desc'>Get signed up and get Planning! | Already got an Account? ");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.login", options) : helperMissing.call(depth0, "link-to", "auth.login", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("</div>");
   return buffer;
   }
 function program4(depth0,data) {
@@ -641,12 +645,12 @@ function program4(depth0,data) {
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n\n<div class='register-container'>\n	<div class='auth-header'>Register</div>\n	<div class='auth-desc'>");
+  data.buffer.push("\n\n<div class='register-container'>\n	<div class='auth-header'>Register</div>\n	");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers['if'].call(depth0, "flash", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("</div>\n	<form role='form' id='register-form' class='register-form-container' ");
+  data.buffer.push("\n	<form role='form' id='register-form' class='register-form-container' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "register", {hash:{

@@ -7,9 +7,9 @@ var AuthRegisterController = Em.ObjectController.extend({
 			if(!__data.firstname || !__data.lastname || !__data.email || !__data.password) {
 				this.set('flash', 'You are missing information!');
 			} else if(__data.password !== __pwd_check) {
-				//todo - passwords don't match
 				this.set('flash', "Your passwords do not match!");
 			} else {
+				this.set('flash', null);
 				//todo - post data to register
 				$.post('/api/auth/register', __data).done(function(resp) {
 					if(resp.code !== 200) {

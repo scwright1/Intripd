@@ -2,7 +2,7 @@
 
 <div class='register-container'>
 	<div class='auth-header'>Register</div>
-	<div class='auth-desc'>{{#if flash}}{{flash}}{{else}}Get signed up and get Planning! | Already got an Account? {{#link-to 'auth.login'}}Sign In Here!{{/link-to}}{{/if}}</div>
+	{{#if flash}}<div class='auth-desc-flash'><b>{{flash}}</b></div>{{else}}<div class='auth-desc'>Get signed up and get Planning! | Already got an Account? {{#link-to 'auth.login'}}Sign In Here!{{/link-to}}</div>{{/if}}
 	<form role='form' id='register-form' class='register-form-container' {{action 'register' on='submit'}}>
 		<div class='register-form-container-left'>
 			<div class='form-group'>
