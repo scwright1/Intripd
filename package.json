@@ -1,6 +1,6 @@
 {
 	"name": "Intripd",
-	"version": "0.7.3",
+	"version": "1.3.3",
 	"description": "Intripd is a personal and collaborative travel planning application, designed to make all parts of planning a trip a breeze!",
 	"author": "Intripd <support@intripd.com>",
 	"contributors": [
@@ -28,6 +28,7 @@
 		"ember-tools": "*",
 		"node-uuid": "*",
 		"jwt-simple": "*",
+		"crypto": "*",
 		"buggr": "*",
 		"underscore": "*",
 		"colors": "*",

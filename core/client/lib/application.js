@@ -207,12 +207,15 @@ var AuthRegisterController = Em.ObjectController.extend({
 			} else {
 				this.set('flash', null);
 				//todo - post data to register
-				$.post('/api/auth/register', __data).done(function(resp) {
+				$.post('/api/authentication/register', __data).done(function(resp) {
 					if(resp.code !== 200) {
 						//todo - error registering
+						console.log(resp.code);
 					} else {
 						//todo - set session tokens
 						//todo - retry our attempted Transition if we have one, otherwise drop down to index
+						console.log(resp.code);
+						console.log(resp.uid);
 					}
 				});
 			}
