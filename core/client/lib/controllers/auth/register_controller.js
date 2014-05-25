@@ -16,9 +16,16 @@ var AuthRegisterController = Em.ObjectController.extend({
 						//todo - error registering
 						self.set('flash', resp.err);
 					} else {
-						//todo - set session tokens
-						//todo - retry our attempted Transition if we have one, otherwise drop down to index
-					}
+						App.Session.set('user_auth_token', resp.token);
+						App.Session.set('user_uid', resp.uid);
+						var attemptedTransition = App.Session.get('attemptedTransition');
+				        if (attemptedTransition) {
+				        	attemptedTransition.retry();
+				        	App.Session.set('attemptedTransition', null);
+				        } else {
+				        	self.transitionToRoute('index');
+				        }
+		 			}
 				});
 			}
 

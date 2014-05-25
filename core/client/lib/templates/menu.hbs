@@ -4,6 +4,13 @@
   	</div>
   	<div id="nav-links">
 	    <ul class="nav navbar-nav navbar-right">
+        {{#if isAuthenticated}}
+          <li class='nav-link'>
+            <a href='#' {{action 'logout'}}>
+              <span class='entypo logout nav-icon'></span>  <span class='user-text-responsive'>Logout</span>
+            </a>
+          </li>
+        {{else}}
       		<li class='nav-link'>
             {{#link-to "auth.login"}}
               <span class='entypo login nav-icon'></span> <span class='user-text-responsive'>Login</span>
@@ -14,6 +21,7 @@
               <span class='entypo add-user nav-icon'></span> Register
             {{/link-to}}
           </li>
+        {{/if}}
 	    </ul>
   	</div>
 </nav>

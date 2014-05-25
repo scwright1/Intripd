@@ -13,9 +13,11 @@ module.exports = function(server, passport) {
 				});
 			} else {
 				//create auth token
+				var sessionToken = token(user.uid, true);
 				//create session
 				res.send({
 					code: 200,
+					token: sessionToken,
 					uid: user.uid
 				});
 			}
