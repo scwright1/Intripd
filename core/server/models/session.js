@@ -1,11 +1,11 @@
 var mongoose		= require('mongoose'),
 	jwt				= require('jwt-simple'),
-	schema			= mongoose.Schema({
+	session_schema	= mongoose.Schema({
 		token:		{ type: String, required: true, unique: true },
 		date:		{ type: Date }
 	});
 
-schema.statics.generate = function(data, done) {
+session_schema.statics.generate = function(data, done) {
 	var Session = this;
 	if(!data.token) {
 		return done(400, 'Token not found');
@@ -23,7 +23,7 @@ schema.statics.generate = function(data, done) {
 	}
 };
 
-schema.statics.destroy = function(data, done) {
+session_schema.statics.destroy = function(data, done) {
 	var Session = this;
 	if(!data.token) {
 		return done(400);
@@ -40,10 +40,10 @@ schema.statics.destroy = function(data, done) {
 	}
 };
 
-schema.statics.validate = function(data, done) {
+session_schema.statics.validate = function(data, done) {
 	//todo - check session
 };
 
 
-var Session = mongoose.model('Session', schema);
+var Session = mongoose.model('Session', session_schema);
 module.exports = Session;

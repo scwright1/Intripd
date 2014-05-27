@@ -5,11 +5,12 @@
 //require mongoose for mongodb access.  require hash for hashing passwords
 var mongoose		= require('mongoose'),
 	hash			= require('../helpers/hash'),
-	uuid			= require('node-uuid');
+	uuid			= require('node-uuid'),
+	Profile			= require('./profile');
 
 
 //create the base user schema
-var schema = mongoose.Schema({
+var user_schema = mongoose.Schema({
 	provider: {type: String, required: true, default: 'local'}, //auth provider - Local/Facebook/OAuth/Twitter etc
 	uid: {type: String, required: true},
 	email: {type: String, required: true, unique: true, trim: true, lowercase: true},
@@ -20,7 +21,7 @@ var schema = mongoose.Schema({
 
 
 //create a static function as part of the schema for signing up
-schema.statics.register = function(email, password, done) {
+user_schema.statics.register = function(email, password, done) {
 	var User = this;
 	hash(password, function(err, salt, hash) {
 		if(err) {
@@ -37,15 +38,23 @@ schema.statics.register = function(email, password, done) {
 				if(err) {
 					return done(10002, null, {message: 'Sorry, That email address is already in use!'});
 				} else {
-					//create a profile
-					done(null, user);
+					Profile.create({
+						uid : user.uid,
+                        created : new Date()
+					}, function(err) {
+						if(err) {
+							return done(10003, null, {message: 'Sorry, there has been an error creating your profile!'});
+						} else {
+							return done(200, user);
+						}
+					});
 				}
 			});
 		}
 	})
 };
 
-schema.statics.auth = function(email, password, done) {
+user_schema.statics.auth = function(email, password, done) {
 	this.findOne({email: email}, function(err, user) {
 		if(err) {
 			return done(20001, null, 'Internal Error.  Please try again.');
@@ -71,5 +80,5 @@ schema.statics.auth = function(email, password, done) {
 
 
 //create the User model
-var User = mongoose.model('User', schema);
+var User = mongoose.model('User', user_schema);
 module.exports = User;
