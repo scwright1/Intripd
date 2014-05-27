@@ -67,7 +67,7 @@ schema.statics.auth = function(email, password, done) {
 			}
 		}
 	});
-}
+};
 
 
 //create the User model

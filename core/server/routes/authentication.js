@@ -21,9 +21,10 @@ module.exports = function(server, passport) {
 						var data = {
 							token: SESSIONTOKEN
 						};
-						Session.create(data, function(response, flash) {
+						Session.generate(data, function(response, flash) {
 							if(response === 200) {
 								res.send({
+									code: response,
 									uid: user.uid,
 									token: SESSIONTOKEN
 								});
@@ -36,6 +37,17 @@ module.exports = function(server, passport) {
 						});
 					}
 				});
+			}
+		});
+	});
+
+	//blow away the session and log the user out
+	server.post('/api/authentication/logout', function(req, res, next) {
+		Session.destroy(req.body.__data, function(response) {
+			if(response === 200) {
+				res.send(200);
+			} else {
+				throw response;
 			}
 		});
 	});

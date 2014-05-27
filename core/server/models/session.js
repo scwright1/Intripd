@@ -5,7 +5,7 @@ var mongoose		= require('mongoose'),
 		date:		{ type: Date }
 	});
 
-schema.statics.create = function(data, done) {
+schema.statics.generate = function(data, done) {
 	var Session = this;
 	if(!data.token) {
 		return done(400, 'Token not found');
@@ -24,12 +24,25 @@ schema.statics.create = function(data, done) {
 };
 
 schema.statics.destroy = function(data, done) {
-	//todo - destroy session
+	var Session = this;
+	if(!data.token) {
+		return done(400);
+	} else {
+		Session.remove({
+			token: data.token
+		}, function(err) {
+			if(err) {
+				return done(400);
+			} else {
+				return done(200)
+			}
+		});
+	}
 };
 
-schema.statics.check = function(data, done) {
+schema.statics.validate = function(data, done) {
 	//todo - check session
-}
+};
 
 
 var Session = mongoose.model('Session', schema);

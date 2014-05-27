@@ -113,7 +113,7 @@ var SessionManager = Ember.Object.extend({
 	// Determine if the user is currently authenticated.
   	isAuthenticated: function() {
   		//return if both the user token and user uid fields are filled (even if they might be invalid)
-    	return !Ember.isEmpty(this.get('user_auth_token')) && !Ember.isEmpty(this.get('user_uid'));
+      return !Ember.isEmpty(this.get('user_auth_token')) && !Ember.isEmpty(this.get('user_uid'));
   	},
 
   	//update cookie if token changes 
@@ -137,24 +137,25 @@ var SessionManager = Ember.Object.extend({
   	//update cookie if trip changes
   	tripChanged: function() {
   		$.cookie('TRP_USERACTIVETRIP', this.get('user_active_trip'), {expires: 365});
-  	},
+  	}.observes('user_active_trip'),
 
   	reset: function() {
+      var self = this;
   		//dump the user back to the index page
   		Ember.run.sync();
   		//reset the session
   		Ember.run.next(this, function(){
   			var _udata = { __data: {token: this.get('user_auth_token'), uid: this.get('user_uid')} };
   			//destroy the server-side session information
-  			$.post('/api/sessions/destroy', _udata).done(function() {
+  			$.post('/api/authentication/logout', _udata).done(function() {
           //reset the client-side tokens (cookies and internal)
-          $.deleteCookie('TRP_USERACTIVETRIP');
-          $.deleteCookie('TRP_USERUID');
-          $.deleteCookie('TRP_USERAUTHTOKEN');
-          this.set('user_active_trip', null);
-          this.set('user_auth_token', null);
-          this.set('user_uid', null);
-          this.set('persist', false);
+          self.set('user_active_trip', '');
+          self.set('user_auth_token', '');
+          self.set('user_uid', '');
+          self.set('persist', false);
+          $.removeCookie('TRP_USERACTIVETRIP');
+          $.removeCookie('TRP_USERUID');
+          $.removeCookie('TRP_USERAUTHTOKEN');
           //reset the ajax prefilter
           Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
             if(!jqXHR.crossDomain) {
@@ -171,8 +172,9 @@ var SessionManager = Ember.Object.extend({
 
 module.exports = SessionManager;
 },{}],4:[function(require,module,exports){
-var ApplicationController = Ember.Controller.extend({
+var ApplicationController = Ember.ObjectController.extend({
 	isAuthenticated: function() {
+		console.log(App.Session.isAuthenticated());
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
 	actions: {
@@ -344,7 +346,7 @@ module.exports = AuthLoginRoute;
 },{}],12:[function(require,module,exports){
 var AuthRegisterRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
-		if(App.Session.get('token')) {
+		if(App.Session.get('user_auth_token')) {
 			App.Session.set('attemptedTransition', transition);
 			this.transitionTo('index');
 		}
