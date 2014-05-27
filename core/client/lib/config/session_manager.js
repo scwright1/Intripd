@@ -53,24 +53,25 @@ var SessionManager = Ember.Object.extend({
   		Ember.run.next(this, function(){
   			var _udata = { __data: {token: this.get('user_auth_token'), uid: this.get('user_uid')} };
   			//destroy the server-side session information
-  			$.post('/api/sessions/destroy', _udata);
-				//reset the client-side tokens (cookies and internal)
-				$.deleteCookie('TRP_USERACTIVETRIP');
-				$.deleteCookie('TRP_USERUID');
-				$.deleteCookie('TRP_USERAUTHTOKEN');
-				this.set('user_active_trip', null);
-				this.set('user_auth_token', null);
-				this.set('user_uid', null);
-        this.set('persist', false);
-				//reset the ajax prefilter
-				Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-					if(!jqXHR.crossDomain) {
-						jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
-					jqXHR.setRequestHeader('X-UID', null);
-					}
-				});
-				//finally, throw the user back to the index page
-				App.__container__.lookup("route:application").transitionTo('index');
+  			$.post('/api/sessions/destroy', _udata).done(function() {
+          //reset the client-side tokens (cookies and internal)
+          $.deleteCookie('TRP_USERACTIVETRIP');
+          $.deleteCookie('TRP_USERUID');
+          $.deleteCookie('TRP_USERAUTHTOKEN');
+          this.set('user_active_trip', null);
+          this.set('user_auth_token', null);
+          this.set('user_uid', null);
+          this.set('persist', false);
+          //reset the ajax prefilter
+          Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+            if(!jqXHR.crossDomain) {
+              jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
+            jqXHR.setRequestHeader('X-UID', null);
+            }
+          });
+          //finally, throw the user back to the index page
+          App.__container__.lookup("route:application").transitionTo('index');
+        });
   		});
   	}
 });
