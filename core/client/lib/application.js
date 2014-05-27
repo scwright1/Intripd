@@ -118,7 +118,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
-  		if(this.get('persist')) {
+  		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'));
@@ -127,7 +127,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if uid changes
   	uidChanged: function() {
-  		if(this.get('persist')) {
+  		if(this.get('persist') === true) {
   			$.cookie('TRP_USERUID', this.get('user_uid'), {expires: 365});
   		} else {
   			$.cookie('TRP_USERUID', this.get('user_uid'));
@@ -191,7 +191,28 @@ var AuthLoginController = Ember.ObjectController.extend({
 	actions: {
 		login: function() {
 			var self = this;
-			data = this.getProperties('email', 'password', 'remember');
+			var __data = this.getProperties('email', 'password', 'remember');
+			self.set('flash', null);
+			if(!__data.email || !__data.password) {
+				this.set('flash', 'You are missing information!');
+			} else {
+				$.post('/api/authentication/login', __data).done(function(response) {
+					if(response.code !== 200) {
+						self.set('flash', response.err);
+					} else {
+						App.Session.set('user_auth_token', response.token);
+						App.Session.set('user_uid', response.uid);
+						App.Session.set('persist', __data.remember);
+						var attemptedTransition = App.Session.get('attemptedTransition');
+				        if (attemptedTransition) {
+				        	attemptedTransition.retry();
+				        	App.Session.set('attemptedTransition', null);
+				        } else {
+				        	self.transitionToRoute('index');
+				        }
+					}
+				});
+			}
 		}
 	}
 });
@@ -583,9 +604,32 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['auth/login'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
+  
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("<div class='auth-desc-flash'><b>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "flash", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</b></div>");
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
+  data.buffer.push("<div class='auth-desc'>Got an Account? Awesome! ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.register", options) : helperMissing.call(depth0, "link-to", "auth.register", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("</div>");
+  return buffer;
+  }
+function program4(depth0,data) {
   
   
   data.buffer.push("Or Sign Up!");
@@ -595,13 +639,12 @@ function program1(depth0,data) {
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n\n<!-- Auth content -->\n<div class='login-container'>\n	<div class='auth-header'>Sign In</div>\n	<div class='auth-desc'>Got an Account? Awesome! ");
+  data.buffer.push("\n\n<!-- Auth content -->\n<div class='login-container'>\n	<div class='auth-header'>Sign In</div>\n	");
   hashTypes = {};
   hashContexts = {};
-  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.register", options) : helperMissing.call(depth0, "link-to", "auth.register", options));
+  stack2 = helpers['if'].call(depth0, "flash", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("</div>\n	<form id='login-form' ");
+  data.buffer.push("\n	<form id='login-form' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "login", {hash:{

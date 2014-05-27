@@ -25,7 +25,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
-  		if(this.get('persist')) {
+  		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'));
@@ -34,7 +34,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if uid changes
   	uidChanged: function() {
-  		if(this.get('persist')) {
+  		if(this.get('persist') === true) {
   			$.cookie('TRP_USERUID', this.get('user_uid'), {expires: 365});
   		} else {
   			$.cookie('TRP_USERUID', this.get('user_uid'));

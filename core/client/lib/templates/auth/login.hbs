@@ -3,7 +3,7 @@
 <!-- Auth content -->
 <div class='login-container'>
 	<div class='auth-header'>Sign In</div>
-	<div class='auth-desc'>Got an Account? Awesome! {{#link-to 'auth.register'}}Or Sign Up!{{/link-to}}</div>
+	{{#if flash}}<div class='auth-desc-flash'><b>{{flash}}</b></div>{{else}}<div class='auth-desc'>Got an Account? Awesome! {{#link-to 'auth.register'}}Or Sign Up!{{/link-to}}</div>{{/if}}
 	<form id='login-form' {{action 'login' on='submit'}}>
 		<div class='form-group'>
 			<div class='input-group'>

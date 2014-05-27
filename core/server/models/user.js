@@ -60,13 +60,13 @@ user_schema.statics.auth = function(email, password, done) {
 			return done(20001, null, 'Internal Error.  Please try again.');
 		} else {
 			if(!user) {
-				return done(401, null, "Invalid Email Address or Password");
+				return done(401, null, "Can't match Email Address");
 			} else {
 				hash(password, user.salt, function(err, hash) {
 					if(err) {
 						return done(401, null, err);
 					} else {
-						if(hash === user.hash) {
+						if(hash == user.hash) {
 							return done(200, user, null);
 						} else {
 							return done(401, null, 'Invalid Email Address or Password');

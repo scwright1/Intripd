@@ -17,7 +17,7 @@ module.exports = function(server, passport) {
 					if(err) {
 						res.send({err: err});
 					} else {
-						var SESSIONTOKEN = token(user.uid, req.body.persist);
+						var SESSIONTOKEN = token(user.uid, false);
 						var data = {
 							token: SESSIONTOKEN
 						};
@@ -35,6 +35,37 @@ module.exports = function(server, passport) {
 								});
 							}
 						});
+					}
+				});
+			}
+		});
+	});
+
+
+	server.post('/api/authentication/login', function(req, res, next) {
+		User.auth(req.body.email, req.body.password, function(response, user, flash) {
+			if((response !== 200) || (!user)) {
+				res.send({
+					code: response,
+					err: flash
+				});
+			} else {
+				var SESSIONTOKEN = token(user.uid, req.body.remember);
+				var data = {
+					token: SESSIONTOKEN
+				};
+				Session.generate(data, function(response, flash) {
+					if(response === 200) {
+						res.send({
+							code: response,
+							uid: user.uid,
+							token: SESSIONTOKEN
+						});
+					} else {
+						res.send({
+							code: response,
+							err: flash
+						})
 					}
 				});
 			}
