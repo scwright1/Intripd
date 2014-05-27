@@ -6,7 +6,21 @@ var mongoose		= require('mongoose'),
 	});
 
 schema.statics.create = function(data, done) {
-	//todo - create session
+	var Session = this;
+	if(!data.token) {
+		return done(400, 'Token not found');
+	} else {
+		Session.create({
+			token: data.token,
+			date: new Date()
+		}, function(err, state) {
+			if(err) {
+				return done(400, 'Token Malformed');
+			} else {
+				return done(200, null);
+			}
+		});
+	}
 };
 
 schema.statics.destroy = function(data, done) {

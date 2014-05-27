@@ -1,5 +1,6 @@
 var token		= require('../helpers/token'),
-	User		= require('../models/user');
+	User		= require('../models/user'),
+	Session		= require('../models/session');
 
 
 module.exports = function(server, passport) {
@@ -12,13 +13,28 @@ module.exports = function(server, passport) {
 					err: flash.message
 				});
 			} else {
-				//create auth token
-				var sessionToken = token(user.uid, true);
-				//create session
-				res.send({
-					code: 200,
-					token: sessionToken,
-					uid: user.uid
+				req.login(user, function(err) {
+					if(err) {
+						res.send({err: err});
+					} else {
+						var SESSIONTOKEN = token(user.uid, req.body.persist);
+						var data = {
+							token: SESSIONTOKEN
+						};
+						Session.create(data, function(response, flash) {
+							if(response === 200) {
+								res.send({
+									uid: user.uid,
+									token: SESSIONTOKEN
+								});
+							} else {
+								res.send({
+									code: response,
+									err: flash
+								});
+							}
+						});
+					}
 				});
 			}
 		});
