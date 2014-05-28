@@ -5,8 +5,7 @@ var mongoose			= require('mongoose'),
 		lastName:		{type: String},
 		gender:			{type: String},
 		dob:			{type: Date},
-		created:		{type: Date},
-		userState:		{type: Boolean, default: true}
+		created:		{type: Date}
 	});
 
 var Profile = mongoose.model('Profile', profile_schema);

@@ -4,17 +4,13 @@
  */
 
 var SessionManager = Ember.Object.extend({
-	persist: false,
 	//initialise
+  persist: false,
 	init: function() {
 		this._super();
-		//initialise the cookies that will be used
-		//TRP_USERUID
-		//TRP_USERAUTHTOKEN
-		//TRP_USERACTIVETRIP
-		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'), {expires: 365});
-		this.set('user_uid', $.cookie('TRP_USERUID'), {expires: 365});
-		this.set('user_active_trip', $.cookie('TRP_USERACTIVETRIP'), {expires: 365});
+		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'));
+		this.set('user_uid', $.cookie('TRP_USERUID'));
+		this.set('user_active_trip', $.cookie('TRP_USERACTIVETRIP'));
 	},
 
 	// Determine if the user is currently authenticated.
@@ -25,6 +21,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
+      console.log(this.get('persist'));
   		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {

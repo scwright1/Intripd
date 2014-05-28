@@ -4,6 +4,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 		login: function() {
 			var self = this;
 			var __data = this.getProperties('email', 'password', 'remember');
+			self.set('remember', __data.remember);
 			self.set('flash', null);
 			if(!__data.email || !__data.password) {
 				this.set('flash', 'You are missing information!');
@@ -12,9 +13,11 @@ var AuthLoginController = Ember.ObjectController.extend({
 					if(response.code !== 200) {
 						self.set('flash', response.err);
 					} else {
-						App.Session.set('user_auth_token', response.token);
-						App.Session.set('user_uid', response.uid);
-						App.Session.set('persist', __data.remember);
+						App.Session.setProperties({
+							user_auth_token: response.token,
+							user_uid: response.uid,
+							persist: self.get('remember')
+						});
 						var attemptedTransition = App.Session.get('attemptedTransition');
 				        if (attemptedTransition) {
 				        	attemptedTransition.retry();

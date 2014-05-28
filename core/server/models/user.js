@@ -21,15 +21,15 @@ var user_schema = mongoose.Schema({
 
 
 //create a static function as part of the schema for signing up
-user_schema.statics.register = function(email, password, done) {
+user_schema.statics.register = function(data, done) {
 	var User = this;
-	hash(password, function(err, salt, hash) {
+	hash(data.password, function(err, salt, hash) {
 		if(err) {
 			return done(10001, null, {message: 'Internal Error, Password hash failed'});
 		} else {
 			//create user
 			User.create({
-				email: email,
+				email: data.email,
 				salt: salt,
 				hash: hash,
 				uid: uuid.v4(),
@@ -40,6 +40,8 @@ user_schema.statics.register = function(email, password, done) {
 				} else {
 					Profile.create({
 						uid : user.uid,
+						firstName: data.firstname,
+						lastName: data.lastname,
                         created : new Date()
 					}, function(err) {
 						if(err) {

@@ -97,17 +97,13 @@ App.Router.reopen({
  */
 
 var SessionManager = Ember.Object.extend({
-	persist: false,
 	//initialise
+  persist: false,
 	init: function() {
 		this._super();
-		//initialise the cookies that will be used
-		//TRP_USERUID
-		//TRP_USERAUTHTOKEN
-		//TRP_USERACTIVETRIP
-		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'), {expires: 365});
-		this.set('user_uid', $.cookie('TRP_USERUID'), {expires: 365});
-		this.set('user_active_trip', $.cookie('TRP_USERACTIVETRIP'), {expires: 365});
+		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'));
+		this.set('user_uid', $.cookie('TRP_USERUID'));
+		this.set('user_active_trip', $.cookie('TRP_USERACTIVETRIP'));
 	},
 
 	// Determine if the user is currently authenticated.
@@ -118,6 +114,7 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
+      console.log(this.get('persist'));
   		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {
@@ -192,6 +189,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 		login: function() {
 			var self = this;
 			var __data = this.getProperties('email', 'password', 'remember');
+			self.set('remember', __data.remember);
 			self.set('flash', null);
 			if(!__data.email || !__data.password) {
 				this.set('flash', 'You are missing information!');
@@ -200,9 +198,11 @@ var AuthLoginController = Ember.ObjectController.extend({
 					if(response.code !== 200) {
 						self.set('flash', response.err);
 					} else {
-						App.Session.set('user_auth_token', response.token);
-						App.Session.set('user_uid', response.uid);
-						App.Session.set('persist', __data.remember);
+						App.Session.setProperties({
+							user_auth_token: response.token,
+							user_uid: response.uid,
+							persist: self.get('remember')
+						});
 						var attemptedTransition = App.Session.get('attemptedTransition');
 				        if (attemptedTransition) {
 				        	attemptedTransition.retry();
@@ -237,8 +237,10 @@ var AuthRegisterController = Em.ObjectController.extend({
 						//todo - error registering
 						self.set('flash', resp.err);
 					} else {
-						App.Session.set('user_auth_token', resp.token);
-						App.Session.set('user_uid', resp.uid);
+						App.Session.setProperties({
+							user_auth_token: resp.token,
+							user_uid: resp.uid
+						});
 						var attemptedTransition = App.Session.get('attemptedTransition');
 				        if (attemptedTransition) {
 				        	attemptedTransition.retry();
@@ -573,7 +575,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "menu", options) : helperMissing.call(depth0, "render", "menu", options))));
-  data.buffer.push("\n		<div class=\"policy\" style='border-bottom: 1px solid #455158;'>\n			<div class=\"container\">\n				<h3>About Cookies on this site</h3>\n				<p>Cookies are small text entries, stored within the browser, used to improve the web services we offer.  They are used primarily to improve the interaction between yourselves and our website.\n				<br /><br />\n				By using cookies, we can do the following:\n				<br/><br />\n				<ul>\n					<li>Enable our services to recognise you and your device so that you can save your personal information for further sessions without having to re-enter it</li>\n					<li>Retain login information (session data), so that your login can persist across multiple sessions of use for the service.</li>\n					<li>Measure statistics about how people are using our services, so that they can be optimised and tailored to the user-load and interaction</li>\n				</ul>\n				<br /><br />\n				Without these cookies, the website and our services will assume that you are a new visitor each time you move to a new page or visit the site.\n				<br /><br />\n				European Union (EU) legislation requires that we let you know about our use of cookies.  Our cookie audit can be found below.\n				<br /><br />\n				We recommend that you allow the cookies we set, as they help us to provide a better service.  <b>We cannot identify you from these cookies, as they are anonymous.</b>\n				<br />\n				<br />\n				</p>\n				<h4>How to remove our Cookies</h4>\n				<p>If you do not want to receive cookes from our website or services, or want to remove cookies, you must select cookie settings under the Internet or Privacy settings in your browser, and then add our url <a>*.intripd.com</a> to the list of websites you do not want to accept cookies from.<br /><br />\n				These are specific instructions for how to remove cookies from each major browser:<br />\n				<a href='http://support.google.com/?hl=en&rd=1' target='_blank'>Android</a><br />\n				<a href='http://support.google.com/chrome/bin/answer.py?hl=en&answer=95647' target='_blank'>Chrome</a><br />\n				<a href='http://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences?redirectlocale=en-US&redirectslug=Enabling+and+disabling+cookies' target='_blank'>Firefox</a><br />\n				<a href='http://support.microsoft.com/kb/196955' target='_blank'>Internet Explorer</a><br />\n				<a href='http://support.apple.com/kb/PH5042' target='_blank'>Safari (Mac OSX)</a><br />\n				<a href='http://support.apple.com/kb/HT1677' target='_blank'>Safari (iOS)</a><br /><br />\n				<i><b>However, it is important to note that if you do this, you will be unable to use the vast majority of our services, as, due to the nature of the services we provide, we necessitate the need for cookies as part of the session.</b></i>\n				<br /><br /></p>\n				<h3>Cookie Audit</h3>\n				<p>Below is a list of cookies currently employed by our site and services (both 1st and 3rd party), and a detailed description of each.<br /><br /></p>\n				<h4>Persistent Cookies</h4><p>These cookies will store information for longer than your current browser session.  They are used for making it easier to enter repeated information, or remember preference settings in subsequent visits.</p>\n				<p><b>Originator: </b>intripd.com<br />\n				<b>Cookie Name: </b>TRP_COOKIENOTIF<br /><br />\n				<b>TTL: </b>1 Year.<br />\n				<b>Can be deleted? </b>Yes<br />\n				<b>Purpose: </b>A cookie used for tracking whether a user has acknowledged the Cookie Policy notification.  Once the user acknowledges the notice, the cookie is set and the notice disappears.  Setting the cookie implies consent to using cookies to track other user data.<br /><br /><br /></p>\n			</div>\n		</div>\n");
+  data.buffer.push("\n		<div class=\"policy\" style='border-bottom: 1px solid #455158;'>\n			<div class=\"container\">\n				<h3>About Cookies on this site</h3>\n				<p>Cookies are small text entries, stored within the browser, used to improve the web services we offer.  They are used primarily to improve the interaction between yourselves and our website.\n				<br /><br />\n				By using cookies, we can do the following:\n				<br/><br />\n				<ul>\n					<li>Enable our services to recognise you and your device so that you can save your personal information for further sessions without having to re-enter it</li>\n					<li>Retain login information (session data), so that your login can persist across multiple sessions of use for the service.</li>\n					<li>Measure statistics about how people are using our services, so that they can be optimised and tailored to the user-load and interaction</li>\n				</ul>\n				<br /><br />\n				Without these cookies, the website and our services will assume that you are a new visitor each time you move to a new page or visit the site.\n				<br /><br />\n				European Union (EU) legislation requires that we let you know about our use of cookies.  Our cookie audit can be found below.\n				<br /><br />\n				We recommend that you allow the cookies we set, as they help us to provide a better service.  <b>We cannot identify you from these cookies, as they are anonymous.</b>\n				<br />\n				<br />\n				</p>\n				<h4>How to remove our Cookies</h4>\n				<p>If you do not want to receive cookes from our website or services, or want to remove cookies, you must select cookie settings under the Internet or Privacy settings in your browser, and then add our url <a>*.intripd.com</a> to the list of websites you do not want to accept cookies from.<br /><br />\n				These are specific instructions for how to remove cookies from each major browser:<br />\n				<a href='http://support.google.com/?hl=en&rd=1' target='_blank'>Android</a><br />\n				<a href='http://support.google.com/chrome/bin/answer.py?hl=en&answer=95647' target='_blank'>Chrome</a><br />\n				<a href='http://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences?redirectlocale=en-US&redirectslug=Enabling+and+disabling+cookies' target='_blank'>Firefox</a><br />\n				<a href='http://support.microsoft.com/kb/196955' target='_blank'>Internet Explorer</a><br />\n				<a href='http://support.apple.com/kb/PH5042' target='_blank'>Safari (Mac OSX)</a><br />\n				<a href='http://support.apple.com/kb/HT1677' target='_blank'>Safari (iOS)</a><br /><br />\n				<i><b>However, it is important to note that if you do this, you will be unable to use the vast majority of our services, as, due to the nature of the services we provide, we necessitate the need for cookies as part of the session.</b></i>\n				<br /><br /></p>\n				<h3>Cookie Audit</h3>\n				<p>Below is a list of cookies currently employed by our site and services (both 1st and 3rd party), and a detailed description of each.<br /><br /></p>\n				<h4>Persistent Cookies</h4><p>These cookies will store information for longer than your current browser session.  They are used for making it easier to enter repeated information, or remember preference settings in subsequent visits.</p>\n				<p><b>Originator: </b>intripd.com<br />\n				<b>Cookie Name: </b>TRP_COOKIENOTIF<br /><br />\n				<b>TTL: </b>1 Year.<br />\n				<b>Can be deleted? </b>Yes<br />\n				<b>Purpose: </b>A cookie used for tracking whether a user has acknowledged the Cookie Policy notification.  Once the user acknowledges the notice, the cookie is set and the notice disappears.  Setting the cookie implies consent to using cookies to track other user data.<br /><br /><br /></p>\n				<p><b>Originator: </b>intripd.com<br />\n				<b>Cookie Name: </b>TRP_USERAUTHTOKEN<br /><br />\n				<b>TTL: </b>Up to 1 Year.<br />\n				<b>Can be deleted? </b>Yes<br />\n				<b>Purpose: </b>A cookie used for storing a unique random user authentication token in the browser.  This cookie allows the user to return to the site without having to log in again (if \"remember me\" is selected at Login)<br /><br /><br /></p>\n				<p><b>Originator: </b>intripd.com<br />\n				<b>Cookie Name: </b>TRP_USERUID<br /><br />\n				<b>TTL: </b>Up to 1 Year.<br />\n				<b>Can be deleted? </b>Yes<br />\n				<b>Purpose: </b>A cookie used for storing a unique random user ID in the browser.  This cookie allows the user to return to the site without having to log in again (if \"remember me\" is selected at Login)<br /><br /><br /></p>\n			</div>\n		</div>\n");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -860,15 +862,17 @@ var IndexView = Ember.View.extend({
 		});
 
 		$(document).scroll(function () {
-			var sp = $(this).scrollTop();
-			if(sp >= $('#feature-2').offset().top) {
-				//do feature-2 view logic
-				$('#feature-2').find('.feature-content-header').css('display', 'block');
-				$('#feature-2').find('.feature-content-header').addClass('animated fadeInLeft');
-				setTimeout(function() {
-					$('#feature-2').find('.feature-content-desc').css('display', 'block');
-					$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
-				}, 500);
+			if(document.getElementById('splash')) {
+				var sp = $(this).scrollTop();
+				if(sp >= $('#feature-2').offset().top) {
+					//do feature-2 view logic
+					$('#feature-2').find('.feature-content-header').css('display', 'block');
+					$('#feature-2').find('.feature-content-header').addClass('animated fadeInLeft');
+					setTimeout(function() {
+						$('#feature-2').find('.feature-content-desc').css('display', 'block');
+						$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
+					}, 500);
+				}
 			}
 		});
 	}

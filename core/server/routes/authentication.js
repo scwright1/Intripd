@@ -6,7 +6,7 @@ var token		= require('../helpers/token'),
 module.exports = function(server, passport) {
 	server.post('/api/authentication/register', function(req, res, next) {
 		//sign up user
-		User.register(req.body.email, req.body.password, function(response, user, flash) {
+		User.register(req.body, function(response, user, flash) {
 			if(response !== 200) {
 				res.send({
 					code: response,

@@ -33,15 +33,17 @@ var IndexView = Ember.View.extend({
 		});
 
 		$(document).scroll(function () {
-			var sp = $(this).scrollTop();
-			if(sp >= $('#feature-2').offset().top) {
-				//do feature-2 view logic
-				$('#feature-2').find('.feature-content-header').css('display', 'block');
-				$('#feature-2').find('.feature-content-header').addClass('animated fadeInLeft');
-				setTimeout(function() {
-					$('#feature-2').find('.feature-content-desc').css('display', 'block');
-					$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
-				}, 500);
+			if(document.getElementById('splash')) {
+				var sp = $(this).scrollTop();
+				if(sp >= $('#feature-2').offset().top) {
+					//do feature-2 view logic
+					$('#feature-2').find('.feature-content-header').css('display', 'block');
+					$('#feature-2').find('.feature-content-header').addClass('animated fadeInLeft');
+					setTimeout(function() {
+						$('#feature-2').find('.feature-content-desc').css('display', 'block');
+						$('#feature-2').find('.feature-content-desc').addClass('animated fadeInLeft');
+					}, 500);
+				}
 			}
 		});
 	}
