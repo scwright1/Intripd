@@ -6,6 +6,9 @@
 	    <ul class="nav navbar-nav navbar-right">
         {{#if isAuthenticated}}
           <li class='nav-link'>
+            <span class='user-text-responsive'>Welcome back, </span><b>{{profile.firstName}}</b>
+          </li>
+          <li class='nav-link'>
             <a href='#' {{action 'logout'}}>
               <span class='entypo logout nav-icon'></span>  <span class='user-text-responsive'>Logout</span>
             </a>

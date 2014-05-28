@@ -21,7 +21,6 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
-      console.log(this.get('persist'));
   		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {
@@ -67,6 +66,7 @@ var SessionManager = Ember.Object.extend({
             jqXHR.setRequestHeader('X-UID', null);
             }
           });
+          App.reset();
           //finally, throw the user back to the index page
           App.__container__.lookup("route:application").transitionTo('index');
         });

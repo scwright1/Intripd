@@ -19,6 +19,6 @@ App.Router.map(function() {
 	this.route("error", {path: "*path"});
 });
 
-App.Router.reopen({
+/*App.Router.reopen({
 	location: 'hashbang'
-});
+});*/

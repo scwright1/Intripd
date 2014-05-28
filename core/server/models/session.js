@@ -40,8 +40,27 @@ session_schema.statics.destroy = function(data, done) {
 	}
 };
 
-session_schema.statics.validate = function(data, done) {
+session_schema.statics.validate = function(req, res, next) {
 	//todo - check session
+	var Session = mongoose.model('Session', session_schema);
+	if((!req.headers['x-authentication-token']) || (!req.headers['x-uid'])) {
+		res.send(400);
+	} else {
+		Session.findOne({token: req.headers['x-authentication-token']}, function(err, obj) {
+			if((err) || (!obj)) {
+				res.send(401);
+			} else {
+				var decode = jwt.decode(req.headers['x-authentication-token'], process.env.TOKENKEY);
+				var now = new Date();
+				if((decode.uid !== req.headers['x-uid']) || (decode.exp < now.toJSON())) {
+					Session.destroy({token: req.headers['x-authentication-token']}, state);
+					res.send(401);
+				} else {
+					next();
+				}
+			}
+		});
+	}
 };
 
 

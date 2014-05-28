@@ -5,6 +5,7 @@ module.exports = function(server, passport) {
 		//TODO: routes
 		require('./error')(server);
 		require('./sessions')(server);
+		require('./user')(server);
 		require('./authentication')(server, passport);
 		//once complete
 		console.info('Setup routes successfully');

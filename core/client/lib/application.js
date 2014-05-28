@@ -24,7 +24,7 @@ module.exports = App;
 /*
 registerImplementation of hashbang url
  */
-
+/*
  (function() {
 
 var get = Ember.get, set = Ember.set;
@@ -64,7 +64,7 @@ var hashbangLocation = Ember.HashLocation.extend({
 
 App.register('location:hashbang', hashbangLocation);
 
-})();
+})();*/
 },{}],2:[function(require,module,exports){
 var App = require('./app');
 
@@ -87,9 +87,9 @@ App.Router.map(function() {
 	this.route("error", {path: "*path"});
 });
 
-App.Router.reopen({
+/*App.Router.reopen({
 	location: 'hashbang'
-});
+});*/
 },{"./app":1}],3:[function(require,module,exports){
 //Session Manager
 /*
@@ -114,7 +114,6 @@ var SessionManager = Ember.Object.extend({
 
   	//update cookie if token changes 
   	tokenChanged: function() {
-      console.log(this.get('persist'));
   		if(this.get('persist') === true) {
   			$.cookie('TRP_USERAUTHTOKEN', this.get('user_auth_token'), {expires: 365});
   		} else {
@@ -160,6 +159,7 @@ var SessionManager = Ember.Object.extend({
             jqXHR.setRequestHeader('X-UID', null);
             }
           });
+          App.reset();
           //finally, throw the user back to the index page
           App.__container__.lookup("route:application").transitionTo('index');
         });
@@ -173,6 +173,10 @@ var ApplicationController = Ember.ObjectController.extend({
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
+	profile: function() {
+		var user = this.store.find('profile', App.Session.get('user_uid'));
+		return user;
+	}.property(),
 	actions: {
 		closeCookieNotification: function() {
 			$.cookie('TRP_COOKIENOTIF', false);
@@ -287,6 +291,7 @@ App.IndexController = require('./controllers/index_controller');
 App.MenuController = require('./controllers/menu_controller');
 App.AuthLoginController = require('./controllers/auth/login_controller');
 App.AuthRegisterController = require('./controllers/auth/register_controller');
+App.Profile = require('./models/profile');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
 App.MapRoute = require('./routes/map_route');
@@ -300,7 +305,17 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./routes/application_route":10,"./routes/auth/login_route":11,"./routes/auth/register_route":12,"./routes/error_route":13,"./routes/map_route":14,"./templates":15,"./views/application_view":16,"./views/index_view":17}],10:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./models/profile":10,"./routes/application_route":11,"./routes/auth/login_route":12,"./routes/auth/register_route":13,"./routes/error_route":14,"./routes/map_route":15,"./templates":16,"./views/application_view":17,"./views/index_view":18}],10:[function(require,module,exports){
+var Profile = DS.Model.extend({
+	uid: DS.attr('string'),
+	firstName: DS.attr('string'),
+	lastName: DS.attr('string'),
+	gender: DS.attr('string'),
+	DOB: DS.attr('date')
+});
+
+module.exports = Profile;
+},{}],11:[function(require,module,exports){
 var AppSession = require('../config/session_manager');
 
 //initialize the session at application start time
@@ -357,7 +372,7 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-},{"../config/session_manager":3}],11:[function(require,module,exports){
+},{"../config/session_manager":3}],12:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	model: function() {
 		return Ember.Object.create({});
@@ -365,7 +380,7 @@ var AuthLoginRoute = Ember.Route.extend({
 });
 
 module.exports = AuthLoginRoute;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var AuthRegisterRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('user_auth_token')) {
@@ -379,7 +394,7 @@ var AuthRegisterRoute = Ember.Route.extend({
 });
 
 module.exports = AuthRegisterRoute;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var ErrorRoute = Ember.Route.extend({
 	redirect: function() {
 		window.location.replace('404');
@@ -387,7 +402,7 @@ var ErrorRoute = Ember.Route.extend({
 });
 
 module.exports = ErrorRoute;
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
 	model: function() {
 		return Ember.Object.create({});
@@ -395,7 +410,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 });
 
 module.exports = MapRoute;
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -509,7 +524,11 @@ function program1(depth0,data) {
 function program3(depth0,data) {
   
   var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n          <li class='nav-link'>\n            <a href='#' ");
+  data.buffer.push("\n          <li class='nav-link'>\n            <span class='user-text-responsive'>Welcome back, </span><b>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</b>\n          </li>\n          <li class='nav-link'>\n            <a href='#' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -807,7 +826,7 @@ function program4(depth0,data) {
 
 
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -826,7 +845,7 @@ var ApplicationView = Ember.View.extend({
 });
 
 module.exports = ApplicationView;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
