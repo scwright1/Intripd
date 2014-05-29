@@ -66,7 +66,6 @@ var SessionManager = Ember.Object.extend({
             jqXHR.setRequestHeader('X-UID', null);
             }
           });
-          App.reset();
           //finally, throw the user back to the index page
           App.__container__.lookup("route:application").transitionTo('index');
         });

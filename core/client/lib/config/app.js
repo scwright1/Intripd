@@ -23,7 +23,7 @@ module.exports = App;
 /*
 registerImplementation of hashbang url
  */
-/*
+
  (function() {
 
 var get = Ember.get, set = Ember.set;
@@ -63,4 +63,4 @@ var hashbangLocation = Ember.HashLocation.extend({
 
 App.register('location:hashbang', hashbangLocation);
 
-})();*/
+})();

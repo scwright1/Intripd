@@ -11,11 +11,11 @@ var mongoose			= require('mongoose'),
 profile_schema.statics.getProfileWithID = function(id, done) {
 	var Profile = mongoose.model('Profile', profile_schema);
 	if(!id) {
-		return done(401, null);
+		return done(401, null, 'No ID Provided');
 	} else {
 		Profile.findOne({uid: id}, function(err, profile) {
 			if((err) || (!profile)) {
-				return done(401, null);
+				return done(401, null, 'Possibly '+err+' or no profile found');
 			} else {
 
 				var data = {
@@ -26,7 +26,7 @@ profile_schema.statics.getProfileWithID = function(id, done) {
 					'gender': profile.gender,
 					'dob': profile.dob
 				};
-				return done(200, data);
+				return done(200, data, null);
 			}
 		});
 	}

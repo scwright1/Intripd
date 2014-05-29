@@ -24,7 +24,7 @@ module.exports = App;
 /*
 registerImplementation of hashbang url
  */
-/*
+
  (function() {
 
 var get = Ember.get, set = Ember.set;
@@ -64,7 +64,7 @@ var hashbangLocation = Ember.HashLocation.extend({
 
 App.register('location:hashbang', hashbangLocation);
 
-})();*/
+})();
 },{}],2:[function(require,module,exports){
 var App = require('./app');
 
@@ -87,9 +87,9 @@ App.Router.map(function() {
 	this.route("error", {path: "*path"});
 });
 
-/*App.Router.reopen({
+App.Router.reopen({
 	location: 'hashbang'
-});*/
+});
 },{"./app":1}],3:[function(require,module,exports){
 //Session Manager
 /*
@@ -159,7 +159,6 @@ var SessionManager = Ember.Object.extend({
             jqXHR.setRequestHeader('X-UID', null);
             }
           });
-          App.reset();
           //finally, throw the user back to the index page
           App.__container__.lookup("route:application").transitionTo('index');
         });
@@ -170,9 +169,27 @@ var SessionManager = Ember.Object.extend({
 module.exports = SessionManager;
 },{}],4:[function(require,module,exports){
 var ApplicationController = Ember.ObjectController.extend({
+	profile: null,
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
+	profileChanged: function() {
+		var self = this;
+		var uid = App.Session.get('user_uid');
+		if(uid.length > 0) {
+			self.store.unloadAll('profile');
+			Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+			  if (!jqXHR.crossDomain) {
+			    jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', App.Session.get('user_auth_token'));
+			    jqXHR.setRequestHeader('X-UID', App.Session.get('user_uid'));
+			  }
+			});
+			var user = self.store.find('profile', App.Session.get('user_uid'));
+			self.set('profile', user);
+		} else {
+			self.store.unloadAll('profile');
+		}
+	}.observes('App.Session.user_uid'),
 	profile: function() {
 		var user = this.store.find('profile', App.Session.get('user_uid'));
 		return user;

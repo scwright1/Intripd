@@ -53,8 +53,9 @@ session_schema.statics.validate = function(req, res, next) {
 				var decode = jwt.decode(req.headers['x-authentication-token'], process.env.TOKENKEY);
 				var now = new Date();
 				if((decode.uid !== req.headers['x-uid']) || (decode.exp < now.toJSON())) {
-					Session.destroy({token: req.headers['x-authentication-token']}, state);
-					res.send(401);
+					Session.destroy({token: req.headers['x-authentication-token']}, function() {
+						res.send(401);
+					});
 				} else {
 					next();
 				}
