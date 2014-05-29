@@ -1,0 +1,40 @@
+@import 'definitions';
+
+#sidebar {
+	width: 100px;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: #343a3e;
+	position: absolute;
+}
+
+#sidebar > #logobox {
+	width: 100%;
+	height: 100px;
+	background: @color-green-bright;
+}
+
+#sidebar > #logobox > img {
+	margin: 32px;
+}
+
+#sidebar > #bottom-accent {
+	width: 100%;
+	height: 6px;
+	background: @color-green-bright;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+#sidebar > .menu-item {
+	width: 100%;
+	height: 100px;
+	transition: background-color 0.5s ease;
+}
+
+#sidebar > .menu-item:hover {
+	background-color: @color-slate;
+	transition: background-color 0.5s ease;
+}

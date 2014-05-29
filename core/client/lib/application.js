@@ -540,6 +540,22 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 });
 
+Ember.TEMPLATES['map'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+
+
+  data.buffer.push("	\n	<section id='map'>\n		");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar", options) : helperMissing.call(depth0, "render", "sidebar", options))));
+  data.buffer.push("\n		<div id='map-canvas'></div>\n		}\n	</section>");
+  return buffer;
+  
+});
+
 Ember.TEMPLATES['menu'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
@@ -553,44 +569,55 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
-  var buffer = '', hashTypes, hashContexts;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
   data.buffer.push("\n          <li class='nav-link'>\n            <span class='user-text-responsive'>Welcome back, </span><b>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</b>\n          </li>\n          <li class='nav-link'>\n            <a href='#' ");
+  data.buffer.push("</b>\n          </li>\n          <li class='nav-link'>\n            ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "map", options) : helperMissing.call(depth0, "link-to", "map", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push("\n          </li>\n          <li class='nav-link'>\n            <a href='#' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(">\n              <span class='entypo logout nav-icon'></span>  <span class='user-text-responsive'>Logout</span>\n            </a>\n          </li>\n        ");
   return buffer;
   }
+function program4(depth0,data) {
+  
+  
+  data.buffer.push("\n              <span class='entypo address nav-icon'></span> <span class='user-text-responsive'><b>Map</b></span>\n            ");
+  }
 
-function program5(depth0,data) {
+function program6(depth0,data) {
   
   var buffer = '', stack1, stack2, hashTypes, hashContexts, options;
   data.buffer.push("\n      		<li class='nav-link'>\n            ");
   hashTypes = {};
   hashContexts = {};
-  options = {hash:{},inverse:self.noop,fn:self.program(6, program6, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  options = {hash:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.login", options) : helperMissing.call(depth0, "link-to", "auth.login", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n          </li>\n      		<li class='nav-link'>\n            ");
   hashTypes = {};
   hashContexts = {};
-  options = {hash:{},inverse:self.noop,fn:self.program(8, program8, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  options = {hash:{},inverse:self.noop,fn:self.program(9, program9, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "auth.register", options) : helperMissing.call(depth0, "link-to", "auth.register", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n          </li>\n        ");
   return buffer;
   }
-function program6(depth0,data) {
+function program7(depth0,data) {
   
   
   data.buffer.push("\n              <span class='entypo login nav-icon'></span> <span class='user-text-responsive'>Login</span>\n            ");
   }
 
-function program8(depth0,data) {
+function program9(depth0,data) {
   
   
   data.buffer.push("\n              <span class='entypo add-user nav-icon'></span> Register\n            ");
@@ -607,10 +634,20 @@ function program8(depth0,data) {
   data.buffer.push("\n  	</div>\n  	<div id=\"nav-links\">\n	    <ul class=\"nav navbar-nav navbar-right\">\n        ");
   hashTypes = {};
   hashContexts = {};
-  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n	    </ul>\n  	</div>\n</nav>");
   return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='search'></div>\n		<div class='menu-item' data-context='profile'></div>\n		<div class='menu-item' data-context='trips'></div>\n		<div class='menu-item' data-context='waypoints'></div>\n		<div class='menu-item' data-context='media'></div>\n		<div id='bottom-accent'></div>\n	</section>");
   
 });
 
