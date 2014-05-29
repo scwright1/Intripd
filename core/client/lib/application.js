@@ -315,6 +315,7 @@ App.MapRoute = require('./routes/map_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
+App.FooterView = require('./views/footer_view');
 App.IndexView = require('./views/index_view');
 
 require('./config/routes');
@@ -322,7 +323,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./models/profile":10,"./routes/application_route":11,"./routes/auth/login_route":12,"./routes/auth/register_route":13,"./routes/error_route":14,"./routes/map_route":15,"./templates":16,"./views/application_view":17,"./views/index_view":18}],10:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./models/profile":10,"./routes/application_route":11,"./routes/auth/login_route":12,"./routes/auth/register_route":13,"./routes/error_route":14,"./routes/map_route":15,"./templates":16,"./views/application_view":17,"./views/footer_view":18,"./views/index_view":19}],10:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -481,12 +482,24 @@ function program1(depth0,data) {
   data.buffer.push("Privacy");
   }
 
-  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='entypo-social facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='entypo-social twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='entypo-social pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<script type=\"text/javascript\">\n					var today = new Date();\n					document.getElementById(\"thisyear\").innerHTML = today.getFullYear();\n    			</script>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved. | ");
+function program3(depth0,data) {
+  
+  
+  data.buffer.push("Cookies");
+  }
+
+  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='entypo-social facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='entypo-social twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='entypo-social pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved.");
   data.buffer.push(" | ");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.privacy", options) : helperMissing.call(depth0, "link-to", "policies.privacy", options));
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
+  data.buffer.push(" | ");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.cookies", options) : helperMissing.call(depth0, "link-to", "policies.cookies", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("</h6>\n				<sub>intripd-geneva-beta-1 | <span class='icon-html5'></span> <span class='icon-css3'></span> <span class='icon-git'></span></sub>\n			</div>\n		</div>\n	</div>\n</div>");
   return buffer;
@@ -863,6 +876,15 @@ var ApplicationView = Ember.View.extend({
 
 module.exports = ApplicationView;
 },{}],18:[function(require,module,exports){
+var FooterView = Ember.View.extend({
+	didInsertElement: function() {
+		var today = new Date();
+		document.getElementById("thisyear").innerHTML = today.getFullYear();
+	}
+});
+
+module.exports = FooterView;
+},{}],19:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
