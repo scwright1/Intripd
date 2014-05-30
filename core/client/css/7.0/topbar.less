@@ -1,0 +1,74 @@
+@import 'definitions';
+
+#topbar {
+	position: absolute;
+	height: 80px;
+	top: 0;
+	left: 80px;
+	right: 0;
+	background: @color-slate;
+	border-bottom: 1px solid darken(@color-slate, 5%);
+}
+
+#topbar > #trip-quickbar {
+	float: left;
+	height: 100%;
+	line-height: 80px;
+	font-weight: 100;
+	font-size: 16px;
+	padding-left: 40px;
+	color: @color-dark;
+}
+
+#topbar > #user-quickbar {
+	float: right;
+	height: 100%;
+	line-height: 80px;
+	font-weight: 300;
+	font-size: 16px;
+	padding-right: 40px;
+	color: @color-dark;
+}
+
+#topbar > #user-quickbar > .user-info {
+	float: left;
+	padding: 0 10px;
+}
+
+#topbar > #user-quickbar > .user-info > .user-icon {
+	width: 24px;
+	height: 24px;
+	border-radius: 12px;
+	border: 1px solid lighten(@color-dark, 50%);
+	background: url('../../img/user-icon.png');
+	float: left;
+	margin: 27px 10px 0px 10px;
+	overflow: hidden;
+}
+
+#topbar > #user-quickbar > .user-info > .user-text {
+	float: right;
+}
+
+#topbar > #user-quickbar > .topbar-icon {
+	padding-left: 10px;
+	padding-right: 10px;
+	float: right;
+	height: 100%;
+	line-height: 80px;
+	transition: color 0.5s ease;
+}
+
+#topbar > #user-quickbar > .topbar-icon:hover {
+	color: @color-red;
+	transition: color 0.5s ease;
+}
+
+#topbar > #user-quickbar > .pre {
+	float: left !important;
+}
+
+#topbar > #user-quickbar > .pre:hover {
+	color: @color-green-bright;
+	transition: color 0.5s ease;
+}

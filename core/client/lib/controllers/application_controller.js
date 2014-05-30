@@ -1,4 +1,5 @@
 var ApplicationController = Ember.ObjectController.extend({
+	needs: 'topbar',
 	profile: null,
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();

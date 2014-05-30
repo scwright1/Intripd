@@ -43,33 +43,30 @@ var SessionManager = Ember.Object.extend({
   	}.observes('user_active_trip'),
 
   	reset: function() {
-      var self = this;
   		//dump the user back to the index page
-  		Ember.run.sync();
   		//reset the session
-  		Ember.run.next(this, function(){
-  			var _udata = { __data: {token: this.get('user_auth_token'), uid: this.get('user_uid')} };
-  			//destroy the server-side session information
-  			$.post('/api/authentication/logout', _udata).done(function() {
-          //reset the client-side tokens (cookies and internal)
-          self.set('user_active_trip', '');
-          self.set('user_auth_token', '');
-          self.set('user_uid', '');
-          self.set('persist', false);
-          $.removeCookie('TRP_USERACTIVETRIP');
-          $.removeCookie('TRP_USERUID');
-          $.removeCookie('TRP_USERAUTHTOKEN');
-          //reset the ajax prefilter
-          Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-            if(!jqXHR.crossDomain) {
-              jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
-            jqXHR.setRequestHeader('X-UID', null);
-            }
-          });
-          //finally, throw the user back to the index page
-          App.__container__.lookup("route:application").transitionTo('index');
+			var _udata = { __data: {token: this.get('user_auth_token'), uid: this.get('user_uid')} };
+      var self = this;
+			//destroy the server-side session information
+			$.post('/api/authentication/logout', _udata).done(function() {
+        //reset the client-side tokens (cookies and internal)
+        self.set('user_active_trip', '');
+        self.set('user_auth_token', '');
+        self.set('user_uid', '');
+        self.set('persist', false);
+        $.removeCookie('TRP_USERACTIVETRIP');
+        $.removeCookie('TRP_USERUID');
+        $.removeCookie('TRP_USERAUTHTOKEN');
+        //reset the ajax prefilter
+        Ember.$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
+          if(!jqXHR.crossDomain) {
+            jqXHR.setRequestHeader('X-AUTHENTICATION-TOKEN', null);
+          jqXHR.setRequestHeader('X-UID', null);
+          }
         });
-  		});
+        //finally, throw the user back to the index page
+        self.transitionToRoute('index');
+      });
   	}
 });
 
