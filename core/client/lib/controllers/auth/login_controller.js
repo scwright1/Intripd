@@ -18,13 +18,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 							user_uid: response.uid,
 							persist: self.get('remember')
 						});
-						var attemptedTransition = App.Session.get('attemptedTransition');
-				        if (attemptedTransition) {
-				        	attemptedTransition.retry();
-				        	App.Session.set('attemptedTransition', null);
-				        } else {
-				        	self.transitionToRoute('index');
-				        }
+				        self.transitionToRoute('map');
 					}
 				});
 			}
