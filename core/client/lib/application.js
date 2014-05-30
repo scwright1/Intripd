@@ -158,7 +158,7 @@ var SessionManager = Ember.Object.extend({
           }
         });
         //finally, throw the user back to the index page
-        self.transitionToRoute('index');
+        self.transitionToRoute('auth.login');
       });
   	}
 });
@@ -186,6 +186,7 @@ var ApplicationController = Ember.ObjectController.extend({
 			self.set('profile', user);
 		} else {
 			self.store.unloadAll('profile');
+			window.location.reload();
 		}
 	}.observes('App.Session.user_uid'),
 	profile: function() {
@@ -194,7 +195,7 @@ var ApplicationController = Ember.ObjectController.extend({
 	}.property(),
 	actions: {
 		closeCookieNotification: function() {
-			$.cookie('TRP_COOKIENOTIF', false);
+			$.cookie('TRP_COOKIENOTIF', false, {expires: 365});
 			$('#cookies').css('display', 'none');
 		}
 	}
