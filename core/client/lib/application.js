@@ -345,7 +345,6 @@ var ApplicationRoute = Ember.Route.extend({
 	actions: {
 	    logout: function() {
 	      App.Session.reset();
-	      this.transitionTo('auth.login');
 	    },
 	    error: function(error, transition) {
 	      console.log(error.message);
