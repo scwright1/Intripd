@@ -356,7 +356,7 @@ var ApplicationRoute = Ember.Route.extend({
 	actions: {
 	    logout: function() {
 	      App.Session.reset();
-	      this.transitionTo('index');
+	      this.transitionTo('auth.login');
 	    },
 	    error: function(error, transition) {
 	      console.log(error.message);
@@ -384,14 +384,9 @@ module.exports = ApplicationRoute;
 //set up the authenticated route to allow for most pages to run on this route by default
 
 App.AuthenticatedRoute = Ember.Route.extend({
-	redirectToLogin: function(transition) {
-    App.Session.set('attemptedTransition', transition);
-    this.transitionTo('auth.login');
-  },
-
-  beforeModel: function(transition) {
+  beforeModel: function() {
     if (!App.Session.get('user_auth_token')) {
-      	this.redirectToLogin(transition);
+      	this.transitionTo('auth.login');
     }
   }
 });

@@ -6,24 +6,8 @@
 	margin: 40px auto;
 }
 
-.register-container {
-	height: 400px;
-	background: @color-slate;
-	margin: 40px auto;
-}
-
 .register-form-container {
 	width: 100%;
-}
-
-.register-form-container-left {
-	width: 49%;
-	float: left;
-}
-
-.register-form-container-right {
-	width: 49%;
-	float: right;
 }
 
 .auth-header {
@@ -200,6 +184,12 @@ label {
 }
 
 @media all and (min-width: 769px) {
+	.register-container {
+		height: 400px;
+		background: @color-slate;
+		margin: 40px auto;
+	}
+
 	.login-container {
 		width: 350px;
 	}
@@ -207,11 +197,35 @@ label {
 	.register-container {
 		width: 720px;
 	}
+
+	.register-form-container-left {
+		width: 49%;
+		float: left;
+	}
+
+	.register-form-container-right {
+		width: 49%;
+		float: right;
+	}
 }
 
 @media all and (max-width: 768px) {
+	.register-container {
+		background: @color-slate;
+		margin: 40px auto;
+	}
+
 	.login-container {
 		width: 100%;
+	}
+
+	.auth-desc {
+		line-height: 35px;
+		padding: 0 20px;
+	}
+
+	.form-group > .input-group {
+		margin: 0 auto;
 	}
 }
 
