@@ -23,7 +23,7 @@ var SidebarController = App.ApplicationController.extend({
 		},
 		menu: function(action) {
 			if(action === 'open') {
-				$('#map-canvas').animate({'left': '380px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': '420px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'close') {
 				$('#map-canvas').animate({'left': '80px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			}

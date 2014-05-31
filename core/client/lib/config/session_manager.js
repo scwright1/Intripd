@@ -65,7 +65,7 @@ var SessionManager = Ember.Object.extend({
           }
         });
         //finally, throw the user back to the index page
-        self.transitionToRoute('auth.login');
+        self.transitionToRoute('index');
       });
   	}
 });

@@ -20,7 +20,7 @@ var AuthRegisterController = Em.ObjectController.extend({
 							user_auth_token: resp.token,
 							user_uid: resp.uid
 						});
-						self.transitionToRoute('map');
+						self.transitionToRoute('index');
 		 			}
 				});
 			}

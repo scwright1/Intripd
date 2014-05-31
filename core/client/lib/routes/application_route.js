@@ -44,7 +44,7 @@ module.exports = ApplicationRoute;
 App.AuthenticatedRoute = Ember.Route.extend({
   beforeModel: function() {
     if (!App.Session.get('user_auth_token')) {
-      	this.transitionTo('auth.login');
+      	this.transitionTo('index');
     }
   }
 });

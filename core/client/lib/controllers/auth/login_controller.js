@@ -18,7 +18,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 							user_uid: response.uid,
 							persist: self.get('remember')
 						});
-				        self.transitionToRoute('map');
+				        self.transitionToRoute('index');
 					}
 				});
 			}

@@ -158,7 +158,7 @@ var SessionManager = Ember.Object.extend({
           }
         });
         //finally, throw the user back to the index page
-        self.transitionToRoute('auth.login');
+        self.transitionToRoute('index');
       });
   	}
 });
@@ -223,7 +223,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 							user_uid: response.uid,
 							persist: self.get('remember')
 						});
-				        self.transitionToRoute('map');
+				        self.transitionToRoute('index');
 					}
 				});
 			}
@@ -255,7 +255,7 @@ var AuthRegisterController = Em.ObjectController.extend({
 							user_auth_token: resp.token,
 							user_uid: resp.uid
 						});
-						self.transitionToRoute('map');
+						self.transitionToRoute('index');
 		 			}
 				});
 			}
@@ -308,7 +308,7 @@ var SidebarController = App.ApplicationController.extend({
 		},
 		menu: function(action) {
 			if(action === 'open') {
-				$('#map-canvas').animate({'left': '380px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': '420px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			} else if(action === 'close') {
 				$('#map-canvas').animate({'left': '80px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			}
@@ -319,6 +319,27 @@ var SidebarController = App.ApplicationController.extend({
 module.exports = SidebarController;
 },{}],10:[function(require,module,exports){
 var TopbarController = App.ApplicationController.extend({
+	trigger: null,
+	actions: {
+		activate: function() {
+			var element = null;
+			element = this.get('trigger');
+			if($(element).hasClass('active')) {
+				$(element).removeClass('active');
+				this.send('menu', 'close');
+			} else {
+				$(element).addClass('active');
+				this.send('menu', 'open');
+			}
+		},
+		menu: function(action) {
+			if(action === 'open') {
+				$('#map-canvas').animate({'right': '300px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+			} else if(action === 'close') {
+				$('#map-canvas').animate({'right': '0px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+			}
+		}
+	}
 });
 
 module.exports = TopbarController;
@@ -348,13 +369,14 @@ App.FooterView = require('./views/footer_view');
 App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
 App.SidebarView = require('./views/sidebar_view');
+App.TopbarView = require('./views/topbar_view');
 
 require('./config/routes');
 
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./controllers/topbar_controller":10,"./models/profile":12,"./routes/application_route":13,"./routes/auth/login_route":14,"./routes/auth/register_route":15,"./routes/error_route":16,"./routes/map_route":17,"./templates":18,"./views/application_view":19,"./views/footer_view":20,"./views/index_view":21,"./views/map_view":22,"./views/sidebar_view":23}],12:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar_controller":9,"./controllers/topbar_controller":10,"./models/profile":12,"./routes/application_route":13,"./routes/auth/login_route":14,"./routes/auth/register_route":15,"./routes/error_route":16,"./routes/map_route":17,"./templates":18,"./views/application_view":19,"./views/footer_view":20,"./views/index_view":21,"./views/map_view":22,"./views/sidebar_view":23,"./views/topbar_view":24}],12:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -411,7 +433,7 @@ module.exports = ApplicationRoute;
 App.AuthenticatedRoute = Ember.Route.extend({
   beforeModel: function() {
     if (!App.Session.get('user_auth_token')) {
-      	this.transitionTo('auth.login');
+      	this.transitionTo('index');
     }
   }
 });
@@ -677,7 +699,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div>\n		<div class='menu-item' data-context='trips'><div class='entypo map sidebar-icon'></div></div>\n		<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div>\n		<div id='bottom-accent'></div>\n	</section>");
+  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips'><div class='entypo map sidebar-icon'></div></div>\n		<!-- <div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>");
   
 });
 
@@ -687,7 +709,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<!--<div class='entypo chat topbar-icon pre'></div>\n			<div class='entypo megaphone topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<!--<div class='entypo users topbar-icon pre' data-context='friends'></div>\n			<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1088,5 +1110,21 @@ var SidebarView = Ember.View.extend({
 });
 
 module.exports = SidebarView;
+},{}],24:[function(require,module,exports){
+var TopbarView = Ember.View.extend({
+	didInsertElement: function() {
+		var self = this;
+		$('#user-quickbar > .topbar-icon').click(function() {
+			var controller = self.get('controller');
+			if($(this).data('context')) {
+				var context = $(this).data('context');
+				controller.set('trigger', this);
+				controller.send('activate');
+			}
+		});
+	}
+});
+
+module.exports = TopbarView;
 },{}]},{},[11])
 ;
