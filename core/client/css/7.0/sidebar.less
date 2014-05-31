@@ -35,6 +35,18 @@
 	color: lighten(@color-dark, 30%);
 }
 
+#sidebar > .menu-item.active {
+	background: @color-slate;
+	color: @color-dark;
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+#sidebar > .menu-item.active:hover {
+	background: @color-slate;
+	color: @color-dark;
+	transition: background-color 0.5s ease, color 0.5s ease;
+}
+
 #sidebar > .menu-item.special {
 	bottom: 6px;
 	left: 0px;
