@@ -563,7 +563,7 @@ function program3(depth0,data) {
   data.buffer.push("Cookies");
   }
 
-  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='entypo-social facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='entypo-social twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='entypo-social pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved.");
+  data.buffer.push("<div id='footer'>\n	<div class='footer-panel'>\n		<div class='container'>\n			<div id='site-social' class='pull-left'>\n				<h3>Get Social with Us.</h3>\n				<a class='social-icon facebook' href='http://www.facebook.com/intripd' target='_blank'><span class='fontello-facebook'></span></a>\n				<a class='social-icon twitter' href='http://www.twitter.com/intripd' target='_blank'><span class='fontello-twitter'></span></a>\n				<a class='social-icon pinterest' href='http://www.pinterest.com/intripd' target='_blank'><span class='fontello-pinterest'></span></a>\n			</div>\n			<div id='site-info' class='pull-right' style='text-align: right;'>\n				<h3>Got Questions?</h3>\n				<h5>We'd love to hear from you: <a href='mailto:contact@intripd.com'>contact@intripd.com</a></h5>\n				<h6> &copy; 2012 - <span id='thisyear'></span>. Intripd. All rights reserved.");
   data.buffer.push(" | ");
   hashTypes = {};
   hashContexts = {};
@@ -576,7 +576,7 @@ function program3(depth0,data) {
   options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   stack2 = ((stack1 = helpers['link-to'] || depth0['link-to']),stack1 ? stack1.call(depth0, "policies.cookies", options) : helperMissing.call(depth0, "link-to", "policies.cookies", options));
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("</h6>\n				<sub>intripd-geneva-beta-1 | <span class='icon-html5'></span> <span class='icon-css3'></span> <span class='icon-git'></span></sub>\n			</div>\n		</div>\n	</div>\n</div>");
+  data.buffer.push("</h6>\n				<sub>intripd-geneva-beta-1 | <span class='icon-html5'></span> <span class='icon-css3'></span></sub>\n			</div>\n		</div>\n	</div>\n</div>");
   return buffer;
   
 });
@@ -664,13 +664,13 @@ function program3(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n              <span class='entypo logout nav-icon'></span>  <span class='user-text-responsive'>Logout</span>\n            </a>\n          </li>\n        ");
+  data.buffer.push(">\n              <span class='fontello-logout nav-icon'></span>  <span class='user-text-responsive'>Logout</span>\n            </a>\n          </li>\n        ");
   return buffer;
   }
 function program4(depth0,data) {
   
   
-  data.buffer.push("\n              <span class='entypo address nav-icon'></span> <span class='user-text-responsive'><b>Map</b></span>\n            ");
+  data.buffer.push("\n              <span class='fontello-address nav-icon'></span> <span class='user-text-responsive'><b>Map</b></span>\n            ");
   }
 
 function program6(depth0,data) {
@@ -694,13 +694,13 @@ function program6(depth0,data) {
 function program7(depth0,data) {
   
   
-  data.buffer.push("\n              <span class='entypo login nav-icon'></span> <span class='user-text-responsive'>Login</span>\n            ");
+  data.buffer.push("\n              <span class='fontello-login nav-icon'></span> <span class='user-text-responsive'>Login</span>\n            ");
   }
 
 function program9(depth0,data) {
   
   
-  data.buffer.push("\n              <span class='entypo add-user nav-icon'></span> Register\n            ");
+  data.buffer.push("\n              <span class='fontello-user-add nav-icon'></span> Register\n            ");
   }
 
   data.buffer.push("<nav class=\"navbar navbar-default navbar-static-top\" role=\"navigation\">\n	<div class=\"navbar-header\">\n    	");
@@ -727,7 +727,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips' data-scale='fill'><div class='entypo map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		Nothing here yet\n	</section>");
+  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips' data-scale='fill'><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		Nothing here yet\n	</section>");
   
 });
 
@@ -737,7 +737,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='entypo users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -745,7 +745,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>\n			</div>\n			<div class='entypo logout topbar-icon' ");
+  data.buffer.push("</div>\n			</div>\n			<div class='fontello-logout topbar-icon' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
