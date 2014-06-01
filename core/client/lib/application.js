@@ -293,24 +293,40 @@ var SidebarController = App.ApplicationController.extend({
 			//1.  We click the same element that is already active, so close it
 			if($(element).hasClass('active')) {
 				$(element).removeClass('active');
-				this.send('menu', 'close');
+				this.send('menu', 'close', this);
 			} else {
 				//2.  We click a new element when a different element is active
 				if($(element).siblings().hasClass('active')) {
 					$(element).siblings().removeClass('active');
 					$(element).addClass('active');
+					this.send('menu', 'change', element);
 				} else {
 					// 3. No active menu items, just make the current one active
 					$(element).addClass('active');
-					this.send('menu', 'open');
+					this.send('menu', 'open', element);
 				}
 			}
 		},
-		menu: function(action) {
+		menu: function(action, trigger) {
+			var size = 0;
+			if($(trigger).data('scale') === 'fill') {
+				size = $('#map-canvas').width() + $('#sidebar').width();
+			} else {
+				size = $('#sidebar').width() + 340;
+			}
 			if(action === 'open') {
-				$('#map-canvas').animate({'left': '420px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': size+'px'}, {duration: 600, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#menu-content').addClass('active');
+				if($('#social-content').hasClass('active')) {
+					$('#menu-content').css('right', '300px');
+				} else {
+					$('#menu-content').css('right', '0px');
+				}
 			} else if(action === 'close') {
-				$('#map-canvas').animate({'left': '80px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': $('#sidebar').width()+'px'}, {duration: 600, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#menu-content').removeClass('active');
+			} else if(action === 'change') {
+				//todo - change menus
 			}
 		}
 	}
@@ -335,8 +351,20 @@ var TopbarController = App.ApplicationController.extend({
 		menu: function(action) {
 			if(action === 'open') {
 				$('#map-canvas').animate({'right': '300px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#social-content').addClass('active');
+				if($('#menu-content').hasClass('active')) {
+					var nw = $('#menu-content').width() - 300;
+					$('#map-canvas').css('right', nw);
+					$('#menu-content').css('right', '300px');
+				}
 			} else if(action === 'close') {
 				$('#map-canvas').animate({'right': '0px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#social-content').removeClass('active');
+				if($('#menu-content').hasClass('active')) {
+					var nw = $('#menu-content').width() + 300;
+					$('#map-canvas').css('left', nw);
+					$('#menu-content').css('right', '0px');
+				}
 			}
 		}
 	}
@@ -699,7 +727,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips'><div class='entypo map sidebar-icon'></div></div>\n		<!-- <div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>");
+  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips' data-scale='fill'><div class='entypo map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		Nothing here yet\n	</section>");
   
 });
 
@@ -709,7 +737,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<!--<div class='entypo users topbar-icon pre' data-context='friends'></div>\n			<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='entypo users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -721,7 +749,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("></div>\n		</div>\n	</section>");
+  data.buffer.push("></div>\n		</div>\n	</section>\n	<section id='social-content' data-value='content'>\n		Social\n	</section>");
   return buffer;
   
 });
