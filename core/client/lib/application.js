@@ -497,6 +497,11 @@ var ErrorRoute = Ember.Route.extend({
 module.exports = ErrorRoute;
 },{}],17:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
+	actions: {
+		loadMenu: function(module) {
+			this.render(module, {into: 'sidebar', outlet: 'menu-content'});
+		}
+	},
 	model: function() {
 		return Ember.Object.create({});
 	}
@@ -724,10 +729,20 @@ function program9(depth0,data) {
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->\n		<div class='menu-item' data-context='trips' data-scale='fill'><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		Nothing here yet\n	</section>");
+  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!--<div class='menu-item' data-context='search'><div class='fontello-search sidebar-icon'></div></div>-->\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadMenu", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "menu-content", options) : helperMissing.call(depth0, "outlet", "menu-content", options))));
+  data.buffer.push("\n	</section>");
+  return buffer;
   
 });
 
@@ -737,7 +752,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='entypo mail topbar-icon pre'></div> -->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -751,6 +766,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("></div>\n		</div>\n	</section>\n	<section id='social-content' data-value='content'>\n		Social\n	</section>");
   return buffer;
+  
+});
+
+Ember.TEMPLATES['sidebar/trips'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("\n	<section id='trips-menu'>\n		<div class='trips-statistics'>\n		</div>\n		<div class='trips-container'>\n			<div id='create-new-trip'>\n			+\n			</div>\n		</div>\n	</section>");
   
 });
 

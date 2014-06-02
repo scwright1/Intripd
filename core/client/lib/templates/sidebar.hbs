@@ -5,13 +5,13 @@
 				<img src='img/logo-white.png' width='32px' height='32px' />
 			</div>
 		</a>
-		<!-- <div class='menu-item' data-context='search'><div class='entypo search sidebar-icon'></div></div> -->
-		<div class='menu-item' data-context='trips' data-scale='fill'><div class='fontello-map sidebar-icon'></div></div>
-		<!--<div class='menu-item' data-context='waypoints'><div class='entypo location sidebar-icon'></div></div>
-		<div class='menu-item' data-context='media'><div class='entypo camera sidebar-icon'></div></div>
-		<div class='menu-item special' data-context='add-collaborator'><div class='entypo add-user sidebar-icon'></div></div> -->
+		<!--<div class='menu-item' data-context='search'><div class='fontello-search sidebar-icon'></div></div>-->
+		<div class='menu-item' data-context='trips' data-scale='fill' {{action 'loadMenu' 'sidebar.trips'}}><div class='fontello-map sidebar-icon'></div></div>
+		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>
+		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>
+		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->
 		<div id='bottom-accent'></div>
 	</section>
 	<section id='menu-content' data-value='content'>
-		Nothing here yet
+		{{outlet 'menu-content'}}
 	</section>
