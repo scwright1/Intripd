@@ -308,25 +308,48 @@ var SidebarController = App.ApplicationController.extend({
 			}
 		},
 		menu: function(action, trigger) {
-			var size = 0;
-			if($(trigger).data('scale') === 'fill') {
-				size = $('#map-canvas').width() + $('#sidebar').width();
-			} else {
-				size = $('#sidebar').width() + 340;
-			}
 			if(action === 'open') {
-				$('#map-canvas').animate({'left': size+'px'}, {duration: 600, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-				$('#menu-content').addClass('active');
-				if($('#social-content').hasClass('active')) {
-					$('#menu-content').css('right', '300px');
+				if($(trigger).data('scale')) {
+					if($('#social-content').hasClass('active')) {
+						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
+						var menuLeft = $('#sidebar').width() - width;
+						$('#menu-content').css('left', menuLeft+'px');
+						$('#menu-content').css('width', width+'px');
+						var height = $(document).height() - $('#topbar').height();
+						$('#menu-content').css('top', $('#topbar').height()+'px');
+						$('#menu-content').css('height', height+'px');
+						var mapLeft = $(document).width();
+						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
+						var mapLeft = $('#social-content').offset().left;
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					} else {
+						//preprocess the dimensions of the menu container so we can slide it out
+						var width = $(document).width() - $('#sidebar').width();
+						var menuLeft = $('#sidebar').width() - width;
+						$('#menu-content').css('left', menuLeft+'px');
+						$('#menu-content').css('width', width+'px');
+						var height = $(document).height() - $('#topbar').height();
+						$('#menu-content').css('top', $('#topbar').height()+'px');
+						$('#menu-content').css('height', height+'px');
+						var mapLeft = $(document).width();
+						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					}
 				} else {
-					$('#menu-content').css('right', '0px');
+					var menuLeft = $('#sidebar').width() - $(trigger).data('size');
+					$('#menu-content').css('left', menuLeft+'px');
+					$('#menu-content').css('width', $(trigger).data('size')+'px');
+					var height = $(document).height() - $('#topbar').height();
+					$('#menu-content').css('top', $('#topbar').height()+'px');
+					$('#menu-content').css('height', height+'px');
+					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
+					$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
+					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 				}
 			} else if(action === 'close') {
-				$('#map-canvas').animate({'left': $('#sidebar').width()+'px'}, {duration: 600, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-				$('#menu-content').removeClass('active');
-			} else if(action === 'change') {
-				//todo - change menus
+				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
+				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false});
+				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 			}
 		}
 	}
@@ -352,19 +375,9 @@ var TopbarController = App.ApplicationController.extend({
 			if(action === 'open') {
 				$('#map-canvas').animate({'right': '300px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#social-content').addClass('active');
-				if($('#menu-content').hasClass('active')) {
-					var nw = $('#menu-content').width() - 300;
-					$('#map-canvas').css('right', nw);
-					$('#menu-content').css('right', '300px');
-				}
 			} else if(action === 'close') {
 				$('#map-canvas').animate({'right': '0px'}, {duration: 200, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#social-content').removeClass('active');
-				if($('#menu-content').hasClass('active')) {
-					var nw = $('#menu-content').width() + 300;
-					$('#map-canvas').css('left', nw);
-					$('#menu-content').css('right', '0px');
-				}
 			}
 		}
 	}
@@ -729,20 +742,10 @@ function program9(depth0,data) {
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!--<div class='menu-item' data-context='search'><div class='fontello-search sidebar-icon'></div></div>-->\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadMenu", "sidebar.trips", {hash:{},contexts:[depth0,depth0],types:["STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "menu-content", options) : helperMissing.call(depth0, "outlet", "menu-content", options))));
-  data.buffer.push("\n	</section>");
-  return buffer;
+  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>\n		<div class='menu-item' data-context='trips' data-scale='fill'><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		Nothing Here\n	</section>");
   
 });
 

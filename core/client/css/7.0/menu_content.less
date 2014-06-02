@@ -1,32 +1,18 @@
 @import 'definitions';
 
 #menu-content {
+	text-align: right;
 	height: 100%;
-	margin-top: 80px;
-	font-weight: 100;
-	left: 80px;
-	right: 0;
+	padding-top: 100px;
+	color: @color-slate;
+	background: #123456;
 	position: absolute;
-	z-index: 8;
-	display: none;
-}
-
-#menu-content.active {
-	display: block;
 }
 
 #social-content {
-	padding: 20px;
-	font-weight: 100;
-	display: none;
-}
-
-#social-content.active {
+	position: absolute;
+	right: 0;
 	width: 300px;
 	height: 100%;
-	right: 0;
 	top: 80px;
-	position: absolute;
-	border-left: 1px solid darken(@color-slate, 5%);
-	display: block;
 }
