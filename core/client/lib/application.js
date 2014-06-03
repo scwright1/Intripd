@@ -843,7 +843,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("Create a trip");
+  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n</div>");
   
 });
 
