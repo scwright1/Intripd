@@ -3,8 +3,11 @@
 		<div class='trips-statistics'>
 		</div>
 		<div class='trips-container'>
-			<div id='create-new-trip'>
+			<div id='create-new-trip' {{action 'create'}}>
 			+
 			</div>
 		</div>
+	</section>
+	<section id='create-trip-dialog'>
+		{{render 'sidebar.trips.create'}}
 	</section>

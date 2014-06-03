@@ -59,7 +59,7 @@ var SidebarController = App.ApplicationController.extend({
 			} else if(action === 'close') {
 				if($('#menu-content').hasClass('scale')){$('#menu-content').removeClass('scale');}
 				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
-				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false});
+				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false, complete: function() {$(this).children().removeAttr('style');}});
 				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#menu-content').removeClass('active');
 			} else if(action === 'change') {
