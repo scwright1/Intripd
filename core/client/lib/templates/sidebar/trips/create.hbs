@@ -1,4 +1,26 @@
 
 <div id='create-trip-form'>
 	<div class='header'>Create A Trip</div>
+	<form role='form' id='trip-creation'>
+		<div class='form-group'>
+			<div class='input-group'>
+				<span class='input-group-addon'>&#xf0b1;</span>
+				{{input value=tripname class="form-control" placeholder="Trip Name" type="text" autocomplete='off'}}
+			</div>
+		</div>
+		<div class='form-group'>
+			<div class='input-group'>
+				<span class='input-group-addon'>&#xf073;</span>
+				{{input value=departing class="form-control" placeholder="Start Date" type="text" autocomplete='off'}}
+			</div>
+		</div>
+		<div class='form-group'>
+			<div class='input-group'>
+				<span class='input-group-addon'>&#xf073;</span>
+				{{input value=returning type="text" class="form-control" placeholder="End Date" autocomplete='off'}}
+			</div>
+		</div>
+		<button class='cancel' style='width: 90px; float: left;'>Cancel</button>
+		<button type='submit' style='width: 240px; float: right;'>Create</button>
+	</form>
 </div>

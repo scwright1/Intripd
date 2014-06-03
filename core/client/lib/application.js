@@ -840,10 +840,44 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/trips/create'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  
+  var buffer = '', stack1, hashContexts, hashTypes, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n</div>");
+  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n	<form role='form' id='trip-creation'>\n		<div class='form-group'>\n			<div class='input-group'>\n				<span class='input-group-addon'>&#xf0b1;</span>\n				");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("tripname"),
+    'class': ("form-control"),
+    'placeholder': ("Trip Name"),
+    'type': ("text"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n			</div>\n		</div>\n		<div class='form-group'>\n			<div class='input-group'>\n				<span class='input-group-addon'>&#xf073;</span>\n				");
+  hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("departing"),
+    'class': ("form-control"),
+    'placeholder': ("Start Date"),
+    'type': ("text"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n			</div>\n		</div>\n		<div class='form-group'>\n			<div class='input-group'>\n				<span class='input-group-addon'>&#xf073;</span>\n				");
+  hashContexts = {'value': depth0,'type': depth0,'class': depth0,'placeholder': depth0,'autocomplete': depth0};
+  hashTypes = {'value': "ID",'type': "STRING",'class': "STRING",'placeholder': "STRING",'autocomplete': "STRING"};
+  options = {hash:{
+    'value': ("returning"),
+    'type': ("text"),
+    'class': ("form-control"),
+    'placeholder': ("End Date"),
+    'autocomplete': ("off")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n			</div>\n		</div>\n		<button class='cancel' style='width: 90px; float: left;'>Cancel</button>\n		<button type='submit' style='width: 240px; float: right;'>Create</button>\n	</form>\n</div>");
+  return buffer;
   
 });
 

@@ -50,8 +50,7 @@
 }
 
 #create-trip-dialog > #create-trip-form {
-	width: 600px;
-	height: 400px;
+	width: 400px;
 	margin: 0px auto;
 	position: relative;
 	margin-top: 80px;
@@ -69,4 +68,52 @@
 	font-weight: 300;
 	text-align: center;
 	color: @color-olive;
+}
+
+#create-trip-dialog > #create-trip-form > #trip-creation {
+	padding: 25px;
+}
+
+#create-trip-dialog > #create-trip-form > #trip-creation > button {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: @color-green;
+	text-transform: uppercase;
+	transition: background-color 0.5s ease;
+}
+
+#create-trip-dialog > #create-trip-form > #trip-creation > button.cancel {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: @color-red;
+	text-transform: uppercase;
+	transition: background-color 0.5s ease;
+}
+
+#create-trip-dialog > #create-trip-form > #trip-creation > button:hover {
+	transition: background-color 0.5s ease;
+	background: @color-green - #090909;
+}
+
+#create-trip-dialog > #create-trip-form > #trip-creation > button.cancel:hover {
+	transition: background-color 0.5s ease;
+	background: @color-red - #090909;
 }
