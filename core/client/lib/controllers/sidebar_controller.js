@@ -25,46 +25,45 @@ var SidebarController = App.ApplicationController.extend({
 		menu: function(action, trigger) {
 			if(action === 'open') {
 				if($(trigger).data('scale')) {
+					$('#menu-content').addClass('scale');
 					if($('#social-content').hasClass('active')) {
 						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
 						var menuLeft = $('#sidebar').width() - width;
 						$('#menu-content').css('left', menuLeft+'px');
 						$('#menu-content').css('width', width+'px');
-						var height = $(document).height() - $('#topbar').height();
-						$('#menu-content').css('top', $('#topbar').height()+'px');
-						$('#menu-content').css('height', height+'px');
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 						var mapLeft = $('#social-content').offset().left;
 						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#menu-content').addClass('active');
 					} else {
 						//preprocess the dimensions of the menu container so we can slide it out
 						var width = $(document).width() - $('#sidebar').width();
 						var menuLeft = $('#sidebar').width() - width;
 						$('#menu-content').css('left', menuLeft+'px');
 						$('#menu-content').css('width', width+'px');
-						var height = $(document).height() - $('#topbar').height();
-						$('#menu-content').css('top', $('#topbar').height()+'px');
-						$('#menu-content').css('height', height+'px');
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#menu-content').addClass('active');
 					}
 				} else {
 					var menuLeft = $('#sidebar').width() - $(trigger).data('size');
 					$('#menu-content').css('left', menuLeft+'px');
 					$('#menu-content').css('width', $(trigger).data('size')+'px');
-					var height = $(document).height() - $('#topbar').height();
-					$('#menu-content').css('top', $('#topbar').height()+'px');
-					$('#menu-content').css('height', height+'px');
 					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
 					$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#menu-content').addClass('active');
 				}
 			} else if(action === 'close') {
+				if($('#menu-content').hasClass('scale')){$('#menu-content').removeClass('scale');}
 				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
 				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false});
 				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#menu-content').removeClass('active');
+			} else if(action === 'change') {
+				console.log('TODO: something clever');
 			}
 		}
 	}
