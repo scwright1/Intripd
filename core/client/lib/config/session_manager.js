@@ -6,6 +6,7 @@
 var SessionManager = Ember.Object.extend({
 	//initialise
   persist: false,
+  trip: null,
 	init: function() {
 		this._super();
 		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'));

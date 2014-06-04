@@ -1,5 +1,5 @@
 var SidebarTripsController = Ember.ArrayController.extend({
-	needs: 'SidebarTripsCreate',
+	needs: ['SidebarTripsCreate','sidebar'],
 	actions: {
 		initCreate: function() {
 			//todo - create a trip, assign it to a user and make it active
@@ -13,9 +13,10 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
 		},
 		create: function() {
+			var self = this;
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');
-				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
+				var date = new Date(Date.UTC(rawDate[2],rawDate[1]-1,rawDate[0],0,0));
 				return date.toISOString();
 			}
 
@@ -33,6 +34,22 @@ var SidebarTripsController = Ember.ArrayController.extend({
 
 			//persist the record
 			var promise = trip.save();
+			promise.then(fulfill, reject);
+			function fulfill(model) {
+				App.Session.set('trip', model._data);
+				App.Session.set('user_active_trip', model._data.uid);
+				controller.set('tripname', null);
+				controller.set('departing', null);
+				controller.set('returning', null);
+				var sidebar = self.get('controllers.sidebar');
+				var trigger = $('.menu-item.active');
+				sidebar.set('trigger', trigger);
+				sidebar.send('activate');
+			}
+
+			function reject(reason) {
+				alert(reason);
+			}
 		}
 	}
 });

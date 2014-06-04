@@ -99,6 +99,7 @@ App.Router.reopen({
 var SessionManager = Ember.Object.extend({
 	//initialise
   persist: false,
+  trip: null,
 	init: function() {
 		this._super();
 		this.set('user_auth_token', $.cookie('TRP_USERAUTHTOKEN'));
@@ -166,8 +167,9 @@ var SessionManager = Ember.Object.extend({
 module.exports = SessionManager;
 },{}],4:[function(require,module,exports){
 var ApplicationController = Ember.ObjectController.extend({
-	needs: 'topbar',
+	needs: ['topbar'],
 	profile: null,
+	trip: null,
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
@@ -189,6 +191,25 @@ var ApplicationController = Ember.ObjectController.extend({
 			window.location.reload();
 		}
 	}.observes('App.Session.user_uid'),
+	tripChanged: function() {
+		var self = this;
+		var uid = App.Session.get('user_active_trip');
+		if(uid.length > 0) {
+			self.store.unloadAll('trip');
+			var trip = self.store.find('trip', App.Session.get('user_active_trip'));
+			self.set('trip', trip);
+		} else {
+			self.store.unloadAll('trip');
+			window.location.reload();
+		}
+	}.observes('App.Session.user_active_trip'),
+	trip: function() {
+		var trip = 'None Selected';
+		if(App.Session.get('user_active_trip')) {
+			trip = this.store.find('trip', App.Session.get('user_active_trip'));
+		}
+		return trip;
+	}.property(),
 	profile: function() {
 		var user = this.store.find('profile', App.Session.get('user_uid'));
 		return user;
@@ -290,7 +311,7 @@ var SidebarTripsCreateController = Ember.ObjectController.extend({
 module.exports = SidebarTripsCreateController;
 },{}],10:[function(require,module,exports){
 var SidebarTripsController = Ember.ArrayController.extend({
-	needs: 'SidebarTripsCreate',
+	needs: ['SidebarTripsCreate','sidebar'],
 	actions: {
 		initCreate: function() {
 			//todo - create a trip, assign it to a user and make it active
@@ -304,9 +325,10 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
 		},
 		create: function() {
+			var self = this;
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');
-				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
+				var date = new Date(Date.UTC(rawDate[2],rawDate[1]-1,rawDate[0],0,0));
 				return date.toISOString();
 			}
 
@@ -324,6 +346,22 @@ var SidebarTripsController = Ember.ArrayController.extend({
 
 			//persist the record
 			var promise = trip.save();
+			promise.then(fulfill, reject);
+			function fulfill(model) {
+				App.Session.set('trip', model._data);
+				App.Session.set('user_active_trip', model._data.uid);
+				controller.set('tripname', null);
+				controller.set('departing', null);
+				controller.set('returning', null);
+				var sidebar = self.get('controllers.sidebar');
+				var trigger = $('.menu-item.active');
+				sidebar.set('trigger', trigger);
+				sidebar.send('activate');
+			}
+
+			function reject(reason) {
+				alert(reason);
+			}
 		}
 	}
 });
@@ -850,7 +888,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			No Active Trip!\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			Currently Viewing: <span>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</span>\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
