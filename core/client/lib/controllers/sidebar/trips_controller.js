@@ -1,4 +1,5 @@
-var SidebarTripsController = App.ApplicationController.extend({
+var SidebarTripsController = Ember.ArrayController.extend({
+	needs: 'SidebarTripsCreate',
 	actions: {
 		create: function() {
 			//todo - create a trip, assign it to a user and make it active
