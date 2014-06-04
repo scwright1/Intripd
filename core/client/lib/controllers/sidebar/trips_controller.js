@@ -11,6 +11,28 @@ var SidebarTripsController = Ember.ArrayController.extend({
 		cancelCreate: function() {
 			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
 			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
+		},
+		create: function() {
+			function convertDateToISO(dateString) {
+				var rawDate = dateString.split('/');
+				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
+				return date.toISOString();
+			}
+
+			//gathering trip information
+			var controller = this.get('controllers.SidebarTripsCreate');
+			var data = controller.getProperties('tripname', 'departing', 'returning');
+
+			//create record
+			var trip = this.store.createRecord('trip', {
+				name: data.tripname,
+				start_date: convertDateToISO(data.departing),
+				end_date: convertDateToISO(data.returning),
+				creator_uid: App.Session.get('uid')
+			});
+
+			//persist the record
+			var promise = trip.save();
 		}
 	}
 });

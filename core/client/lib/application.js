@@ -302,6 +302,28 @@ var SidebarTripsController = Ember.ArrayController.extend({
 		cancelCreate: function() {
 			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
 			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
+		},
+		create: function() {
+			function convertDateToISO(dateString) {
+				var rawDate = dateString.split('/');
+				var date = new Date(rawDate[2],rawDate[1]-1,rawDate[0],0,0);
+				return date.toISOString();
+			}
+
+			//gathering trip information
+			var controller = this.get('controllers.SidebarTripsCreate');
+			var data = controller.getProperties('tripname', 'departing', 'returning');
+
+			//create record
+			var trip = this.store.createRecord('trip', {
+				name: data.tripname,
+				start_date: convertDateToISO(data.departing),
+				end_date: convertDateToISO(data.returning),
+				creator_uid: App.Session.get('uid')
+			});
+
+			//persist the record
+			var promise = trip.save();
 		}
 	}
 });
@@ -447,6 +469,7 @@ App.SidebarTripsCreateController = require('./controllers/sidebar/trips/create_c
 App.AuthLoginController = require('./controllers/auth/login_controller');
 App.AuthRegisterController = require('./controllers/auth/register_controller');
 App.Profile = require('./models/profile');
+App.Trip = require('./models/trip');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
 App.MapRoute = require('./routes/map_route');
@@ -458,13 +481,14 @@ App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
 App.SidebarView = require('./views/sidebar_view');
 App.TopbarView = require('./views/topbar_view');
+App.SidebarTripsCreateView = require('./views/sidebar/trips/create_view');
 
 require('./config/routes');
 
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar/trips/create_controller":9,"./controllers/sidebar/trips_controller":10,"./controllers/sidebar_controller":11,"./controllers/topbar_controller":12,"./models/profile":14,"./routes/application_route":15,"./routes/auth/login_route":16,"./routes/auth/register_route":17,"./routes/error_route":18,"./routes/map_route":19,"./templates":20,"./views/application_view":21,"./views/footer_view":22,"./views/index_view":23,"./views/map_view":24,"./views/sidebar_view":25,"./views/topbar_view":26}],14:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/menu_controller":8,"./controllers/sidebar/trips/create_controller":9,"./controllers/sidebar/trips_controller":10,"./controllers/sidebar_controller":11,"./controllers/topbar_controller":12,"./models/profile":14,"./models/trip":15,"./routes/application_route":16,"./routes/auth/login_route":17,"./routes/auth/register_route":18,"./routes/error_route":19,"./routes/map_route":20,"./templates":21,"./views/application_view":22,"./views/footer_view":23,"./views/index_view":24,"./views/map_view":25,"./views/sidebar/trips/create_view":26,"./views/sidebar_view":27,"./views/topbar_view":28}],14:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -475,6 +499,20 @@ var Profile = DS.Model.extend({
 
 module.exports = Profile;
 },{}],15:[function(require,module,exports){
+var Trip = DS.Model.extend({
+	uid: DS.attr('string'),
+	creator_uid: DS.attr('string'),
+	name: DS.attr('string'),
+	creation_date: DS.attr('string'),
+	start_date: DS.attr('string'),
+	end_date: DS.attr('string'),
+	lat: DS.attr('string'),
+	lng: DS.attr('string'),
+	zoom: DS.attr('number')
+});
+
+module.exports = Trip;
+},{}],16:[function(require,module,exports){
 var AppSession = require('../config/session_manager');
 
 //initialize the session at application start time
@@ -525,7 +563,7 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-},{"../config/session_manager":3}],16:[function(require,module,exports){
+},{"../config/session_manager":3}],17:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	model: function() {
 		return Ember.Object.create({});
@@ -533,7 +571,7 @@ var AuthLoginRoute = Ember.Route.extend({
 });
 
 module.exports = AuthLoginRoute;
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var AuthRegisterRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('user_auth_token')) {
@@ -547,7 +585,7 @@ var AuthRegisterRoute = Ember.Route.extend({
 });
 
 module.exports = AuthRegisterRoute;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var ErrorRoute = Ember.Route.extend({
 	redirect: function() {
 		window.location.replace('404');
@@ -555,7 +593,7 @@ var ErrorRoute = Ember.Route.extend({
 });
 
 module.exports = ErrorRoute;
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
 	actions: {
 		loadMenu: function(module) {
@@ -568,7 +606,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 });
 
 module.exports = MapRoute;
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -852,10 +890,16 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/trips/create'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashContexts, hashTypes, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashContexts, hashTypes, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n	<form role='form' id='trip-creation'>\n		<div class='form-group'>\n			<div class='input-group'>\n				<span class='input-group-addon'>&#xf0b1;</span>\n				");
+  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n	<form role='form' id='trip-creation' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "create", {hash:{
+    'on': ("submit")
+  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n		<div class='form-group'>\n			<div class='input-group'>\n				<span class='input-group-addon'>&#xf0b1;</span>\n				");
   hashContexts = {'value': depth0,'class': depth0,'placeholder': depth0,'type': depth0,'autocomplete': depth0};
   hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
   options = {hash:{
@@ -871,8 +915,8 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {'value': "ID",'class': "STRING",'placeholder': "STRING",'type': "STRING",'autocomplete': "STRING"};
   options = {hash:{
     'value': ("departing"),
-    'class': ("form-control"),
-    'placeholder': ("Start Date"),
+    'class': ("form-control date"),
+    'placeholder': ("Start Date (Optional)"),
     'type': ("text"),
     'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -883,8 +927,8 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   options = {hash:{
     'value': ("returning"),
     'type': ("text"),
-    'class': ("form-control"),
-    'placeholder': ("End Date"),
+    'class': ("form-control date"),
+    'placeholder': ("End Date (Optional)"),
     'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
@@ -1139,7 +1183,7 @@ function program4(depth0,data) {
 
 
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -1158,7 +1202,7 @@ var ApplicationView = Ember.View.extend({
 });
 
 module.exports = ApplicationView;
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var FooterView = Ember.View.extend({
 	didInsertElement: function() {
 		var today = new Date();
@@ -1167,7 +1211,7 @@ var FooterView = Ember.View.extend({
 });
 
 module.exports = FooterView;
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
@@ -1220,7 +1264,7 @@ var IndexView = Ember.View.extend({
 });
 
 module.exports = IndexView;
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['fill-window'],
@@ -1259,7 +1303,22 @@ var MapView = Ember.View.extend({
 });
 
 module.exports = MapView;
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
+var SidebarTripsCreateView = Ember.View.extend({
+	init: function() {
+		this._super();
+	},
+	didInsertElement: function() {
+		var _this = this;
+		$('#trip-creation > .form-group > .input-group > .date').datepicker({
+			format: 'dd/mm/yyyy',
+			autoclose: true
+		});
+	}
+});
+
+module.exports = SidebarTripsCreateView;
+},{}],27:[function(require,module,exports){
 var SidebarView = Ember.View.extend({
 	didInsertElement: function() {
 		var self = this;
@@ -1281,7 +1340,7 @@ var SidebarView = Ember.View.extend({
 });
 
 module.exports = SidebarView;
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var TopbarView = Ember.View.extend({
 	didInsertElement: function() {
 		var self = this;

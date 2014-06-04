@@ -219,6 +219,7 @@ function loadRoutes(server, callback) {
 		console.warn('Starting router');
 		require('./routes')(server, passport);
 		server.use(function(req, res, next) {
+			res.status(404);
 			res.render('404', {status: 404, url: req.url});
 		});
 		return callback();

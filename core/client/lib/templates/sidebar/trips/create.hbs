@@ -1,7 +1,7 @@
 
 <div id='create-trip-form'>
 	<div class='header'>Create A Trip</div>
-	<form role='form' id='trip-creation'>
+	<form role='form' id='trip-creation' {{action 'create' on='submit'}}>
 		<div class='form-group'>
 			<div class='input-group'>
 				<span class='input-group-addon'>&#xf0b1;</span>
@@ -11,13 +11,13 @@
 		<div class='form-group'>
 			<div class='input-group'>
 				<span class='input-group-addon'>&#xf073;</span>
-				{{input value=departing class="form-control" placeholder="Start Date" type="text" autocomplete='off'}}
+				{{input value=departing class="form-control date" placeholder="Start Date (Optional)" type="text" autocomplete='off'}}
 			</div>
 		</div>
 		<div class='form-group'>
 			<div class='input-group'>
 				<span class='input-group-addon'>&#xf073;</span>
-				{{input value=returning type="text" class="form-control" placeholder="End Date" autocomplete='off'}}
+				{{input value=returning type="text" class="form-control date" placeholder="End Date (Optional)" autocomplete='off'}}
 			</div>
 		</div>
 		<button class='cancel' style='width: 90px; float: left;' {{action 'cancelCreate'}}>Cancel</button>
