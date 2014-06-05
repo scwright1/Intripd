@@ -1,4 +1,4 @@
-var AuthLoginController = Ember.ObjectController.extend({
+var AuthLoginController = App.ApplicationController.extend({
 	remember: true,
 	actions: {
 		login: function() {

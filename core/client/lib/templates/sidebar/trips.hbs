@@ -7,10 +7,10 @@
 			+
 			</div>
 			{{#each}}
-				<div class='tripbox'>
+				<div {{bind-attr id='uid'}} class='tripbox' {{action 'switch' this on='click'}}>
 				    {{name}}
 				    {{tripdate this date='start_date'}}
-				    {{tripdate this date='end_date'}}
+				   	{{tripdate this date='end_date'}}
 			   	</div>
 			{{/each}}
 		</div>

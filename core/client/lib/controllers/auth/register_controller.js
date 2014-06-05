@@ -1,4 +1,4 @@
-var AuthRegisterController = Em.ObjectController.extend({
+var AuthRegisterController = App.ApplicationController.extend({
 	actions: {
 		register: function() {
 			var self = this;

@@ -1,20 +1,55 @@
 Ember.Handlebars.helper('tripdate', function(property, options) {
-	console.log(property);
 	var self = this;
 	var ident = options.hash.date;
 	//if the property isn't a promise, then just return the safe string, otherwise deal with the promise
 	if(typeof property.then !== 'function') {
 		var iso = property.get(ident);
 		var date = generateDate(convertDate(iso));
+		if(date === "1st January 1970") {
+			date = "No Date Set!";
+		}
 		return new Ember.Handlebars.SafeString(date);
 	} else {
 		property.then(f,r);
 		function f(model) {
 			var iso = model.get(ident);
 			var date = generateDate(convertDate(iso));
+			if(date === "1st January 1970") {
+				date = "No Date Set!";
+			}
 			self.set(ident, date);
 		}
 		function r(reason){}
+	}
+});
+
+Ember.Handlebars.helper('travelDates', function(property) {
+	if(App.Session.get('user_active_trip')) {
+		var self = this, date;
+		//if the property isn't a promise, then just return the safe string, otherwise deal with the promise
+		if(typeof property.then !== 'function') {
+			var start = generateDate(convertDate(property.get('start_date')));
+			var end = generateDate(convertDate(property.get('end_date')));
+			if((start === "1st January 1970") || (end === "1st January 1970")) {
+				date = "Dates not set";
+			} else {
+				date = start + ' to ' + end;
+			}
+			return new Ember.Handlebars.SafeString(date);
+		} else {
+			property.then(f,r);
+			function f(model) {
+				var start = generateDate(convertDate(model.get('start_date')));
+				var end = generateDate(convertDate(model.get('end_date')));
+				if((start === "1st January 1970") || (end === "1st January 1970")) {
+					date = "Dates not set";
+				} else {
+					date = start + ' to ' + end;
+				}
+				self.set('travelling', date);
+			}
+			function r(reason){}
+		}
 	}
 });
 
@@ -35,7 +70,7 @@ function convertDate(iso) {
 
 function generateDate(date) {
 	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
+	var m = date.getMonth();
 	var d = date.getDate();
 	var dateSuffix, month;
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

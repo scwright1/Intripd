@@ -192,15 +192,17 @@ var ApplicationController = Ember.ObjectController.extend({
 		}
 	}.observes('App.Session.user_uid'),
 	tripChanged: function() {
-		var self = this;
-		var uid = App.Session.get('user_active_trip');
-		if(uid.length > 0) {
-			self.store.unloadAll('trip');
-			var trip = self.store.find('trip', App.Session.get('user_active_trip'));
-			self.set('trip', trip);
-		} else {
-			self.store.unloadAll('trip');
-			window.location.reload();
+		if(App.Session.get('user_active_trip')) {
+			var self = this;
+			var uid = App.Session.get('user_active_trip');
+			if(uid.length > 0) {
+				self.store.unloadAll('trip');
+				var trip = self.store.find('trip', App.Session.get('user_active_trip'));
+				self.set('trip', trip);
+			} else {
+				self.store.unloadAll('trip');
+				window.location.reload();
+			}
 		}
 	}.observes('App.Session.user_active_trip'),
 	trip: function() {
@@ -228,7 +230,7 @@ var ApplicationController = Ember.ObjectController.extend({
 
 module.exports = ApplicationController;
 },{}],5:[function(require,module,exports){
-var AuthLoginController = Ember.ObjectController.extend({
+var AuthLoginController = App.ApplicationController.extend({
 	remember: true,
 	actions: {
 		login: function() {
@@ -258,7 +260,7 @@ var AuthLoginController = Ember.ObjectController.extend({
 
 module.exports = AuthLoginController;
 },{}],6:[function(require,module,exports){
-var AuthRegisterController = Em.ObjectController.extend({
+var AuthRegisterController = App.ApplicationController.extend({
 	actions: {
 		register: function() {
 			var self = this;
@@ -339,6 +341,13 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			//gathering trip information
 			var controller = this.get('controllers.SidebarTripsCreate');
 			var data = controller.getProperties('tripname', 'departing', 'returning');
+			if(!data.departing) {
+				data.departing = "01/01/1970";
+			}
+
+			if(!data.returning) {
+				data.returning = "01/01/1970";
+			}
 
 			//create record
 			var trip = this.store.createRecord('trip', {
@@ -365,6 +374,26 @@ var SidebarTripsController = Ember.ArrayController.extend({
 
 			function reject(reason) {
 				alert(reason);
+			}
+		},
+		switch: function(trip) {
+			var self = this;
+			//switch out the currently active trip
+			//firstly, remove the currently active trip;
+			App.Session.set('user_active_trip', null);
+			$.cookie('TRP_USERACTIVETRIP', '');
+			//once we think this is null, go and generate the new points
+			if((App.Session.get('user_active_trip') !== null) || ($.cookie('TRP_USERACTIVETRIP') !== '')) {
+				alert("Something went wrong, we couldn't clear out the old trip!");
+				alert(App.Session.get('user_active_trip'));
+				alert($.cookie('TRP_USERACTIVETRIP'));
+			} else {
+				App.Session.set('trip', trip._data);
+				App.Session.set('user_active_trip', trip._data.uid);
+				var sidebar = self.get('controllers.sidebar');
+				var trigger = $('.menu-item.active');
+				sidebar.set('trigger', trigger);
+				sidebar.send('activate');
 			}
 		}
 	}
@@ -449,6 +478,7 @@ var TopbarController = App.ApplicationController.extend({
 	trigger: null,
 	start_date: null,
 	end_date: null,
+	travelling: null,
 	actions: {
 		activate: function() {
 			var element = null;
@@ -497,22 +527,57 @@ var TopbarController = App.ApplicationController.extend({
 module.exports = TopbarController;
 },{}],13:[function(require,module,exports){
 Ember.Handlebars.helper('tripdate', function(property, options) {
-	console.log(property);
 	var self = this;
 	var ident = options.hash.date;
 	//if the property isn't a promise, then just return the safe string, otherwise deal with the promise
 	if(typeof property.then !== 'function') {
 		var iso = property.get(ident);
 		var date = generateDate(convertDate(iso));
+		if(date === "1st January 1970") {
+			date = "No Date Set!";
+		}
 		return new Ember.Handlebars.SafeString(date);
 	} else {
 		property.then(f,r);
 		function f(model) {
 			var iso = model.get(ident);
 			var date = generateDate(convertDate(iso));
+			if(date === "1st January 1970") {
+				date = "No Date Set!";
+			}
 			self.set(ident, date);
 		}
 		function r(reason){}
+	}
+});
+
+Ember.Handlebars.helper('travelDates', function(property) {
+	if(App.Session.get('user_active_trip')) {
+		var self = this, date;
+		//if the property isn't a promise, then just return the safe string, otherwise deal with the promise
+		if(typeof property.then !== 'function') {
+			var start = generateDate(convertDate(property.get('start_date')));
+			var end = generateDate(convertDate(property.get('end_date')));
+			if((start === "1st January 1970") || (end === "1st January 1970")) {
+				date = "Dates not set";
+			} else {
+				date = start + ' to ' + end;
+			}
+			return new Ember.Handlebars.SafeString(date);
+		} else {
+			property.then(f,r);
+			function f(model) {
+				var start = generateDate(convertDate(model.get('start_date')));
+				var end = generateDate(convertDate(model.get('end_date')));
+				if((start === "1st January 1970") || (end === "1st January 1970")) {
+					date = "Dates not set";
+				} else {
+					date = start + ' to ' + end;
+				}
+				self.set('travelling', date);
+			}
+			function r(reason){}
+		}
 	}
 });
 
@@ -533,7 +598,7 @@ function convertDate(iso) {
 
 function generateDate(date) {
 	var y = date.getFullYear();
-	var m = date.getMonth() + 1;
+	var m = date.getMonth();
 	var d = date.getDate();
 	var dateSuffix, month;
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -675,6 +740,12 @@ App.AuthenticatedRoute = Ember.Route.extend({
 });
 },{"../config/session_manager":3}],18:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
+	beforeModel: function(transition) {
+		if(App.Session.get('user_auth_token')) {
+			App.Session.set('attemptedTransition', transition);
+			this.transitionTo('index');
+		}
+	},
 	model: function() {
 		return Ember.Object.create({});
 	}
@@ -984,25 +1055,13 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push(": ");
-  hashContexts = {'date': depth0};
-  hashTypes = {'date': "STRING"};
-  options = {hash:{
-    'date': ("start_date")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "trip", options) : helperMissing.call(depth0, "tripdate", "trip", options))));
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "start_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" to ");
-  hashContexts = {'date': depth0};
-  hashTypes = {'date': "STRING"};
-  options = {hash:{
-    'date': ("end_date")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "trip", options) : helperMissing.call(depth0, "tripdate", "trip", options))));
+  options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.travelDates || depth0.travelDates),stack1 ? stack1.call(depth0, "trip", options) : helperMissing.call(depth0, "travelDates", "trip", options))));
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "end_date", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "travelling", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("</span>\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
@@ -1023,12 +1082,25 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar/trips'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
-  var buffer = '', stack1, hashTypes, hashContexts, options;
-  data.buffer.push("\n				<div class='tripbox'>\n				    ");
+  var buffer = '', stack1, hashContexts, hashTypes, options;
+  data.buffer.push("\n				<div ");
+  hashContexts = {'id': depth0};
+  hashTypes = {'id': "STRING"};
+  options = {hash:{
+    'id': ("uid")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers['bind-attr'] || depth0['bind-attr']),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "bind-attr", options))));
+  data.buffer.push(" class='tripbox' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "switch", "", {hash:{
+    'on': ("click")
+  },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">\n				    ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1039,7 +1111,7 @@ function program1(depth0,data) {
     'date': ("start_date")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "", options) : helperMissing.call(depth0, "tripdate", "", options))));
-  data.buffer.push("\n				    ");
+  data.buffer.push("\n				   	");
   hashContexts = {'date': depth0};
   hashTypes = {'date': "STRING"};
   options = {hash:{
@@ -1098,7 +1170,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   options = {hash:{
     'value': ("departing"),
     'class': ("form-control date"),
-    'placeholder': ("Start Date"),
+    'placeholder': ("Start Date (Optional)"),
     'type': ("text"),
     'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -1110,7 +1182,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'value': ("returning"),
     'type': ("text"),
     'class': ("form-control date"),
-    'placeholder': ("End Date"),
+    'placeholder': ("End Date (Optional)"),
     'autocomplete': ("off")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));

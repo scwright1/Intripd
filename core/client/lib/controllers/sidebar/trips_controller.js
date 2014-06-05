@@ -23,6 +23,13 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			//gathering trip information
 			var controller = this.get('controllers.SidebarTripsCreate');
 			var data = controller.getProperties('tripname', 'departing', 'returning');
+			if(!data.departing) {
+				data.departing = "01/01/1970";
+			}
+
+			if(!data.returning) {
+				data.returning = "01/01/1970";
+			}
 
 			//create record
 			var trip = this.store.createRecord('trip', {
@@ -49,6 +56,26 @@ var SidebarTripsController = Ember.ArrayController.extend({
 
 			function reject(reason) {
 				alert(reason);
+			}
+		},
+		switch: function(trip) {
+			var self = this;
+			//switch out the currently active trip
+			//firstly, remove the currently active trip;
+			App.Session.set('user_active_trip', null);
+			$.cookie('TRP_USERACTIVETRIP', '');
+			//once we think this is null, go and generate the new points
+			if((App.Session.get('user_active_trip') !== null) || ($.cookie('TRP_USERACTIVETRIP') !== '')) {
+				alert("Something went wrong, we couldn't clear out the old trip!");
+				alert(App.Session.get('user_active_trip'));
+				alert($.cookie('TRP_USERACTIVETRIP'));
+			} else {
+				App.Session.set('trip', trip._data);
+				App.Session.set('user_active_trip', trip._data.uid);
+				var sidebar = self.get('controllers.sidebar');
+				var trigger = $('.menu-item.active');
+				sidebar.set('trigger', trigger);
+				sidebar.send('activate');
 			}
 		}
 	}
