@@ -20,19 +20,25 @@
 }
 
 #trips-menu > .trips-container {
-	padding: 40px;
+	padding: 20px;
+	overflow-y: scroll;
 }
 
-#trips-menu > .trips-container > #create-new-trip {
+#trips-menu > .trips-container > .tripbox {
+	margin: 20px;
 	width: 160px;
 	height: 160px;
 	color: @color-dark;
 	background: darken(@color-slate, 5%);
 	transition: color 0.5s ease, background-color 0.5s ease;
+	text-align: center;
+	float: left;
+}
+
+#trips-menu > .trips-container > #create-new-trip {
 	font-weight: 600;
 	font-size: 72px;
 	line-height: 160px;
-	text-align: center;
 }
 
 #trips-menu > .trips-container > #create-new-trip:hover {

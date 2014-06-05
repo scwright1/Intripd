@@ -1028,29 +1028,29 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '', stack1, hashTypes, hashContexts, options;
-  data.buffer.push("\n			    ");
+  data.buffer.push("\n				<div class='tripbox'>\n				    ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n			    ");
+  data.buffer.push("\n				    ");
   hashContexts = {'date': depth0};
   hashTypes = {'date': "STRING"};
   options = {hash:{
     'date': ("start_date")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "", options) : helperMissing.call(depth0, "tripdate", "", options))));
-  data.buffer.push("\n			    ");
+  data.buffer.push("\n				    ");
   hashContexts = {'date': depth0};
   hashTypes = {'date': "STRING"};
   options = {hash:{
     'date': ("end_date")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "", options) : helperMissing.call(depth0, "tripdate", "", options))));
-  data.buffer.push("\n			");
+  data.buffer.push("\n			   	</div>\n			");
   return buffer;
   }
 
-  data.buffer.push("\n	<section id='trips-menu'>\n		<div class='trips-statistics'>\n		</div>\n		<div class='trips-container'>\n			<div id='create-new-trip' ");
+  data.buffer.push("\n	<section id='trips-menu'>\n		<div class='trips-statistics'>\n		</div>\n		<div class='trips-container'>\n			<div class='tripbox' id='create-new-trip' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "initCreate", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));

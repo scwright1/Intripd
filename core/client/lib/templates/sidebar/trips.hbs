@@ -3,13 +3,15 @@
 		<div class='trips-statistics'>
 		</div>
 		<div class='trips-container'>
-			<div id='create-new-trip' {{action 'initCreate'}}>
+			<div class='tripbox' id='create-new-trip' {{action 'initCreate'}}>
 			+
 			</div>
 			{{#each}}
-			    {{name}}
-			    {{tripdate this date='start_date'}}
-			    {{tripdate this date='end_date'}}
+				<div class='tripbox'>
+				    {{name}}
+				    {{tripdate this date='start_date'}}
+				    {{tripdate this date='end_date'}}
+			   	</div>
 			{{/each}}
 		</div>
 	</section>
