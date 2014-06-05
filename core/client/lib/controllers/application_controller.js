@@ -36,7 +36,11 @@ var ApplicationController = Ember.ObjectController.extend({
 		}
 	}.observes('App.Session.user_active_trip'),
 	trip: function() {
-		var trip = 'None Selected';
+		var trip = {
+			name: 'No Active Trip!',
+			start_date: 'No Start',
+			end_date: 'No End'
+		};
 		if(App.Session.get('user_active_trip')) {
 			trip = this.store.find('trip', App.Session.get('user_active_trip'));
 		}

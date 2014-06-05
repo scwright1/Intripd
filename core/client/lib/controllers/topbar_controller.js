@@ -1,5 +1,7 @@
 var TopbarController = App.ApplicationController.extend({
 	trigger: null,
+	start_date: null,
+	end_date: null,
 	actions: {
 		activate: function() {
 			var element = null;

@@ -27,4 +27,15 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	server.get('/api/trips', Session.validate, function(req, res) {
+		Trip.getTrips(req.query.creator_uid, function(response, data) {
+			if(response === 200) {
+				var ret = {
+					'trips': data
+				};
+				res.send(ret);
+			}
+		});
+	});
 }

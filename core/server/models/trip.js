@@ -50,6 +50,37 @@ tripSchema.statics.createTrip = function(creator_uid, data, done) {
 	}
 }
 
+tripSchema.statics.getTrips = function(creator_uid, done) {
+	var Trip = mongoose.model('Trip', tripSchema);
+	if(!creator_uid) {
+		return done(400);
+	} else {
+		Trip.find({creator_uid: creator_uid}, function(err, trips) {
+			if((err) || (trips === null)) {
+				return done(400);
+			} else {
+				var t = new Array();
+				for(var i = 0; i < trips.length; i++) {
+					var tmp = {
+						'uid': trips[i].uid,
+						'id': trips[i].id,
+						'creator_uid': trips[i].creator_uid,
+						'name': trips[i].name,
+						'creation_date': trips[i].creation_date,
+						'start_date': trips[i].start_date,
+						'end_date': trips[i].end_date,
+						'lat': trips[i].lat,
+						'lng': trips[i].lng,
+						'zoom': trips[i].zoom
+					};
+					t.push(tmp);
+				}
+				return done(200, t);
+			}
+		});
+	}
+}
+
 tripSchema.statics.getTrip = function(uid, done) {
 	var Trip = this;
 	if(!uid) {

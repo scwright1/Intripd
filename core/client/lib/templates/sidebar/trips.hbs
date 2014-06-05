@@ -6,6 +6,11 @@
 			<div id='create-new-trip' {{action 'initCreate'}}>
 			+
 			</div>
+			{{#each}}
+			    {{name}}
+			    {{tripdate this date='start_date'}}
+			    {{tripdate this date='end_date'}}
+			{{/each}}
 		</div>
 	</section>
 	<section id='create-trip-dialog'>
