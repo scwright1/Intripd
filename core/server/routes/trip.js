@@ -38,4 +38,8 @@ module.exports = function(server) {
 			}
 		});
 	});
+
+	server.get('/api/trips/data', function(req, res) {
+		console.log(req.query);
+	});
 }
