@@ -12,6 +12,24 @@ var SidebarView = Ember.View.extend({
 			controller.send('activate');
 		});
 
+		$(window).resize(function() {
+			if($('#menu-content').hasClass('active')) {
+				if($('#menu-content').hasClass('scale')) {
+					if($('#social-content').hasClass('active')) {
+						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
+						$('#menu-content').css('width', width+'px');
+						var mapLeft = $(document).width() - $('#social-content').width();
+						$('#map-canvas').css('left', mapLeft+'px');
+					} else {
+						var width = ($(document).width() - $('#sidebar').width());
+						$('#menu-content').css('width', width+'px');
+						var mapLeft = $(document).width();
+						$('#map-canvas').css('left', mapLeft+'px');
+					}
+				}
+			}
+		});
+
 	}
 });
 

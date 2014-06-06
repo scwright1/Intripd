@@ -1,4 +1,5 @@
 var SidebarController = App.ApplicationController.extend({
+	needs: 'map',
 	trigger: null,
 	actions: {
 		activate: function() {
@@ -23,6 +24,7 @@ var SidebarController = App.ApplicationController.extend({
 			}
 		},
 		menu: function(action, trigger) {
+			var map = this.get('controllers.map').get('map');
 			if(action === 'open') {
 				if($(trigger).data('scale')) {
 					$('#menu-content').addClass('scale');

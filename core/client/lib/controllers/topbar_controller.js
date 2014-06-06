@@ -1,4 +1,5 @@
 var TopbarController = App.ApplicationController.extend({
+	needs: 'map',
 	trigger: null,
 	start_date: null,
 	end_date: null,
@@ -16,6 +17,7 @@ var TopbarController = App.ApplicationController.extend({
 			}
 		},
 		menu: function(action) {
+			var map = this.get('controllers.map').get('map');
 			if(action === 'open') {
 				if($('#menu-content').hasClass('scale')) {
 					var leftEdge = $(document).width();
