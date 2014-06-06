@@ -7,19 +7,24 @@ var SidebarController = App.ApplicationController.extend({
 			element = this.get('trigger');
 			//do the element class stuff (i.e. make active/inactive based on state)
 			//1.  We click the same element that is already active, so close it
-			if($(element).hasClass('active')) {
-				$(element).removeClass('active');
+			if($(element).data('context') === 'clear') {
 				this.send('menu', 'close', this);
+				$(element).siblings().removeClass('active');
 			} else {
-				//2.  We click a new element when a different element is active
-				if($(element).siblings().hasClass('active')) {
-					$(element).siblings().removeClass('active');
-					$(element).addClass('active');
-					this.send('menu', 'change', element);
+				if($(element).hasClass('active')) {
+					$(element).removeClass('active');
+					this.send('menu', 'close', this);
 				} else {
-					// 3. No active menu items, just make the current one active
-					$(element).addClass('active');
-					this.send('menu', 'open', element);
+					//2.  We click a new element when a different element is active
+					if($(element).siblings().hasClass('active')) {
+						$(element).siblings().removeClass('active');
+						$(element).addClass('active');
+						this.send('menu', 'change', element);
+					} else {
+						// 3. No active menu items, just make the current one active
+						$(element).addClass('active');
+						this.send('menu', 'open', element);
+					}
 				}
 			}
 		},
@@ -36,7 +41,7 @@ var SidebarController = App.ApplicationController.extend({
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 						var mapLeft = $('#social-content').offset().left;
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 						$('#menu-content').addClass('active');
 					} else {
 						//preprocess the dimensions of the menu container so we can slide it out
@@ -46,7 +51,7 @@ var SidebarController = App.ApplicationController.extend({
 						$('#menu-content').css('width', width+'px');
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 						$('#menu-content').addClass('active');
 					}
 				} else {
@@ -55,14 +60,14 @@ var SidebarController = App.ApplicationController.extend({
 					$('#menu-content').css('width', $(trigger).data('size')+'px');
 					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
 					$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#menu-content').addClass('active');
 				}
 			} else if(action === 'close') {
 				if($('#menu-content').hasClass('scale')){$('#menu-content').removeClass('scale');}
 				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
 				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false, complete: function() {$(this).children().removeAttr('style');}});
-				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#menu-content').removeClass('active');
 			} else if(action === 'change') {
 				console.log('TODO: something clever');

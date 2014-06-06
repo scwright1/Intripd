@@ -419,19 +419,24 @@ var SidebarController = App.ApplicationController.extend({
 			element = this.get('trigger');
 			//do the element class stuff (i.e. make active/inactive based on state)
 			//1.  We click the same element that is already active, so close it
-			if($(element).hasClass('active')) {
-				$(element).removeClass('active');
+			if($(element).data('context') === 'clear') {
 				this.send('menu', 'close', this);
+				$(element).siblings().removeClass('active');
 			} else {
-				//2.  We click a new element when a different element is active
-				if($(element).siblings().hasClass('active')) {
-					$(element).siblings().removeClass('active');
-					$(element).addClass('active');
-					this.send('menu', 'change', element);
+				if($(element).hasClass('active')) {
+					$(element).removeClass('active');
+					this.send('menu', 'close', this);
 				} else {
-					// 3. No active menu items, just make the current one active
-					$(element).addClass('active');
-					this.send('menu', 'open', element);
+					//2.  We click a new element when a different element is active
+					if($(element).siblings().hasClass('active')) {
+						$(element).siblings().removeClass('active');
+						$(element).addClass('active');
+						this.send('menu', 'change', element);
+					} else {
+						// 3. No active menu items, just make the current one active
+						$(element).addClass('active');
+						this.send('menu', 'open', element);
+					}
 				}
 			}
 		},
@@ -448,7 +453,7 @@ var SidebarController = App.ApplicationController.extend({
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 						var mapLeft = $('#social-content').offset().left;
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 						$('#menu-content').addClass('active');
 					} else {
 						//preprocess the dimensions of the menu container so we can slide it out
@@ -458,7 +463,7 @@ var SidebarController = App.ApplicationController.extend({
 						$('#menu-content').css('width', width+'px');
 						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 						$('#menu-content').addClass('active');
 					}
 				} else {
@@ -467,14 +472,14 @@ var SidebarController = App.ApplicationController.extend({
 					$('#menu-content').css('width', $(trigger).data('size')+'px');
 					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
 					$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#menu-content').addClass('active');
 				}
 			} else if(action === 'close') {
 				if($('#menu-content').hasClass('scale')){$('#menu-content').removeClass('scale');}
 				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
 				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false, complete: function() {$(this).children().removeAttr('style');}});
-				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#menu-content').removeClass('active');
 			} else if(action === 'change') {
 				console.log('TODO: something clever');
@@ -511,25 +516,25 @@ var TopbarController = App.ApplicationController.extend({
 					$('#social-content').css('left', leftEdge+'px');
 					$('#menu-content').animate({'width': ($('#menu-content').width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
 					$('#social-content').animate({'left': ($(document).width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': $('#social-content').width()+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'right': $('#social-content').width()+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#social-content').addClass('active');
 				} else {
 					var leftEdge = $(document).width();
 					$('#social-content').css('left', leftEdge+'px');
 					$('#social-content').animate({'left': ($(document).width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': '300px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'right': '300px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#social-content').addClass('active');
 				}
 			} else if(action === 'close') {
 				if($('#menu-content').hasClass('scale')) {
 					$('#menu-content').animate({'width': ($('#menu-content').width() + $('#social-content').width()) + 'px'}, {duration: 400, queue: false})
 					$('#social-content').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#social-content').removeClass('active');
 				} else {
 					$('#social-content').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, complete: function() {google.maps.event.trigger(map, 'resize');}});
+					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 					$('#social-content').removeClass('active');
 				}
 			}
@@ -1044,11 +1049,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<a href='/'>\n			<div id='logobox'>\n				<img src='img/logo-white.png' width='32px' height='32px' />\n			</div>\n		</a>\n		<!--<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>-->\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
+  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='clear'><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>-->\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadMenu", "sidebar.trips", "trip", "user", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		");
+  data.buffer.push("><div class='fontello-suitcase sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
