@@ -583,7 +583,6 @@ Ember.Handlebars.helper('travelDates', function(property) {
 			}
 			return new Ember.Handlebars.SafeString(date);
 		} else {
-			property.then(f,r);
 			function f(model) {
 				var start = generateDate(convertDate(model.get('start_date')));
 				var end = generateDate(convertDate(model.get('end_date')));
@@ -595,6 +594,7 @@ Ember.Handlebars.helper('travelDates', function(property) {
 				self.set('travelling', date);
 			}
 			function r(reason){}
+			property.then(f,r);
 		}
 	}
 });
