@@ -18,7 +18,7 @@ var AuthLoginController = App.ApplicationController.extend({
 							user_uid: response.uid,
 							persist: self.get('remember')
 						});
-				        self.transitionToRoute('index');
+				        self.transitionToRoute('map');
 					}
 				});
 			}

@@ -20,7 +20,7 @@ var AuthRegisterController = App.ApplicationController.extend({
 							user_auth_token: resp.token,
 							user_uid: resp.uid
 						});
-						self.transitionToRoute('index');
+						self.transitionToRoute('map');
 		 			}
 				});
 			}

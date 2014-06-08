@@ -250,7 +250,7 @@ var AuthLoginController = App.ApplicationController.extend({
 							user_uid: response.uid,
 							persist: self.get('remember')
 						});
-				        self.transitionToRoute('index');
+				        self.transitionToRoute('map');
 					}
 				});
 			}
@@ -282,7 +282,7 @@ var AuthRegisterController = App.ApplicationController.extend({
 							user_auth_token: resp.token,
 							user_uid: resp.uid
 						});
-						self.transitionToRoute('index');
+						self.transitionToRoute('map');
 		 			}
 				});
 			}
@@ -1049,7 +1049,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='clear'><div class='fontello-map sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>-->\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
+  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='clear'><div class='fontello-map sidebar-icon'></div></div>\n		<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>\n		<div class='menu-item' data-context='trips' data-scale='fill' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "loadMenu", "sidebar.trips", "trip", "user", "null", {hash:{},contexts:[depth0,depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1069,11 +1069,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			<span>");
+  data.buffer.push("\n	<section id='topbar'>\n		<div id='trip-quickbar'>\n			<div class='trip-name'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(": ");
+  data.buffer.push("</div>\n			<div class='trip-dates'>");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -1081,7 +1081,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "travelling", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</span>\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
+  data.buffer.push("</div>\n		</div>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			<div class='fontello-users topbar-icon pre' data-context='friends'></div>\n			<!--<div class='fontello-mail topbar-icon pre'></div>-->\n			<div class='user-info'>\n				<div class='user-icon'></div>\n				<div class='user-text'>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
