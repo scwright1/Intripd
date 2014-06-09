@@ -16,6 +16,9 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				}
 			}
 			this.render(module, {into: 'sidebar', outlet: 'menu-content'});
+		},
+		initCreate: function() {
+			this.render('sidebar.trips.create', {into: 'sidebar.trips', outlet: 'trip-content'});
 		}
 	},
 	model: function() {

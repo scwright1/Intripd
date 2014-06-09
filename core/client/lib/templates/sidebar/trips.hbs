@@ -7,14 +7,21 @@
 			+
 			</div>
 			{{#each}}
-				<div {{bind-attr id='uid'}} class='tripbox' {{action 'switch' this on='click'}}>
+				{{#view App.SidebarTripsEntryView contentBinding='this'}}
+				<div {{bind-attr id='uid'}} class='tripbox'>
+					<div class='overlay'>
+						<div class='select' {{action 'switch' this on='click'}}><span class='fontello-check'></span></div>
+						<!--<div class='edit'><span class='fontello-cog'></span></div>-->
+						<div class='delete' {{action 'destroy' this on='click'}}><span class='fontello-cancel'></span></div>
+					</div>
 				    {{name}}
 				    {{tripdate this date='start_date'}}
 				   	{{tripdate this date='end_date'}}
 			   	</div>
+			   	{{/view}}
 			{{/each}}
 		</div>
 	</section>
 	<section id='create-trip-dialog'>
-		{{render 'sidebar.trips.create'}}
+		{{outlet 'trip-content'}}
 	</section>

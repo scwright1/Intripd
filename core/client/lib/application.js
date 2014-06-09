@@ -320,25 +320,9 @@ var MenuController = App.ApplicationController.extend({
 module.exports = MenuController;
 },{}],10:[function(require,module,exports){
 var SidebarTripsCreateController = Ember.ObjectController.extend({
-	content: []
-});
-
-module.exports = SidebarTripsCreateController;
-},{}],11:[function(require,module,exports){
-var SidebarTripsController = Ember.ArrayController.extend({
-	needs: ['SidebarTripsCreate','sidebar'],
+	needs: ['sidebar'],
+	content: [],
 	actions: {
-		initCreate: function() {
-			//todo - create a trip, assign it to a user and make it active
-			$('#create-trip-dialog').css('left', ($('#menu-content').offset().left + $('#menu-content').width())+'px');
-			$('#create-trip-dialog').css('width', $('menu-content').width()+'px');
-			$('#trips-menu').animate({'left': (80-$(document).width())+'px'},{duration: 400, queue: false});
-			$('#create-trip-dialog').animate({'left': '0px'}, {duration: 400, queue: false});
-		},
-		cancelCreate: function() {
-			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
-			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
-		},
 		create: function() {
 			var self = this;
 			function convertDateToISO(dateString) {
@@ -348,8 +332,7 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			}
 
 			//gathering trip information
-			var controller = this.get('controllers.SidebarTripsCreate');
-			var data = controller.getProperties('tripname', 'departing', 'returning');
+			var data = this.getProperties('tripname', 'departing', 'returning');
 			if(!data.departing) {
 				data.departing = "01/01/1970";
 			}
@@ -372,18 +355,42 @@ var SidebarTripsController = Ember.ArrayController.extend({
 			function fulfill(model) {
 				App.Session.set('trip', model._data);
 				App.Session.set('user_active_trip', model._data.uid);
-				controller.set('tripname', null);
-				controller.set('departing', null);
-				controller.set('returning', null);
+				self.set('tripname', null);
+				self.set('departing', null);
+				self.set('returning', null);
 				var sidebar = self.get('controllers.sidebar');
 				var trigger = $('.menu-item.active');
 				sidebar.set('trigger', trigger);
 				sidebar.send('activate');
+				self.send('reset');
 			}
 
 			function reject(reason) {
 				alert(reason);
 			}
+		},
+		reset: function() {
+			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
+			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
+		}
+	}
+});
+
+module.exports = SidebarTripsCreateController;
+},{}],11:[function(require,module,exports){
+var SidebarTripsController = Ember.ArrayController.extend({
+	needs: ['SidebarTripsCreate','sidebar'],
+	actions: {
+		initCreate: function() {
+			//todo - create a trip, assign it to a user and make it active
+			$('#create-trip-dialog').css('left', ($('#menu-content').offset().left + $('#menu-content').width())+'px');
+			$('#create-trip-dialog').css('width', $('menu-content').width()+'px');
+			$('#trips-menu').animate({'left': (80-$(document).width())+'px'},{duration: 400, queue: false});
+			$('#create-trip-dialog').animate({'left': '0px'}, {duration: 400, queue: false});
+			return true;
+		},
+		destroy: function(trip) {
+			var tripid = trip.id;
 		},
 		switch: function(trip) {
 			var self = this;
@@ -481,25 +488,34 @@ var SidebarController = App.ApplicationController.extend({
 				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#menu-content').removeClass('active');
 			} else if(action === 'change') {
-				$('#menu-content').children('section').css('display', 'none');
+				$('#menu-content').children('.ember-view').css('display', 'none');
 				if(!$(trigger).data('scale')) {
+					if($('#menu-content').hasClass('scale')) {
+						$('#menu-content').removeClass('scale');
+					}
 					var newWidth = $(trigger).data('size');
-					$('#menu-content').animate({'width': newWidth+'px'}, {duration: 400, queue: false, complete: function() {$('#menu-content').children('section').css('display', 'inline');}});
+					$('#menu-content').animate({'width': newWidth+'px'}, {duration: 400, queue: false, complete: function() {$('#menu-content').children('.ember-view').css('display', 'inline');}});
 					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
 					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 				} else {
-					if($('#social-content').hasClass('active')) {
-						//open any scale windows up to the social content
-						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
-						$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('section').css('display', 'inline');}});
-						var mapLeft = $('#social-content').offset().left;
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+					if($('#menu-content').hasClass('scale')){
+						//we're already in a scale window.  do nothing
 					} else {
-						//preprocess the dimensions of the menu container so we can slide it out
-						var width = $(document).width() - $('#sidebar').width();
-						var mapLeft = $(document).width();
-						$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('section').css('display', 'inline');}});
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+						if($('#social-content').hasClass('active')) {
+							$('#menu-content').addClass('scale');
+							//open any scale windows up to the social content
+							var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
+							$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('.ember-view').css('display', 'inline');}});
+							var mapLeft = $('#social-content').offset().left;
+							$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+						} else {
+							$('#menu-content').addClass('scale');
+							//preprocess the dimensions of the menu container so we can slide it out
+							var width = $(document).width() - $('#sidebar').width();
+							var mapLeft = $(document).width();
+							$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('.ember-view').css('display', 'inline');}});
+							$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+						}
 					}
 				}
 			}
@@ -685,7 +701,6 @@ App.Trip = require('./models/trip');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
 App.MapRoute = require('./routes/map_route');
-App.SidebarTripsRoute = require('./routes/sidebar/trips_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
 App.ApplicationView = require('./views/application_view');
@@ -694,14 +709,16 @@ App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
 App.SidebarView = require('./views/sidebar_view');
 App.TopbarView = require('./views/topbar_view');
+App.SidebarTripsView = require('./views/sidebar/trips_view');
 App.SidebarTripsCreateView = require('./views/sidebar/trips/create_view');
+App.SidebarTripsEntryView = require('./views/sidebar/trips/entry_view');
 
 require('./config/routes');
 
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/trips/create_controller":10,"./controllers/sidebar/trips_controller":11,"./controllers/sidebar_controller":12,"./controllers/topbar_controller":13,"./helpers/tripHelper":14,"./models/profile":16,"./models/trip":17,"./routes/application_route":18,"./routes/auth/login_route":19,"./routes/auth/register_route":20,"./routes/error_route":21,"./routes/map_route":22,"./routes/sidebar/trips_route":23,"./templates":24,"./views/application_view":25,"./views/footer_view":26,"./views/index_view":27,"./views/map_view":28,"./views/sidebar/trips/create_view":29,"./views/sidebar_view":30,"./views/topbar_view":31}],16:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/trips/create_controller":10,"./controllers/sidebar/trips_controller":11,"./controllers/sidebar_controller":12,"./controllers/topbar_controller":13,"./helpers/tripHelper":14,"./models/profile":16,"./models/trip":17,"./routes/application_route":18,"./routes/auth/login_route":19,"./routes/auth/register_route":20,"./routes/error_route":21,"./routes/map_route":22,"./templates":23,"./views/application_view":24,"./views/footer_view":25,"./views/index_view":26,"./views/map_view":27,"./views/sidebar/trips/create_view":28,"./views/sidebar/trips/entry_view":29,"./views/sidebar/trips_view":30,"./views/sidebar_view":31,"./views/topbar_view":32}],16:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -831,6 +848,9 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				}
 			}
 			this.render(module, {into: 'sidebar', outlet: 'menu-content'});
+		},
+		initCreate: function() {
+			this.render('sidebar.trips.create', {into: 'sidebar.trips', outlet: 'trip-content'});
 		}
 	},
 	model: function() {
@@ -840,11 +860,6 @@ var MapRoute = App.AuthenticatedRoute.extend({
 
 module.exports = MapRoute;
 },{}],23:[function(require,module,exports){
-var SidebarTripsRoute = Ember.Route.extend({
-});
-
-module.exports = SidebarTripsRoute;
-},{}],24:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -1124,6 +1139,19 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
+  var buffer = '', stack1, hashContexts, hashTypes;
+  data.buffer.push("\n				");
+  hashContexts = {'contentBinding': depth0};
+  hashTypes = {'contentBinding': "STRING"};
+  stack1 = helpers.view.call(depth0, "App.SidebarTripsEntryView", {hash:{
+    'contentBinding': ("this")
+  },inverse:self.noop,fn:self.program(2, program2, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n			");
+  return buffer;
+  }
+function program2(depth0,data) {
+  
   var buffer = '', stack1, hashContexts, hashTypes, options;
   data.buffer.push("\n				<div ");
   hashContexts = {'id': depth0};
@@ -1132,13 +1160,19 @@ function program1(depth0,data) {
     'id': ("uid")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers['bind-attr'] || depth0['bind-attr']),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "bind-attr", options))));
-  data.buffer.push(" class='tripbox' ");
+  data.buffer.push(" class='tripbox'>\n					<div class='overlay'>\n						<div class='select' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "switch", "", {hash:{
     'on': ("click")
   },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">\n				    ");
+  data.buffer.push("><span class='fontello-check'></span></div>\n						<!--<div class='edit'><span class='fontello-cog'></span></div>-->\n						<div class='delete' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "destroy", "", {hash:{
+    'on': ("click")
+  },contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("><span class='fontello-cancel'></span></div>\n					</div>\n				    ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1156,7 +1190,7 @@ function program1(depth0,data) {
     'date': ("end_date")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.tripdate || depth0.tripdate),stack1 ? stack1.call(depth0, "", options) : helperMissing.call(depth0, "tripdate", "", options))));
-  data.buffer.push("\n			   	</div>\n			");
+  data.buffer.push("\n			   	</div>\n			   	");
   return buffer;
   }
 
@@ -1173,7 +1207,7 @@ function program1(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar.trips.create", options) : helperMissing.call(depth0, "render", "sidebar.trips.create", options))));
+  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "trip-content", options) : helperMissing.call(depth0, "outlet", "trip-content", options))));
   data.buffer.push("\n	</section>");
   return buffer;
   
@@ -1475,7 +1509,7 @@ function program4(depth0,data) {
 
 
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -1494,7 +1528,7 @@ var ApplicationView = Ember.View.extend({
 });
 
 module.exports = ApplicationView;
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var FooterView = Ember.View.extend({
 	didInsertElement: function() {
 		var today = new Date();
@@ -1503,7 +1537,7 @@ var FooterView = Ember.View.extend({
 });
 
 module.exports = FooterView;
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
@@ -1556,7 +1590,7 @@ var IndexView = Ember.View.extend({
 });
 
 module.exports = IndexView;
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var MapView = Ember.View.extend({
 	template: Ember.TEMPLATES['map'],
 	classNames: ['fill-window'],
@@ -1595,7 +1629,7 @@ var MapView = Ember.View.extend({
 });
 
 module.exports = MapView;
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var SidebarTripsCreateView = Ember.View.extend({
 	init: function() {
 		this._super();
@@ -1610,7 +1644,40 @@ var SidebarTripsCreateView = Ember.View.extend({
 });
 
 module.exports = SidebarTripsCreateView;
+},{}],29:[function(require,module,exports){
+var SidebarTripsEntryView = Ember.View.extend({
+	mouseEnter: function() {
+		var uid = this.get('content')._data.uid;
+		$('#'+uid+' > .overlay > .select').css('display', 'none');
+		$('#'+uid+' > .overlay > .edit').css('display', 'none');
+		$('#'+uid+' > .overlay > .delete').css('display', 'none');
+		var $at = $('#'+uid+' > .overlay > .select').removeClass('animated fadeInDown fadeOutUp animated');
+		var $at = $('#'+uid+' > .overlay > .edit').removeClass('animated fadeInLeft fadeOutLeft animated');
+		var $at = $('#'+uid+' > .overlay > .delete').removeClass('animated fadeInRight fadeOutRight animated');  
+		setTimeout(function(){ 
+			$('#'+uid+' > .overlay > .select').css('display', 'block');
+			$('#'+uid+' > .overlay > .select').addClass('animated fadeInDown');
+			$('#'+uid+' > .overlay > .edit').css('display', 'block');
+			$('#'+uid+' > .overlay > .edit').addClass('animated fadeInLeft');
+			$('#'+uid+' > .overlay > .delete').css('display', 'block');
+			$('#'+uid+' > .overlay > .delete').addClass('animated fadeInRight');
+		}, 10); 
+	},
+	mouseLeave: function() {
+		var uid = this.get('content')._data.uid;
+		$('#'+uid+' > .overlay > .select').addClass('animated fadeOutUp');
+		$('#'+uid+' > .overlay > .edit').addClass('animated fadeOutLeft');
+		$('#'+uid+' > .overlay > .delete').addClass('animated fadeOutRight');
+	}
+});
+
+module.exports = SidebarTripsEntryView;
 },{}],30:[function(require,module,exports){
+var SidebarTripsView = Ember.View.extend({
+});
+
+module.exports = SidebarTripsView;
+},{}],31:[function(require,module,exports){
 var SidebarView = Ember.View.extend({
 	didInsertElement: function() {
 		var self = this;
@@ -1647,7 +1714,7 @@ var SidebarView = Ember.View.extend({
 });
 
 module.exports = SidebarView;
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var TopbarView = Ember.View.extend({
 	didInsertElement: function() {
 		var self = this;
