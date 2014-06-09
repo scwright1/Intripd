@@ -450,7 +450,6 @@ var SidebarController = App.ApplicationController.extend({
 						var menuLeft = $('#sidebar').width() - width;
 						$('#menu-content').css('left', menuLeft+'px');
 						$('#menu-content').css('width', width+'px');
-						var mapLeft = $(document).width();
 						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
 						var mapLeft = $('#social-content').offset().left;
 						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
@@ -482,7 +481,27 @@ var SidebarController = App.ApplicationController.extend({
 				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
 				$('#menu-content').removeClass('active');
 			} else if(action === 'change') {
-				console.log('TODO: something clever');
+				$('#menu-content').children('section').css('display', 'none');
+				if(!$(trigger).data('scale')) {
+					var newWidth = $(trigger).data('size');
+					$('#menu-content').animate({'width': newWidth+'px'}, {duration: 400, queue: false, complete: function() {$('#menu-content').children('section').css('display', 'inline');}});
+					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
+					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+				} else {
+					if($('#social-content').hasClass('active')) {
+						//open any scale windows up to the social content
+						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
+						$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('section').css('display', 'inline');}});
+						var mapLeft = $('#social-content').offset().left;
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+					} else {
+						//preprocess the dimensions of the menu container so we can slide it out
+						var width = $(document).width() - $('#sidebar').width();
+						var mapLeft = $(document).width();
+						$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('section').css('display', 'inline');}});
+						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
+					}
+				}
 			}
 		}
 	}
