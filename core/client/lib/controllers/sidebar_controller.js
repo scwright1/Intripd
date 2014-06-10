@@ -1,29 +1,35 @@
 var SidebarController = App.ApplicationController.extend({
-	needs: 'map',
+	needs: ['map'],
 	trigger: null,
+	//set up actions
 	actions: {
-		activate: function() {
+		toggleSidebarMenu: function() {
+			var self = this;
 			var element = null;
 			element = this.get('trigger');
 			//do the element class stuff (i.e. make active/inactive based on state)
 			//1.  We click the same element that is already active, so close it
 			if($(element).data('context') === 'clear') {
-				this.send('menu', 'close', this);
+				self.send('menu', 'close', this);
 				$(element).siblings().removeClass('active');
 			} else {
 				if($(element).hasClass('active')) {
 					$(element).removeClass('active');
-					this.send('menu', 'close', this);
+					self.send('menu', 'close', this);
 				} else {
 					//2.  We click a new element when a different element is active
 					if($(element).siblings().hasClass('active')) {
 						$(element).siblings().removeClass('active');
 						$(element).addClass('active');
-						this.send('menu', 'change', element);
+						self.send('menu', 'change', element);
+						//need to make a view change based on the route, so bubble up
+						return true;
 					} else {
 						// 3. No active menu items, just make the current one active
 						$(element).addClass('active');
-						this.send('menu', 'open', element);
+						self.send('menu', 'open', element);
+						//need to make a view change based on the route, so bubble up
+						return true;
 					}
 				}
 			}

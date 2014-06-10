@@ -8,8 +8,6 @@ var SidebarView = Ember.View.extend({
 			var controller = self.get('controller');
 			//set the trigger in the controller to the current element
 			controller.set('trigger', this);
-			//activate the menu
-			controller.send('activate');
 		});
 
 		$(window).resize(function() {

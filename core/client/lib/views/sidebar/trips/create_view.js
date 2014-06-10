@@ -8,7 +8,7 @@ var SidebarTripsCreateView = Ember.View.extend({
 			format: 'dd/mm/yyyy',
 			autoclose: true
 		});
-	}
+	},
 });
 
 module.exports = SidebarTripsCreateView;

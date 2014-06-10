@@ -40,7 +40,7 @@ var SidebarTripsCreateController = Ember.ObjectController.extend({
 				var sidebar = self.get('controllers.sidebar');
 				var trigger = $('.menu-item.active');
 				sidebar.set('trigger', trigger);
-				sidebar.send('activate');
+				sidebar.send('toggleSidebarMenu');
 				self.send('reset');
 			}
 
@@ -48,9 +48,14 @@ var SidebarTripsCreateController = Ember.ObjectController.extend({
 				alert(reason);
 			}
 		},
-		reset: function() {
+		cancel: function() {
 			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
 			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
+		},
+		reset: function() {
+			this.set('tripname', null);
+			this.set('departing', null);
+			this.set('returning', null);
 		}
 	}
 });

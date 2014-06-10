@@ -1,16 +1,27 @@
 var SidebarTripsController = Ember.ArrayController.extend({
-	needs: ['SidebarTripsCreate','sidebar'],
+	needs: ['sidebar'],
+	trigger: null,
+	trip: null,
 	actions: {
-		initCreate: function() {
-			//todo - create a trip, assign it to a user and make it active
+		toggleTripsMenu: function() {
 			$('#create-trip-dialog').css('left', ($('#menu-content').offset().left + $('#menu-content').width())+'px');
 			$('#create-trip-dialog').css('width', $('menu-content').width()+'px');
 			$('#trips-menu').animate({'left': (80-$(document).width())+'px'},{duration: 400, queue: false});
 			$('#create-trip-dialog').animate({'left': '0px'}, {duration: 400, queue: false});
 			return true;
 		},
+		reset: function() {
+			$('#trips-menu').css('left', '0px');
+			$('#create-trip-dialog').css('left', $(document).width()+'px');
+		},
+		generate: function() {
+			this.set('trigger', 'create');
+			this.send('toggleTripsMenu');
+		},
 		destroy: function(trip) {
-			var tripid = trip.id;
+			this.set('trigger', 'delete');
+			this.set('trip', trip);
+			this.send('toggleTripsMenu');
 		},
 		switch: function(trip) {
 			var self = this;
@@ -29,7 +40,7 @@ var SidebarTripsController = Ember.ArrayController.extend({
 				var sidebar = self.get('controllers.sidebar');
 				var trigger = $('.menu-item.active');
 				sidebar.set('trigger', trigger);
-				sidebar.send('activate');
+				sidebar.send('toggleSidebarMenu');
 			}
 		}
 	}

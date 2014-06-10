@@ -3,9 +3,9 @@
 		<div id='logobox'>
 			<img src='img/logo-white.png' width='32px' height='32px' />
 		</div>
-		<div class='menu-item' data-context='clear'><div class='fontello-map sidebar-icon'></div></div>
-		<div class='menu-item' data-context='search' data-size='340'><div class='fontello-search sidebar-icon'></div></div>
-		<div class='menu-item' data-context='trips' data-scale='fill' {{action "loadMenu" 'sidebar.trips' 'trip' 'user' 'null'}}><div class='fontello-suitcase sidebar-icon'></div></div>
+		<div class='menu-item' data-context='clear' {{action 'toggleSidebarMenu'}}><div class='fontello-map sidebar-icon'></div></div>
+		<div class='menu-item' data-context='search' data-size='340' {{action 'toggleSidebarMenu'}}><div class='fontello-search sidebar-icon'></div></div>
+		<div class='menu-item' data-context='trips' data-scale='fill' data-search='user' {{action 'toggleSidebarMenu'}}><div class='fontello-suitcase sidebar-icon'></div></div>
 		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>
 		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>
 		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->

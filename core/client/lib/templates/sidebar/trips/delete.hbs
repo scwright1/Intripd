@@ -1,4 +1,3 @@
-
 <div id='create-trip-form'>
 	<div class='header'>Create A Trip</div>
 	<form role='form' id='trip-creation' {{action 'create' on='submit'}}>
@@ -20,7 +19,7 @@
 				{{input value=returning type="text" class="form-control date" placeholder="End Date (Optional)" autocomplete='off'}}
 			</div>
 		</div>
-		<button class='cancel' style='width: 90px; float: left;' {{action 'cancel'}}>Cancel</button>
+		<button class='cancel' style='width: 90px; float: left;' {{action 'reset'}}>Cancel</button>
 		<button type='submit' style='width: 240px; float: right;'>Create</button>
 	</form>
 </div>
