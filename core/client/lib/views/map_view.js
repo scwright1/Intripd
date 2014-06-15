@@ -1,5 +1,4 @@
-var MapView = Ember.View.extend({
-	template: Ember.TEMPLATES['map'],
+var MapView = Em.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
 		this._super();

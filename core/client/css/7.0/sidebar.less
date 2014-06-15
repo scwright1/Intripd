@@ -5,28 +5,22 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: #343a3e;
+	background: @color-dark;
 	position: absolute;
 	z-index: 10;
+	color: @color-slate;
+	font-family: @font-body;
+	font-weight: 300;
 }
 
 #sidebar > #logobox {
 	width: 100%;
 	height: 80px;
-	background: @color-green-bright;
+	background: @color-green;
 }
 
 #sidebar > #logobox > img {
 	margin: 23px;
-}
-
-#sidebar > #bottom-accent {
-	width: 100%;
-	height: 6px;
-	background: @color-green-bright;
-	position: absolute;
-	bottom: 0;
-	left: 0;
 }
 
 #sidebar > .menu-item {
@@ -34,6 +28,12 @@
 	height: 80px;
 	transition: background-color 0.5s ease, color 0.5s ease;
 	color: lighten(@color-dark, 30%);
+}
+
+#sidebar > .menu-item:hover {
+	background-color: darken(@color-dark, 10%);
+	transition: background-color 0.5s ease, color 0.5s ease;
+	color: @color-slate;
 }
 
 #sidebar > .menu-item.active {
@@ -48,25 +48,26 @@
 	transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-#sidebar > .menu-item.special {
-	bottom: 6px;
-	left: 0px;
-	position: absolute;
-}
-
-#sidebar > .menu-item.special:hover {
-	color: @color-green-bright;
-}
-
-#sidebar > .menu-item:hover {
-	background-color: darken(@color-dark, 10%);
-	transition: background-color 0.5s ease, color 0.5s ease;
-	color: @color-slate;
-}
-
 #sidebar > .menu-item > .sidebar-icon {
 	font-size: 20px;
 	line-height: 80px;
 	text-align: center;
 	margin-left: -4px;
+}
+
+#sidebar > #bottom-accent {
+	width: 100%;
+	height: 6px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: @color-green;
+}
+
+#sidebar-menu-content {
+	top: 80px;
+	bottom: 0;
+	background: @color-slate;
+	position: absolute;
+	text-align: right;
 }
