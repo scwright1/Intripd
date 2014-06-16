@@ -15,8 +15,6 @@ App.Router.map(function() {
 
 	this.route('map');
 
-	this.route('testharness');
-
 	//make sure this route is always last for rendering 404 error page
 	this.route("error", {path: "*path"});
 });

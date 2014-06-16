@@ -1,5 +1,4 @@
 var ApplicationController = Ember.ObjectController.extend({
-	needs: ['topbar'],
 	profile: null,
 	trip: null,
 	isAuthenticated: function() {

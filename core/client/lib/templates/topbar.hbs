@@ -1,20 +1,14 @@
 
 	<section id='topbar'>
-		<div id='trip-quickbar'>
-			<div class='trip-name'>{{trip.name}}</div>
-			<div class='trip-dates'>{{travelDates trip}}{{travelling}}</div>
-		</div>
 		<div id='user-quickbar'>
 			<!-- todo - social -->
-			<div class='fontello-users topbar-icon pre' data-context='friends'></div>
-			<!--<div class='fontello-mail topbar-icon pre'></div>-->
-			<div class='user-info'>
-				<div class='user-icon'></div>
-				<div class='user-text'>{{profile.firstName}} {{profile.lastName}}</div>
+			{{view App.TopbarMenutriggerView context='friends' icon='fontello-users' width='300'}}
+			{{view App.TopbarUsertriggerView}}
+			<div class='topbar-item-container'>
+				<div class='fontello-logout topbar-icon' {{action 'logout' on='click'}}></div>
 			</div>
-			<div class='fontello-logout topbar-icon' {{action 'logout'}}></div>
 		</div>
 	</section>
-	<section id='social-content' data-value='content'>
-		Social
+	<section id='social-menu' class='menu-content'>
+		{{view App.TopbarMenuView elementId='social-menu-content'}}
 	</section>

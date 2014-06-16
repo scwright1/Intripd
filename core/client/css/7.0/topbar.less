@@ -10,91 +10,55 @@
 	border-bottom: 1px solid darken(@color-slate, 5%);
 }
 
-#topbar > #trip-quickbar {
-	float: left;
-	height: 100%;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-	font-size: 16px;
-	padding-left: 40px;
-	color: @color-dark;
-}
-
-#topbar > #trip-quickbar > .trip-name {
-	margin-top: 20px;
-	font-weight: 300;
-	color: darken(@color-green-bright, 10%);
-}
-
-#topbar > #trip-quickbar > .trip-dates {
-	font-weight: 300;
-	font-size: 12px;
-	color: darken(@color-green-bright, 10%);
-}
-
 #topbar > #user-quickbar {
 	float: right;
 	height: 100%;
-	line-height: 80px;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
+	margin-right: 30px;
 	font-size: 16px;
-	padding-right: 40px;
-	color: @color-dark;
 }
 
-#topbar > #user-quickbar > .user-info {
+#topbar > #user-quickbar > .topbar-item-container {
 	float: left;
+	line-height: 80px;
 	padding: 0 10px;
+	transition: background-color 0.5s ease;
 }
 
-#topbar > #user-quickbar > .user-info > .user-icon {
+#topbar > #user-quickbar > .user-quick-container {
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	padding: 0 20px;
+}
+
+#topbar > #user-quickbar > .user-quick-container > img {
+	border-radius: 12px;
+	overflow: hidden;
+	border: 1px solid darken(@color-slate, 40%);
 	width: 24px;
 	height: 24px;
-	border-radius: 12px;
-	border: 1px solid lighten(@color-dark, 50%);
-	background: url('../../img/user-icon.png');
 	float: left;
-	margin: 27px 10px 0px 10px;
-	overflow: hidden;
+	margin-top: 28px;
 }
 
-#topbar > #user-quickbar > .user-info > .user-text {
+#topbar > #user-quickbar > .user-quick-container > .user-text {
 	float: right;
+	margin-left: 10px;
 }
 
-@media all and (max-width: 768px) {
-	#topbar > #user-quickbar {
-		padding-right: 20px !important;
-	}
-	#topbar > #trip-quickbar {
-		padding-left: 20px !important;
-		font-size: 14px;
-	}
-	#topbar > #user-quickbar > .user-info > .user-text {
-		display: none;
-	}
-}
-
-#topbar > #user-quickbar > .topbar-icon {
-	padding-left: 10px;
-	padding-right: 10px;
-	float: right;
-	height: 100%;
-	line-height: 80px;
+#topbar > #user-quickbar > .topbar-item-container > .topbar-icon {
 	transition: color 0.5s ease;
 }
 
-#topbar > #user-quickbar > .topbar-icon:hover {
-	color: @color-red;
+#topbar > #user-quickbar > .topbar-item-container > .topbar-icon:hover {
+	color: @color-green;
 	transition: color 0.5s ease;
 }
 
-#topbar > #user-quickbar > .pre {
-	float: left !important;
-}
-
-#topbar > #user-quickbar > .pre:hover {
-	color: @color-green-bright;
-	transition: color 0.5s ease;
+#social-menu > #social-menu-content {
+	width: 0px;
+	position: absolute;
+	top: 80px;
+	bottom: 0;
+	background: @color-slate;
+	z-index: 10;
 }

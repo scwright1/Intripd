@@ -1,10 +1,3 @@
-//require('../vendor/jquery.min');
-//require('../vendor/jquery.cookie');
-//require('../vendor/bootstrap-datepicker');
-//require('../vendor/handlebars');
-//require('../vendor/ember');
-//require('../vendor/ember-data');
-
 window.App = Ember.Application.create();
 
 var App = window.App;

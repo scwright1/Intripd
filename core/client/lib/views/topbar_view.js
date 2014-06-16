@@ -1,5 +1,7 @@
-var TopbarView = Ember.View.extend({
-	didInsertElement: function() {
+var TopbarView = Em.View.extend({
+	templateName: 'topbar',
+	classNames: ['topbar-container']
+/*	didInsertElement: function() {
 		var self = this;
 		$('#user-quickbar > .topbar-icon').click(function() {
 			var controller = self.get('controller');
@@ -18,7 +20,7 @@ var TopbarView = Ember.View.extend({
 				$('#social-content').css('left', left+'px');
 			}
 		});
-	}
+	} */
 });
 
 module.exports = TopbarView;
