@@ -26,7 +26,9 @@ var TriggerView = Em.View.extend({
 				$('#map-canvas').animate({'left': _this.get('width')+'px'}, {duration: 400, queue: false, step: function() {
 					google.maps.event.trigger(_this.get('controller.controllers.map').get('map'), 'resize');
 				}});
-				this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+				if(this.get('menu_context') !== '') {
+					this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+				}
 			}
 		} else {
 			var w;

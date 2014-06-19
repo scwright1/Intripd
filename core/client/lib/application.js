@@ -970,17 +970,33 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
   hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
-    'menu_context': ("close"),
-    'icon': ("fontello-map"),
-    'width': ("0")
+    'menu_context': ("SidebarTrips"),
+    'icon': ("fontello-search"),
+    'width': ("400")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
   hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
   hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
     'menu_context': ("SidebarTrips"),
-    'icon': ("fontello-suitcase"),
+    'icon': ("fontello-map"),
     'width': ("full")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n	");
+  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
+  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
+    'menu_context': ("SidebarTrips"),
+    'icon': ("fontello-location"),
+    'width': ("400")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n	");
+  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
+  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
+    'menu_context': ("SidebarTrips"),
+    'icon': ("fontello-camera"),
+    'width': ("400")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
   data.buffer.push("\n	<div class='sidebar-accent'></div>");
@@ -1616,7 +1632,9 @@ var TriggerView = Em.View.extend({
 				$('#map-canvas').animate({'left': _this.get('width')+'px'}, {duration: 400, queue: false, step: function() {
 					google.maps.event.trigger(_this.get('controller.controllers.map').get('map'), 'resize');
 				}});
-				this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+				if(this.get('menu_context') !== '') {
+					this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+				}
 			}
 		} else {
 			var w;
