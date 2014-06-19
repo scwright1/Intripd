@@ -42,6 +42,7 @@ user_schema.statics.register = function(data, done) {
 						uid : user.uid,
 						firstName: data.firstname,
 						lastName: data.lastname,
+						email: data.email,
                         created : new Date()
 					}, function(err) {
 						if(err) {

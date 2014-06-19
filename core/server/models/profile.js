@@ -5,6 +5,7 @@ var mongoose			= require('mongoose'),
 		lastName:		{type: String},
 		gender:			{type: String},
 		dob:			{type: Date},
+		email:			{type: String},
 		created:		{type: Date}
 	});
 
@@ -24,6 +25,7 @@ profile_schema.statics.getProfileWithID = function(id, done) {
 					'firstName': profile.firstName,
 					'lastName': profile.lastName,
 					'gender': profile.gender,
+					'email': profile.email,
 					'dob': profile.dob
 				};
 				return done(200, data, null);

@@ -74,7 +74,7 @@ App.Router.map(function() {
 		this.route('cookies');
 	});
 
-	this.route('map');
+	this.resource('map');
 
 	//make sure this route is always last for rendering 404 error page
 	this.route("error", {path: "*path"});
@@ -431,180 +431,29 @@ var SidebarTripsController = Ember.ArrayController.extend({
 
 module.exports = SidebarTripsController;
 },{}],13:[function(require,module,exports){
-var SidebarController = App.ApplicationController.extend({
-	needs: ['map'],
-	trigger: null,
-	//set up actions
-	actions: {
-		toggleSidebarMenu: function() {
-			var self = this;
-			var element = null;
-			element = this.get('trigger');
-			//do the element class stuff (i.e. make active/inactive based on state)
-			//1.  We click the same element that is already active, so close it
-			if($(element).data('context') === 'clear') {
-				self.send('menu', 'close', this);
-				$(element).siblings().removeClass('active');
-			} else {
-				if($(element).hasClass('active')) {
-					$(element).removeClass('active');
-					self.send('menu', 'close', this);
-				} else {
-					//2.  We click a new element when a different element is active
-					if($(element).siblings().hasClass('active')) {
-						$(element).siblings().removeClass('active');
-						$(element).addClass('active');
-						self.send('menu', 'change', element);
-						//need to make a view change based on the route, so bubble up
-						return true;
-					} else {
-						// 3. No active menu items, just make the current one active
-						$(element).addClass('active');
-						self.send('menu', 'open', element);
-						//need to make a view change based on the route, so bubble up
-						return true;
-					}
-				}
-			}
-		},
-		menu: function(action, trigger) {
-			var map = this.get('controllers.map').get('map');
-			if(action === 'open') {
-				if($(trigger).data('scale')) {
-					$('#menu-content').addClass('scale');
-					if($('#social-content').hasClass('active')) {
-						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
-						var menuLeft = $('#sidebar').width() - width;
-						$('#menu-content').css('left', menuLeft+'px');
-						$('#menu-content').css('width', width+'px');
-						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-						var mapLeft = $('#social-content').offset().left;
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-						$('#menu-content').addClass('active');
-					} else {
-						//preprocess the dimensions of the menu container so we can slide it out
-						var width = $(document).width() - $('#sidebar').width();
-						var menuLeft = $('#sidebar').width() - width;
-						$('#menu-content').css('left', menuLeft+'px');
-						$('#menu-content').css('width', width+'px');
-						var mapLeft = $(document).width();
-						$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-						$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-						$('#menu-content').addClass('active');
-					}
-				} else {
-					var menuLeft = $('#sidebar').width() - $(trigger).data('size');
-					$('#menu-content').css('left', menuLeft+'px');
-					$('#menu-content').css('width', $(trigger).data('size')+'px');
-					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
-					$('#menu-content').animate({'left': $('#sidebar').width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#menu-content').addClass('active');
-				}
-			} else if(action === 'close') {
-				if($('#menu-content').hasClass('scale')){$('#menu-content').removeClass('scale');}
-				var menuLeft = $('#sidebar').width() - $('#menu-content').width();
-				$('#menu-content').animate({'left': menuLeft+'px'}, {duration: 400, queue: false, complete: function() {$(this).children().removeAttr('style');}});
-				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-				$('#menu-content').removeClass('active');
-			} else if(action === 'change') {
-				$('#menu-content').children('.ember-view').css('display', 'none');
-				if(!$(trigger).data('scale')) {
-					if($('#menu-content').hasClass('scale')) {
-						$('#menu-content').removeClass('scale');
-					}
-					var newWidth = $(trigger).data('size');
-					$('#menu-content').animate({'width': newWidth+'px'}, {duration: 400, queue: false, complete: function() {$('#menu-content').children('.ember-view').css('display', 'inline');}});
-					var mapLeft = $(trigger).data('size') + $('#sidebar').width();
-					$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-				} else {
-					if($('#menu-content').hasClass('scale')){
-						//we're already in a scale window.  do nothing
-					} else {
-						if($('#social-content').hasClass('active')) {
-							$('#menu-content').addClass('scale');
-							//open any scale windows up to the social content
-							var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
-							$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('.ember-view').css('display', 'inline');}});
-							var mapLeft = $('#social-content').offset().left;
-							$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-						} else {
-							$('#menu-content').addClass('scale');
-							//preprocess the dimensions of the menu container so we can slide it out
-							var width = $(document).width() - $('#sidebar').width();
-							var mapLeft = $(document).width();
-							$('#menu-content').animate({'width': width+'px'}, {duration: 400, queue: false, complete: function(){$('#menu-content').children('.ember-view').css('display', 'inline');}});
-							$('#map-canvas').animate({'left': mapLeft+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-						}
-					}
-				}
-			}
-		}
-	}
-});
-
-module.exports = SidebarController;
-},{}],14:[function(require,module,exports){
-var TopbarFriendsController = App.ApplicationController.extend({
-	word: 'hello'
-});
-
-module.exports = TopbarFriendsController;
-},{}],15:[function(require,module,exports){
 var TopbarController = App.ApplicationController.extend({
-	needs: 'map',
-	trigger: null,
-	start_date: null,
-	end_date: null,
-	travelling: null,
+	user_image: null,
 	actions: {
-		activate: function() {
-			var element = null;
-			element = this.get('trigger');
-			if($(element).hasClass('active')) {
-				$(element).removeClass('active');
-				this.send('menu', 'close');
-			} else {
-				$(element).addClass('active');
-				this.send('menu', 'open');
+		get_gravatar: function() {
+			var _this = this;
+			function f(model) {
+				var email = model._data.email;
+				var elc = email.toLowerCase();
+				var elct = elc.trim();
+				var md5 = CryptoJS.MD5(elct).toString();
+				_this.set('user_image', 'http://www.gravatar.com/avatar/'+md5+'?s=24&d=mm');
 			}
-		},
-		menu: function(action) {
-			var map = this.get('controllers.map').get('map');
-			if(action === 'open') {
-				if($('#menu-content').hasClass('scale')) {
-					var leftEdge = $(document).width();
-					$('#social-content').css('left', leftEdge+'px');
-					$('#menu-content').animate({'width': ($('#menu-content').width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
-					$('#social-content').animate({'left': ($(document).width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': $('#social-content').width()+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#social-content').addClass('active');
-				} else {
-					var leftEdge = $(document).width();
-					$('#social-content').css('left', leftEdge+'px');
-					$('#social-content').animate({'left': ($(document).width() - $('#social-content').width())+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': '300px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#social-content').addClass('active');
-				}
-			} else if(action === 'close') {
-				if($('#menu-content').hasClass('scale')) {
-					$('#menu-content').animate({'width': ($('#menu-content').width() + $('#social-content').width()) + 'px'}, {duration: 400, queue: false})
-					$('#social-content').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#social-content').removeClass('active');
-				} else {
-					$('#social-content').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
-					$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, step: function() {google.maps.event.trigger(map, 'resize');}});
-					$('#social-content').removeClass('active');
-				}
+			function r(reason) {
+				console.log(reason);
 			}
+			var profile = this.store.find('profile', App.Session.get('user_uid'));
+			profile.then(f,r);
 		}
 	}
 });
 
 module.exports = TopbarController;
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 Ember.Handlebars.helper('tripdate', function(property, options) {
 	var self = this;
 	var ident = options.hash.date;
@@ -703,7 +552,7 @@ function get_nth_suffix(d) {
 			return 'th';
 	}
 }
-},{}],17:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // This file is auto-generated by `ember build`.
 // You should not modify it.
 
@@ -716,9 +565,7 @@ App.ApplicationController = require('./controllers/application_controller');
 App.IndexController = require('./controllers/index_controller');
 App.MapController = require('./controllers/map_controller');
 App.MenuController = require('./controllers/menu_controller');
-App.SidebarController = require('./controllers/sidebar_controller');
 App.TopbarController = require('./controllers/topbar_controller');
-App.TopbarFriendsController = require('./controllers/topbar/friends_controller');
 App.SidebarTripsController = require('./controllers/sidebar/trips_controller');
 App.SidebarTripsCreateController = require('./controllers/sidebar/trips/create_controller');
 App.SidebarTripsDeleteController = require('./controllers/sidebar/trips/delete_controller');
@@ -729,20 +576,13 @@ App.Trip = require('./models/trip');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
 App.MapRoute = require('./routes/map_route');
-App.TopbarFriendsRoute = require('./routes/topbar/friends_route');
 App.AuthLoginRoute = require('./routes/auth/login_route');
 App.AuthRegisterRoute = require('./routes/auth/register_route');
-App.SidebarView = require('./views/__sidebar_view');
 App.ApplicationView = require('./views/application_view');
 App.FooterView = require('./views/footer_view');
 App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
-App.SidebarView = require('./views/sidebar_view');
 App.TopbarView = require('./views/topbar_view');
-App.TopbarFriendsView = require('./views/topbar/friends_view');
-App.TopbarMenutriggerView = require('./views/topbar/menuTrigger_view');
-App.TopbarMenuView = require('./views/topbar/menu_view');
-App.TopbarUsertriggerView = require('./views/topbar/userTrigger_view');
 App.SidebarMenutriggerView = require('./views/sidebar/menuTrigger_view');
 App.SidebarMenuView = require('./views/sidebar/menu_view');
 App.SidebarTripsView = require('./views/sidebar/trips_view');
@@ -754,17 +594,18 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/trips/create_controller":10,"./controllers/sidebar/trips/delete_controller":11,"./controllers/sidebar/trips_controller":12,"./controllers/sidebar_controller":13,"./controllers/topbar/friends_controller":14,"./controllers/topbar_controller":15,"./helpers/tripHelper":16,"./models/profile":18,"./models/trip":19,"./routes/application_route":20,"./routes/auth/login_route":21,"./routes/auth/register_route":22,"./routes/error_route":23,"./routes/map_route":24,"./routes/topbar/friends_route":25,"./templates":26,"./views/__sidebar_view":27,"./views/application_view":28,"./views/footer_view":29,"./views/index_view":30,"./views/map_view":31,"./views/sidebar/menuTrigger_view":32,"./views/sidebar/menu_view":33,"./views/sidebar/trips/create_view":34,"./views/sidebar/trips/entry_view":35,"./views/sidebar/trips_view":36,"./views/sidebar_view":37,"./views/topbar/friends_view":38,"./views/topbar/menuTrigger_view":39,"./views/topbar/menu_view":40,"./views/topbar/userTrigger_view":41,"./views/topbar_view":42}],18:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/trips/create_controller":10,"./controllers/sidebar/trips/delete_controller":11,"./controllers/sidebar/trips_controller":12,"./controllers/topbar_controller":13,"./helpers/tripHelper":14,"./models/profile":16,"./models/trip":17,"./routes/application_route":18,"./routes/auth/login_route":19,"./routes/auth/register_route":20,"./routes/error_route":21,"./routes/map_route":22,"./templates":23,"./views/application_view":24,"./views/footer_view":25,"./views/index_view":26,"./views/map_view":27,"./views/sidebar/menuTrigger_view":28,"./views/sidebar/menu_view":29,"./views/sidebar/trips/create_view":30,"./views/sidebar/trips/entry_view":31,"./views/sidebar/trips_view":32,"./views/topbar_view":33}],16:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
 	lastName: DS.attr('string'),
 	gender: DS.attr('string'),
+	email: DS.attr('string'),
 	DOB: DS.attr('date')
 });
 
 module.exports = Profile;
-},{}],19:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var Trip = DS.Model.extend({
 	uid: DS.attr('string'),
 	creator_uid: DS.attr('string'),
@@ -778,7 +619,7 @@ var Trip = DS.Model.extend({
 });
 
 module.exports = Trip;
-},{}],20:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var AppSession = require('../config/session_manager');
 
 //initialize the session at application start time
@@ -829,7 +670,7 @@ App.AuthenticatedRoute = Ember.Route.extend({
     }
   }
 });
-},{"../config/session_manager":3}],21:[function(require,module,exports){
+},{"../config/session_manager":3}],19:[function(require,module,exports){
 var AuthLoginRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('user_auth_token')) {
@@ -843,7 +684,7 @@ var AuthLoginRoute = Ember.Route.extend({
 });
 
 module.exports = AuthLoginRoute;
-},{}],22:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var AuthRegisterRoute = Ember.Route.extend({
 	beforeModel: function(transition) {
 		if(App.Session.get('user_auth_token')) {
@@ -857,7 +698,7 @@ var AuthRegisterRoute = Ember.Route.extend({
 });
 
 module.exports = AuthRegisterRoute;
-},{}],23:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var ErrorRoute = Ember.Route.extend({
 	redirect: function() {
 		window.location.replace('404');
@@ -865,99 +706,15 @@ var ErrorRoute = Ember.Route.extend({
 });
 
 module.exports = ErrorRoute;
-},{}],24:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var MapRoute = App.AuthenticatedRoute.extend({
-	actions: {
-		toggleSidebarMenu: function() {
-			var model;
-			var sidebar = this.controllerFor('sidebar');
-			var trigger = sidebar.get('trigger');
-			var context = $(trigger).data('context');
-			var module = 'sidebar.'+context;
-			var controller = this.controllerFor('sidebar.'+context);
-			var modelIdentifier = context.substring(0, context.length -1);
-			if($(trigger).data('search')) {
-				if($(trigger).data('search') === 'user') {
-					model = this.store.find(modelIdentifier, {creator_uid: App.Session.get('user_uid')});
-				} else if($(trigger).data('search') === 'trip') {
-					model = this.store.find(modelIdentifier, {trip_uid: App.Session.get('user_active_trip')});
-				}
-				controller.set('model', model);
-				//the line below resets the css for this menu
-				controller.send('reset');
-			}
-			this.render(module, {into: 'sidebar', outlet: 'menu-content'});
-		},
-		toggleTripsMenu: function() {
-			var menu = this.controllerFor('sidebar.trips');
-			var trigger = menu.get('trigger');
-			var controller = this.controllerFor('sidebar.trips.'+trigger);
-			controller.send('reset');
-			this.render('sidebar.trips.'+trigger, {into: 'sidebar.trips', outlet: 'trip-content'});
-		}
-	},
 	model: function() {
 		return Ember.Object.create({});
 	}
 });
 
 module.exports = MapRoute;
-},{}],25:[function(require,module,exports){
-var TopbarFriendsRoute = Em.Route.extend({
-	
-});
-
-module.exports = TopbarFriendsRoute;
-},{}],26:[function(require,module,exports){
-
-Ember.TEMPLATES['__map'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push("	\n	<section id='map'>\n		");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar", options) : helperMissing.call(depth0, "render", "sidebar", options))));
-  data.buffer.push("\n		");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "topbar", options) : helperMissing.call(depth0, "render", "topbar", options))));
-  data.buffer.push("\n		<div id='map-canvas'></div>\n		}\n	</section>");
-  return buffer;
-  
-});
-
-Ember.TEMPLATES['__sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
-
-
-  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		<div class='menu-item' data-context='clear' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleSidebarMenu", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><div class='fontello-map sidebar-icon'></div></div>\n		<div class='menu-item' data-context='search' data-size='340' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleSidebarMenu", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><div class='fontello-search sidebar-icon'></div></div>\n		<div class='menu-item' data-context='trips' data-scale='fill' data-search='user' ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "toggleSidebarMenu", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("><div class='fontello-suitcase sidebar-icon'></div></div>\n		<!--<div class='menu-item' data-context='waypoints'><div class='fontello-location sidebar-icon'></div></div>\n		<div class='menu-item' data-context='media'><div class='fontello-camera sidebar-icon'></div></div>\n		<div class='menu-item special' data-context='add-collaborator'><div class='fontello-user-add sidebar-icon'></div></div>-->\n		<div id='bottom-accent'></div>\n	</section>\n	<section id='menu-content' data-value='content'>\n		");
-  hashTypes = {};
-  hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.outlet || depth0.outlet),stack1 ? stack1.call(depth0, "menu-content", options) : helperMissing.call(depth0, "outlet", "menu-content", options))));
-  data.buffer.push("\n	</section>");
-  return buffer;
-  
-});
+},{}],23:[function(require,module,exports){
 
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
@@ -1072,18 +829,20 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['map'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<section id='map'>\n	");
+  data.buffer.push("\n	<section id='map'>\n		");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarView", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	");
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "sidebar", options) : helperMissing.call(depth0, "render", "sidebar", options))));
+  data.buffer.push("\n		");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.TopbarView", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	<div id='map-canvas'></div>\n</section>");
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "topbar", options) : helperMissing.call(depth0, "render", "topbar", options))));
+  data.buffer.push("\n		<div id='map-canvas'></div>\n	</section>");
   return buffer;
   
 });
@@ -1176,32 +935,9 @@ function program9(depth0,data) {
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashContexts, hashTypes, escapeExpression=this.escapeExpression;
+  var buffer = '';
 
 
-  data.buffer.push("\n	<section id='sidebar'>\n		<div id='logobox'>\n			<img src='img/logo-white.png' width='32px' height='32px' />\n		</div>\n		");
-  hashContexts = {'context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'context': "STRING",'icon': "STRING",'width': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarMenutriggerView", {hash:{
-    'context': ("trips"),
-    'icon': ("fontello-suitcase"),
-    'width': ("full")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n		");
-  hashContexts = {'context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'context': "STRING",'icon': "STRING",'width': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarMenutriggerView", {hash:{
-    'context': ("search"),
-    'icon': ("fontello-search"),
-    'width': ("340")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	</section>\n	<section id='sidebar-menu' class='menu-content'>\n		");
-  hashContexts = {'elementId': depth0};
-  hashTypes = {'elementId': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarMenuView", {hash:{
-    'elementId': ("sidebar-menu-content")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	</section>");
   return buffer;
   
 });
@@ -1209,62 +945,17 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['topbar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashContexts, hashTypes, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashContexts, hashTypes, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("\n	<section id='topbar'>\n		<div id='user-quickbar'>\n			<!-- todo - social -->\n			");
-  hashContexts = {'context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'context': "STRING",'icon': "STRING",'width': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.TopbarMenutriggerView", {hash:{
-    'context': ("friends"),
-    'icon': ("fontello-users"),
-    'width': ("300")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n			");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.TopbarUsertriggerView", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n			<div class='topbar-item-container'>\n				<div class='fontello-logout topbar-icon' ");
-  hashContexts = {'on': depth0};
-  hashTypes = {'on': "STRING"};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{
-    'on': ("click")
-  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("></div>\n			</div>\n		</div>\n	</section>\n	<section id='social-menu' class='menu-content'>\n		");
-  hashContexts = {'elementId': depth0};
-  hashTypes = {'elementId': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.TopbarMenuView", {hash:{
-    'elementId': ("social-menu-content")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	</section>");
-  return buffer;
-  
-});
-
-Ember.TEMPLATES['topbar/friends'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
-
-
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.word", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" Placeholder for social content.  Please ignore. ");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "word", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  return buffer;
-  
-});
-
-Ember.TEMPLATES['topbar/user_trigger'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push("<img src='/img/user-icon.png' />\n<div class='user-text'>");
+  data.buffer.push("\n	<div id='user-quickinfo-container'>\n		<div class='menu-item nohover'>\n			<img ");
+  hashContexts = {'src': depth0};
+  hashTypes = {'src': "STRING"};
+  options = {hash:{
+    'src': ("user_image")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers['bind-attr'] || depth0['bind-attr']),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "bind-attr", options))));
+  data.buffer.push(" /> ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.firstName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1272,7 +963,13 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "profile.lastName", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</div>");
+  data.buffer.push("\n		</div>\n		<div class='menu-item'>\n			<div class='fontello-logout' ");
+  hashContexts = {'on': depth0};
+  hashTypes = {'on': "STRING"};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "logout", {hash:{
+    'on': ("click")
+  },contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("></div>\n		</div>\n	</div>\n");
   return buffer;
   
 });
@@ -1648,42 +1345,7 @@ function program4(depth0,data) {
 
 
 
-},{}],27:[function(require,module,exports){
-var SidebarView = Ember.View.extend({
-	didInsertElement: function() {
-		var self = this;
-
-		//trigger on click of sidebar element
-		$('#sidebar > .menu-item').click(function() {
-			//get the sidebar controller
-			var controller = self.get('controller');
-			//set the trigger in the controller to the current element
-			controller.set('trigger', this);
-		});
-
-		$(window).resize(function() {
-			if($('#menu-content').hasClass('active')) {
-				if($('#menu-content').hasClass('scale')) {
-					if($('#social-content').hasClass('active')) {
-						var width = ($(document).width() - $('#sidebar').width()) - $('#social-content').width();
-						$('#menu-content').css('width', width+'px');
-						var mapLeft = $(document).width() - $('#social-content').width();
-						$('#map-canvas').css('left', mapLeft+'px');
-					} else {
-						var width = ($(document).width() - $('#sidebar').width());
-						$('#menu-content').css('width', width+'px');
-						var mapLeft = $(document).width();
-						$('#map-canvas').css('left', mapLeft+'px');
-					}
-				}
-			}
-		});
-
-	}
-});
-
-module.exports = SidebarView;
-},{}],28:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var ApplicationView = Ember.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -1702,7 +1364,7 @@ var ApplicationView = Ember.View.extend({
 });
 
 module.exports = ApplicationView;
-},{}],29:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var FooterView = Ember.View.extend({
 	didInsertElement: function() {
 		var today = new Date();
@@ -1711,7 +1373,7 @@ var FooterView = Ember.View.extend({
 });
 
 module.exports = FooterView;
-},{}],30:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var IndexView = Ember.View.extend({
 	classNames: ['fill-window'],
 	init: function() {
@@ -1764,7 +1426,7 @@ var IndexView = Ember.View.extend({
 });
 
 module.exports = IndexView;
-},{}],31:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var MapView = Em.View.extend({
 	classNames: ['fill-window'],
 	didInsertElement: function() {
@@ -1802,7 +1464,7 @@ var MapView = Em.View.extend({
 });
 
 module.exports = MapView;
-},{}],32:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var SidebarMenuTriggerView = Em.View.extend({
 	active: false,
 	context: null,
@@ -1850,7 +1512,7 @@ var SidebarMenuTriggerView = Em.View.extend({
 });
 
 module.exports = SidebarMenuTriggerView;
-},{}],33:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 var SidebarMenuView = Em.ContainerView.extend({
 	open: false,
 	size: null,
@@ -1917,7 +1579,7 @@ var SidebarMenuView = Em.ContainerView.extend({
 });
 
 module.exports = SidebarMenuView;
-},{}],34:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var SidebarTripsCreateView = Ember.View.extend({
 	init: function() {
 		this._super();
@@ -1932,7 +1594,7 @@ var SidebarTripsCreateView = Ember.View.extend({
 });
 
 module.exports = SidebarTripsCreateView;
-},{}],35:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var SidebarTripsEntryView = Ember.View.extend({
 	mouseEnter: function() {
 		var uid = this.get('content')._data.uid;
@@ -1960,7 +1622,7 @@ var SidebarTripsEntryView = Ember.View.extend({
 });
 
 module.exports = SidebarTripsEntryView;
-},{}],36:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var SidebarTripsView = Ember.View.extend({
 	name: 'trips',
 	templateName: 'sidebar/trips-menu',
@@ -1971,149 +1633,16 @@ var SidebarTripsView = Ember.View.extend({
 });
 
 module.exports = SidebarTripsView;
-},{}],37:[function(require,module,exports){
-var SidebarView = Em.View.extend({
-	active: null,
-	templateName: 'sidebar',
-	classNames: ['sidebar-container']
-});
-
-module.exports = SidebarView;
-},{}],38:[function(require,module,exports){
-var TopbarFriendsView = Em.View.extend({
-	templateName: 'topbar/friends',
-	word: null,
-	controller: App.TopbarFriendsController.create(),
-	didInsertElement: function() {
-		this.set('word', this.get('controller').get('word'));
-	}
-});
-
-module.exports = TopbarFriendsView;
-},{}],39:[function(require,module,exports){
-var TopbarMenuTriggerView = Em.View.extend({
-	context: null,
-	icon: null,
-	classNames: ['topbar-item-container'],
-	active: false,
-	classBinding: ['active'],
-	template: Ember.Handlebars.compile("<div {{bind-attr class='view.icon :topbar-icon :pre'}}></div>"),
-	click: function(evt) {
-		var _this = this;
-		var container = Em.View.views['social-menu-content'];
-		var viewIdentifier = _this.get('context').charAt(0).toUpperCase() + _this.get('context').slice(1);
-		var viewName = "Topbar"+viewIdentifier+"View";
-		//check the current state of the menu system
-		if(container.get('open')) {
-			//menu is open
-			if(container.get('menu') === this.get('context')) {
-				//we've clicked the same menu, so close it
-				_this.set('active', false);
-
-				//this line must always be last
-				container.set('open', false);
-			} else {
-				//change the menu
-				container.set('size', this.get('width'));
-				container.set('menu', this.get('context'));
-				container.removeAllChildren();
-				container.pushObject(window["App"][viewName].create());
-				for(var i = 0; i < _this.get('parentView').get('childViews').length; i++) {
-					_this.get('parentView').get('childViews').objectAt(i).set('active', false);
-				}
-				_this.set('active', true);
-			}
-		} else {
-			//menu is not open, open the menu
-			container.removeAllChildren();
-			_this.set('active', true);
-			container.set('menu', this.get('context'));
-			container.set('size', this.get('width'));
-			container.pushObject(window["App"][viewName].create());
-			//this line must always be last
-			container.set('open', true);
-		}
-	}
-});
-
-module.exports = TopbarMenuTriggerView;
-},{}],40:[function(require,module,exports){
-var TopbarMenuView = Em.ContainerView.extend({
-	open: false,
-	size: null,
-	menu: null,
-	classNames: ['social-menu-container'],
-	menu_toggle: function() {
-		var _this = this;
-		var map = this.get('controller').get('map');
-		if(this.get('open')) {
-			//open the menu
-			var right = 0 - this.get('size');
-			this.$().css('right', right+'px');
-			this.$().css('width', this.get('size')+'px');
-			this.$().animate({'right': '0px'}, {duration: 400, queue: false});
-			//also animate the map canvas to keep up with the moving div
-			$('#map-canvas').animate({'right': this.get('size')+'px'}, {duration: 400, queue: false, step: function() {
-				google.maps.event.trigger(map, 'resize');
-			}});
-		} else {
-			//close the menu
-			var right = 0 - this.get('size');
-			this.$().animate({'right': right+'px'}, {duration: 400, queue: false});
-			//also animate the map canvas to keep up with the div
-			$('#map-canvas').animate({'right': '0px'}, {duration: 400, queue: false, step: function() {
-				google.maps.event.trigger(map, 'resize');
-			}});
-		}
-	}.observes('open'),
-	didInsertElement: function() {
-		var _this = this;
-		$(window).resize(function() {
-			if(_this.get('open')) {
-				if(_this.get('size') === 'full') {
-					//todo, handle social sidebar
-					var width = $(window).width() - 80;
-					_this.$().css('width', width+'px');
-				}
-			}
-		});
-	}
-});
-
-module.exports = TopbarMenuView;
-},{}],41:[function(require,module,exports){
-var TopbarUserTriggerView = Em.View.extend({
-	templateName: 'topbar/user_trigger',
-	classNames: ['topbar-item-container', 'user-quick-container']
-});
-
-module.exports = TopbarUserTriggerView;
-},{}],42:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var TopbarView = Em.View.extend({
 	templateName: 'topbar',
-	classNames: ['topbar-container']
-/*	didInsertElement: function() {
-		var self = this;
-		$('#user-quickbar > .topbar-icon').click(function() {
-			var controller = self.get('controller');
-			if($(this).data('context')) {
-				var context = $(this).data('context');
-				controller.set('trigger', this);
-				controller.send('activate');
-			}
-		});
-
-		$(window).resize(function() {
-			if($('#social-content').hasClass('active')) {
-				var right = $(document).width();
-				$('#social-content').css('right', right+'px');
-				var left = $(document).width() - $('#social-content').width();
-				$('#social-content').css('left', left+'px');
-			}
-		});
-	} */
+	elementId: 'topbar',
+	classNames: ['topbar-container'],
+	didInsertElement: function() {
+		this.get('controller').send('get_gravatar');
+	}
 });
 
 module.exports = TopbarView;
-},{}]},{},[17])
+},{}]},{},[15])
 ;

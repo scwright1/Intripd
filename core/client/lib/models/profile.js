@@ -3,6 +3,7 @@ var Profile = DS.Model.extend({
 	firstName: DS.attr('string'),
 	lastName: DS.attr('string'),
 	gender: DS.attr('string'),
+	email: DS.attr('string'),
 	DOB: DS.attr('date')
 });
 

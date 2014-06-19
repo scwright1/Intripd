@@ -1,14 +1,9 @@
 
-	<section id='topbar'>
-		<div id='user-quickbar'>
-			<!-- todo - social -->
-			{{view App.TopbarMenutriggerView context='friends' icon='fontello-users' width='300'}}
-			{{view App.TopbarUsertriggerView}}
-			<div class='topbar-item-container'>
-				<div class='fontello-logout topbar-icon' {{action 'logout' on='click'}}></div>
-			</div>
+	<div id='user-quickinfo-container'>
+		<div class='menu-item nohover'>
+			<img {{bind-attr src='user_image'}} /> {{profile.firstName}} {{profile.lastName}}
 		</div>
-	</section>
-	<section id='social-menu' class='menu-content'>
-		{{view App.TopbarMenuView elementId='social-menu-content'}}
-	</section>
+		<div class='menu-item'>
+			<div class='fontello-logout' {{action 'logout' on='click'}}></div>
+		</div>
+	</div>

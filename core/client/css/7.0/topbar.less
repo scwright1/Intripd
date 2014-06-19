@@ -10,55 +10,38 @@
 	border-bottom: 1px solid darken(@color-slate, 5%);
 }
 
-#topbar > #user-quickbar {
+#topbar > #user-quickinfo-container {
 	float: right;
 	height: 100%;
 	margin-right: 30px;
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 80px;
 	font-size: 16px;
 }
 
-#topbar > #user-quickbar > .topbar-item-container {
+#topbar > #user-quickinfo-container > .menu-item {
 	float: left;
-	line-height: 80px;
-	padding: 0 10px;
-	transition: background-color 0.5s ease;
-}
-
-#topbar > #user-quickbar > .user-quick-container {
-	font-weight: 300;
-	font-family: 'Open Sans', sans-serif;
-	padding: 0 20px;
-}
-
-#topbar > #user-quickbar > .user-quick-container > img {
-	border-radius: 12px;
-	overflow: hidden;
-	border: 1px solid darken(@color-slate, 40%);
-	width: 24px;
-	height: 24px;
-	float: left;
-	margin-top: 28px;
-}
-
-#topbar > #user-quickbar > .user-quick-container > .user-text {
-	float: right;
-	margin-left: 10px;
-}
-
-#topbar > #user-quickbar > .topbar-item-container > .topbar-icon {
+	margin: 0 10px;
 	transition: color 0.5s ease;
 }
 
-#topbar > #user-quickbar > .topbar-item-container > .topbar-icon:hover {
+#topbar > #user-quickinfo-container > .menu-item > img {
+	float: left;
+	margin: 28px 10px;
+	border: 1px solid @color-dark + #090909;
+	border-radius: 12px;
+	overflow: hidden;
+	width: 24px;
+	height: 24px;
+}
+
+#topbar > #user-quickinfo-container > .menu-item:hover {
 	color: @color-green;
 	transition: color 0.5s ease;
 }
 
-#social-menu > #social-menu-content {
-	width: 0px;
-	position: absolute;
-	top: 80px;
-	bottom: 0;
-	background: @color-slate;
-	z-index: 10;
+#topbar > #user-quickinfo-container > .menu-item.nohover:hover {
+	color: @color-dark;
+	transition: color 0.5s ease;
 }
