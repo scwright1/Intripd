@@ -3,6 +3,21 @@ var MapView = Em.View.extend({
 	didInsertElement: function() {
 		this._super();
 		this.loadMap();
+
+		$(window).resize(function() {
+			if($('#sidebar-menu').hasClass('active')) {
+				if($('#sidebar-menu').data('fill') === true) {
+					if($('#topbar-menu').hasClass('active')) {
+						var right = $(document).width() - $('#topbar-menu').width();
+						$('#sidebar-menu').css('width', (right-81)+'px');
+						$('#map-canvas').css('left', right+'px');
+					} else {
+						$('#sidebar-menu').css('width', ($(document).width()-80)+'px');
+						$('#map-canvas').css('left', $(document).width()+'px');
+					}
+				}
+			}
+		});
 	},
 	willDestroyElement: function() {
 		this.set('controller.map', null);
