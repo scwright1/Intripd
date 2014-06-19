@@ -1,10 +1,7 @@
-var SidebarTripsView = Ember.View.extend({
-	name: 'trips',
-	templateName: 'sidebar/trips-menu',
-	didInsertElement: function() {
-		$('#trips-menu').css('left', '0px');
-		$('#create-trip-dialog').css('left', $(document).width()+'px');
-	}
+var TripsView = Em.View.extend({
+	name: 'sidebar/trips_view',
+	templateName: 'sidebar/trips',
+	classNames: ['trips-container']
 });
 
-module.exports = SidebarTripsView;
+module.exports = TripsView;

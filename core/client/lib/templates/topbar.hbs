@@ -1,5 +1,6 @@
 
 	<div id='user-quickinfo-container'>
+		{{view App.TopbarTriggerView menu_context='TopbarFriends' width='300' icon='fontello-users'}}
 		<div class='menu-item nohover'>
 			<img {{bind-attr src='user_image'}} /> {{profile.firstName}} {{profile.lastName}}
 		</div>

@@ -13,7 +13,7 @@ App.Router.map(function() {
 		this.route('cookies');
 	});
 
-	this.resource('map');
+	this.route('map');
 
 	//make sure this route is always last for rendering 404 error page
 	this.route("error", {path: "*path"});
