@@ -31,7 +31,7 @@ var TriggerView = Em.View.extend({
 					_t.get('parentView').get('childViews').objectAt(i).set('active', false);
 				}
 				this.set('active', true);
-
+				this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
 				if(this.get('width') === 'full') {
 					$m.data('fill', true);
 					//transition to full screen width
