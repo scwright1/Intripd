@@ -6,7 +6,6 @@
 
 var TriggerView = Em.View.extend({
 	classNames: ['menu-item'],
-	classNameBindings: ['active'],
 	template: Ember.Handlebars.compile("<div {{bind-attr class='view.icon'}}></div>"),
 	click: function() {
 
@@ -16,9 +15,9 @@ var TriggerView = Em.View.extend({
 			_t = this;
 
 		if($m.hasClass('active')) {
-			if(this.get('active')) {
+			if(this.$().hasClass('active')) {
 				//this is the current active menu, so close
-				this.set('active', false);
+				this.$().removeClass('active');
 				$m.data('fill', false);
 				$m.removeClass('active');
 				$m.animate({'left': (80 - $m.width())+'px'}, {duration: 400, queue: false});
@@ -28,10 +27,10 @@ var TriggerView = Em.View.extend({
 			} else {
 				//change the currently active menu
 				for(var i = 0; i < _t.get('parentView').get('childViews').length; i++) {
-					_t.get('parentView').get('childViews').objectAt(i).set('active', false);
+					_t.get('parentView').get('childViews').objectAt(i).$().removeClass('active');
 				}
-				this.set('active', true);
-				this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+				this.$().addClass('active');
+				this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu', this.get('model_context'), this.get('search_key'));
 				if(this.get('width') === 'full') {
 					$m.data('fill', true);
 					//transition to full screen width
@@ -63,9 +62,9 @@ var TriggerView = Em.View.extend({
 			}
 		} else {
 			var w;
-			this.set('active', true);
+			this.$().addClass('active');
 			//open the menu
-			this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu');
+			this.get('controller').send('renderMenuElement', this.get('menu_context'), 'sidebar-menu', this.get('model_context'), this.get('search_key'));
 			$m.addClass('active');
 			if(this.get('width') === 'full') {
 				$m.data('fill', true);

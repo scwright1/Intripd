@@ -1,6 +1,8 @@
-var SidebarTripsCreateController = Ember.ObjectController.extend({
-	needs: ['sidebar'],
-	content: [],
+var CreateController = Ember.ObjectController.extend({
+	needs: ['map', 'sidebar'],
+	tripname: null,
+	departing: null,
+	returning: null,
 	actions: {
 		create: function() {
 			var self = this;
@@ -37,20 +39,22 @@ var SidebarTripsCreateController = Ember.ObjectController.extend({
 				self.set('tripname', null);
 				self.set('departing', null);
 				self.set('returning', null);
-				var sidebar = self.get('controllers.sidebar');
-				var trigger = $('.menu-item.active');
-				sidebar.set('trigger', trigger);
-				sidebar.send('toggleSidebarMenu');
-				self.send('reset');
+				$('#sidebar-menu').data('fill', false);
+				$('#sidebar-menu').removeClass('active');
+				$('#sidebar-menu').animate({'left': (80 - $('#sidebar-menu').width())+'px'}, {duration: 400, queue: false});
+				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {
+					google.maps.event.trigger(self.get('controllers.map').get('map'), 'resize');
+				}});
+				$('#sidebar > .menu-item').each(function() {
+					if($(this).hasClass('active')) {
+						$(this).removeClass('active');
+					}
+				});
 			}
 
 			function reject(reason) {
 				alert(reason);
 			}
-		},
-		cancel: function() {
-			$('#trips-menu').animate({'left': '0px'},{duration: 400, queue: false});
-			$('#create-trip-dialog').animate({'left': $(document).width()+'px'}, {duration: 400, queue: false});
 		},
 		reset: function() {
 			this.set('tripname', null);
@@ -60,4 +64,4 @@ var SidebarTripsCreateController = Ember.ObjectController.extend({
 	}
 });
 
-module.exports = SidebarTripsCreateController;
+module.exports = CreateController;

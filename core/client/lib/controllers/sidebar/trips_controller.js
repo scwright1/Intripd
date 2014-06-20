@@ -1,7 +1,8 @@
-var TripsController = Ember.ObjectController.extend({
+var TripsController = Ember.ArrayController.extend({
+	content: [],
 	needs: ['map'],
 	name: 'sidebar/trips_controller',
-	debug: true
+	debug: false
 });
 
 module.exports = TripsController;

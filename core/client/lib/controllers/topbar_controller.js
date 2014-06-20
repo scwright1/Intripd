@@ -1,6 +1,7 @@
 var TopbarController = App.ApplicationController.extend({
 	needs: ['map'],
 	user_image: null,
+	travelling: null,
 	actions: {
 		get_gravatar: function() {
 			var _this = this;

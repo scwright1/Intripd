@@ -2,3 +2,20 @@
 	<p>{{name}}</p>
 	<p>{{view.name}}</p>
 {{/if}}
+
+	<div class='stats-bar'>
+	</div>
+	<div class='all-trips'>
+		<div class='trip-box'>
+			<div id='create-trip' class='trip' {{action 'renderMenuElement' 'SidebarTripsCreate' 'sidebar-menu'}}>
+			+
+			</div>
+		</div>
+		{{#each}} 
+			<div class='trip-box'>
+				<div class='trip'>
+					{{name}}
+				</div>
+			</div>
+		{{/each}}
+	</div>
