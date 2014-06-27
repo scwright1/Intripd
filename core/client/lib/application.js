@@ -330,13 +330,16 @@ var SearchController = Ember.ObjectController.extend({
 module.exports = SearchController;
 },{}],12:[function(require,module,exports){
 var CreateController = Ember.ObjectController.extend({
-	needs: ['map', 'sidebar'],
+	needs: ['map'],
 	tripname: null,
 	departing: null,
 	returning: null,
+	flash: null,
 	actions: {
 		create: function() {
+			//todo - validate creation fields and return flash if invalid data
 			var self = this;
+			self.set('flash', null);
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');
 				var date = new Date(Date.UTC(rawDate[2],rawDate[1]-1,rawDate[0],0,0));
@@ -345,46 +348,51 @@ var CreateController = Ember.ObjectController.extend({
 
 			//gathering trip information
 			var data = this.getProperties('tripname', 'departing', 'returning');
-			if(!data.departing) {
-				data.departing = "01/01/1970";
-			}
 
-			if(!data.returning) {
-				data.returning = "01/01/1970";
-			}
+			if(!data.tripname) {
+				self.set('flash', 'Your trip name cannot be blank!');
+			} else {
+				if(!data.departing) {
+					data.departing = "01/01/1970";
+				}
 
-			//create record
-			var trip = this.store.createRecord('trip', {
-				name: data.tripname,
-				start_date: convertDateToISO(data.departing),
-				end_date: convertDateToISO(data.returning),
-				creator_uid: App.Session.get('uid')
-			});
+				if(!data.returning) {
+					data.returning = "01/01/1970";
+				}
 
-			//persist the record
-			var promise = trip.save();
-			promise.then(fulfill, reject);
-			function fulfill(model) {
-				App.Session.set('trip', model._data);
-				App.Session.set('user_active_trip', model._data.uid);
-				self.set('tripname', null);
-				self.set('departing', null);
-				self.set('returning', null);
-				$('#sidebar-menu').data('fill', false);
-				$('#sidebar-menu').removeClass('active');
-				$('#sidebar-menu').animate({'left': (80 - $('#sidebar-menu').width())+'px'}, {duration: 400, queue: false});
-				$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {
-					google.maps.event.trigger(self.get('controllers.map').get('map'), 'resize');
-				}});
-				$('#sidebar > .menu-item').each(function() {
-					if($(this).hasClass('active')) {
-						$(this).removeClass('active');
-					}
+				//create record
+				var trip = this.store.createRecord('trip', {
+					name: data.tripname,
+					start_date: convertDateToISO(data.departing),
+					end_date: convertDateToISO(data.returning),
+					creator_uid: App.Session.get('uid')
 				});
-			}
 
-			function reject(reason) {
-				alert(reason);
+				//persist the record
+				var promise = trip.save();
+				promise.then(fulfill, reject);
+				function fulfill(model) {
+					App.Session.set('trip', model._data);
+					App.Session.set('user_active_trip', model._data.uid);
+					self.set('tripname', null);
+					self.set('departing', null);
+					self.set('returning', null);
+					$('#sidebar-menu').data('fill', false);
+					$('#sidebar-menu').removeClass('active');
+					$('#sidebar-menu').animate({'left': (80 - $('#sidebar-menu').width())+'px'}, {duration: 400, queue: false});
+					$('#map-canvas').animate({'left': '80px'}, {duration: 400, queue: false, step: function() {
+						google.maps.event.trigger(self.get('controllers.map').get('map'), 'resize');
+					}});
+					$('#sidebar > .menu-item').each(function() {
+						if($(this).hasClass('active')) {
+							$(this).removeClass('active');
+						}
+					});
+				}
+
+				function reject(reason) {
+					alert(reason);
+				}
 			}
 		},
 		reset: function() {
@@ -1285,10 +1293,25 @@ function program1(depth0,data) {
 Ember.TEMPLATES['sidebar/trips/create'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashContexts, hashTypes, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
+function program1(depth0,data) {
+  
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("<div class='flash'><b>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "flash", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</b></div>");
+  return buffer;
+  }
 
-  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n	<form role='form' id='trip-creation' ");
+  data.buffer.push("\n<div id='create-trip-form'>\n	<div class='header'>Create A Trip</div>\n	");
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers['if'].call(depth0, "flash", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  data.buffer.push("\n	<form role='form' id='trip-creation' ");
   hashContexts = {'on': depth0};
   hashTypes = {'on': "STRING"};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "create", {hash:{

@@ -1,6 +1,7 @@
 
 <div id='create-trip-form'>
 	<div class='header'>Create A Trip</div>
+	{{#if flash}}<div class='flash'><b>{{flash}}</b></div>{{/if}}
 	<form role='form' id='trip-creation' {{action 'create' on='submit'}}>
 		<div class='form-group'>
 			<div class='input-group'>

@@ -68,11 +68,70 @@
 }
 
 #sidebar-menu > .create-container > #create-trip-form {
-	width: 400px;
-	height: 400px;
+	width: 350px;
+	height: 450px;
 	top: 50%;
 	left: 50%;
-	margin-top: -200px;
-	margin-left: -200px;
+	margin-top: -225px;
+	margin-left: -175px;
 	position: relative;
+}
+
+#sidebar-menu > .create-container > #create-trip-form > .header {
+	height: 99px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid @color-green;
+	line-height: 99px;
+	font-size: 32px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	text-align: center;
+	color: @color-olive;
+}
+
+#sidebar-menu > .create-container > #create-trip-form > #trip-creation {
+	margin: 40px auto;
+}
+
+#sidebar-menu > .create-container > #create-trip-form > .flash {
+	background: @color-red;
+	color: @color-slate;
+	text-align: center;
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	line-height: 40px;
+	height: 40px;
+}
+
+#trip-creation > button {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	width: 100%;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background: @color-green;
+	text-transform: uppercase;
+	transition: background-color 0.5s ease;
+}
+
+#trip-creation > button.cancel {
+	background: @color-red;
+}
+
+#trip-creation > button.cancel:hover {
+	background: @color-red - #090909;
+}
+
+#trip-creation > button:hover {
+	transition: background-color 0.5s ease;
+	background: @color-green - #090909;
 }
