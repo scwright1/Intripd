@@ -23,6 +23,17 @@ var TripsController = Ember.ArrayController.extend({
 					}
 				});
 			}
+		},
+		destroy_trip: function(trip) {
+			if(!trip) {
+				//todo - handle no trip error
+			} else {
+				if(trip._data.uid === App.Session.get('user_active_trip')) {
+					//don't allow this
+				} else {
+					//delete the trip, throw a confirmation
+				}
+			}
 		}
 	}
 });

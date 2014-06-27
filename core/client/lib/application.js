@@ -436,6 +436,17 @@ var TripsController = Ember.ArrayController.extend({
 					}
 				});
 			}
+		},
+		destroy_trip: function(trip) {
+			if(!trip) {
+				//todo - handle no trip error
+			} else {
+				if(trip._data.uid === App.Session.get('user_active_trip')) {
+					//don't allow this
+				} else {
+					//delete the trip, throw a confirmation
+				}
+			}
 		}
 	}
 });
@@ -1266,7 +1277,7 @@ function program4(depth0,data) {
   data.buffer.push("><span class='fontello-check'></span></div>\n					<!--<div class='edit'><span class='fontello-cog'></span></div>-->\n					<div class='delete' data-context='delete' ");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "destroy", "", {hash:{},contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "destroy_trip", "", {hash:{},contexts:[depth0,depth0],types:["STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("><span class='fontello-cancel'></span></div>\n				</div>\n			    ");
   hashTypes = {};
   hashContexts = {};
