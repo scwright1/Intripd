@@ -5,6 +5,7 @@ var CreateController = Ember.ObjectController.extend({
 	returning: null,
 	actions: {
 		create: function() {
+			//todo - validate creation fields and return flash if invalid data
 			var self = this;
 			function convertDateToISO(dateString) {
 				var rawDate = dateString.split('/');
