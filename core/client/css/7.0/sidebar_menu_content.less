@@ -44,6 +44,39 @@
 	height: 160px;
 	margin: 20px;
 	border: 1px solid darken(@color-slate, 5%);
+	position: relative;
+}
+
+#sidebar-menu > .trips-container > .all-trips > .trip-box > .trip > .overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+}
+
+#sidebar-menu > .trips-container > .all-trips > .trip-box > .trip > .overlay > div {
+	font-size: 22px;
+	text-align: center;
+	line-height: 80px;
+	display: none;
+	height: 80px;
+}
+
+#sidebar-menu > .trips-container > .all-trips > .trip-box > .trip > .overlay > .select {
+	background: fade(@color-green, 60%);
+	width: 100%;
+}
+
+#sidebar-menu > .trips-container > .all-trips > .trip-box > .trip > .overlay > .edit {
+	background: fade(@color-orange, 60%);
+	float: left;
+	width: 80px;
+}
+
+#sidebar-menu > .trips-container > .all-trips > .trip-box > .trip > .overlay > .delete {
+	background: fade(@color-red, 60%);
+	float: right;
+	width: 80px;
 }
 
 #sidebar-menu > .trips-container > .all-trips > .trip-box > #create-trip {

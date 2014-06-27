@@ -1,27 +1,23 @@
-var SidebarTripsEntryView = Ember.View.extend({
+var EntryView = Ember.View.extend({
+	classNames: ['trip-box'],
 	mouseEnter: function() {
-		var uid = this.get('content')._data.uid;
-		$('#'+uid+' > .overlay > .select').css('display', 'none');
-		$('#'+uid+' > .overlay > .edit').css('display', 'none');
-		$('#'+uid+' > .overlay > .delete').css('display', 'none');
-		var $at = $('#'+uid+' > .overlay > .select').removeClass('animated fadeInDown fadeOutUp animated');
-		var $at = $('#'+uid+' > .overlay > .edit').removeClass('animated fadeInLeft fadeOutLeft animated');
-		var $at = $('#'+uid+' > .overlay > .delete').removeClass('animated fadeInRight fadeOutRight animated');  
+		var self = this;
+		this.$().children('.trip').children('.overlay').children('.select').css('display', 'none');
+		this.$().children('.trip').children('.overlay').children('.edit').css('display', 'none');
+		this.$().children('.trip').children('.overlay').children('.delete').css('display', 'none');
+		this.$().children('.trip').children('.overlay').children('.select').removeClass('animated fadeInDown fadeOutUp animated');
+		this.$().children('.trip').children('.overlay').children('.delete').removeClass('animated fadeInRight fadeOutRight animated');
 		setTimeout(function(){ 
-			$('#'+uid+' > .overlay > .select').css('display', 'block');
-			$('#'+uid+' > .overlay > .select').addClass('animated fadeInDown');
-			$('#'+uid+' > .overlay > .edit').css('display', 'block');
-			$('#'+uid+' > .overlay > .edit').addClass('animated fadeInLeft');
-			$('#'+uid+' > .overlay > .delete').css('display', 'block');
-			$('#'+uid+' > .overlay > .delete').addClass('animated fadeInRight');
+			self.$().children('.trip').children('.overlay').children('.select').css('display', 'block');
+			self.$().children('.trip').children('.overlay').children('.select').addClass('animated fadeInDown');
+			self.$().children('.trip').children('.overlay').children('.delete').css('display', 'block');
+			self.$().children('.trip').children('.overlay').children('.delete').addClass('animated fadeInRight');
 		}, 10); 
 	},
 	mouseLeave: function() {
-		var uid = this.get('content')._data.uid;
-		$('#'+uid+' > .overlay > .select').addClass('animated fadeOutUp');
-		$('#'+uid+' > .overlay > .edit').addClass('animated fadeOutLeft');
-		$('#'+uid+' > .overlay > .delete').addClass('animated fadeOutRight');
+		this.$().children('.trip').children('.overlay').children('.select').addClass('animated fadeOutUp');
+		this.$().children('.trip').children('.overlay').children('.delete').addClass('animated fadeOutRight');
 	}
 });
 
-module.exports = SidebarTripsEntryView;
+module.exports = EntryView;
