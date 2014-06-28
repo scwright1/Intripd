@@ -138,7 +138,7 @@
 	height: 40px;
 }
 
-#trip-creation > button {
+button {
 	height: 60px;
 	border: none;
 	line-height: 60px;
@@ -151,20 +151,59 @@
 	font-weight: bold;
 	font-size: 18px;
 	text-align: center;
-	background: @color-green;
 	text-transform: uppercase;
 	transition: background-color 0.5s ease;
 }
 
-#trip-creation > button.cancel {
+button.danger {
 	background: @color-red;
 }
 
-#trip-creation > button.cancel:hover {
+button.danger:disabled {
+	background: lighten(@color-red, 20%);
+	transition: background-color 0.5s ease;
+}
+
+button.danger:hover:enabled {
 	background: @color-red - #090909;
 }
 
-#trip-creation > button:hover {
+button:hover:enabled {
 	transition: background-color 0.5s ease;
 	background: @color-green - #090909;
+}
+
+#sidebar-menu > .delete-container {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+
+#sidebar-menu > .delete-container > #delete-trip {
+	width: 350px;
+	height: 450px;
+	top: 50%;
+	left: 50%;
+	margin-top: -225px;
+	margin-left: -175px;
+	position: relative;
+	text-align: left;
+}
+
+#sidebar-menu > .delete-container > #delete-trip > .header {
+	height: 99px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid @color-green;
+	line-height: 99px;
+	font-size: 32px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	text-align: center;
+	color: @color-olive;
+}
+
+#sidebar-menu > .delete-container > #delete-trip > .deletion-confirmation {
+	margin-top: 20px;
 }

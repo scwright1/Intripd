@@ -39,6 +39,12 @@ module.exports = function(server) {
 		});
 	});
 
+	server.delete('/api/trips/:id', Session.validate, function(req, res) {
+		Trip.deleteTrip(req.params.id, function(response) {
+			res.send(response);
+		});
+	});
+
 	server.get('/api/trips/data', function(req, res) {
 		console.log(req.query);
 	});

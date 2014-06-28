@@ -23,17 +23,19 @@ var ApplicationController = Ember.ObjectController.extend({
 		}
 	}.observes('App.Session.user_uid'),
 	tripChanged: function() {
-		if(App.Session.get('user_active_trip')) {
-			var self = this;
-			var uid = App.Session.get('user_active_trip');
-			if(uid.length > 0) {
-				self.store.unloadAll('trip');
-				var trip = self.store.find('trip', App.Session.get('user_active_trip'));
-				self.set('trip', trip);
-			} else {
-				self.store.unloadAll('trip');
-				window.location.reload();
-			}
+		var self = this;
+		var uid = App.Session.get('user_active_trip');
+		if(uid.length > 0) {
+			self.store.unloadAll('trip');
+			var trip = self.store.find('trip', App.Session.get('user_active_trip'));
+			self.set('trip', trip);
+		} else {
+			var trip = {
+				name: 'No Active Trip!',
+				start_date: 'No Start',
+				end_date: 'No End'
+			};
+			self.set('trip', trip);
 		}
 	}.observes('App.Session.user_active_trip'),
 	trip: function() {

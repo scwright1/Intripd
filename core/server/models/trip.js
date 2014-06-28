@@ -109,5 +109,26 @@ tripSchema.statics.getTrip = function(uid, done) {
 	}
 }
 
+tripSchema.statics.deleteTrip = function(id, done) {
+	var Trip = this;
+	if(!id) {
+		return done(400);
+	} else {
+		Trip.findById(id, function(err, trip) {
+			if(err) {
+				return done(400);
+			} else {
+				trip.remove(function(err, code) {
+					if(err) {
+						return done(400);
+					} else {
+						return done(200);
+					}
+				});
+			}
+		});
+	}
+}
+
 var Trip = mongoose.model('Trip', tripSchema);
 module.exports = Trip;
