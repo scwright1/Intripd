@@ -326,7 +326,7 @@ module.exports = MediaController;
 var SearchController = Ember.ObjectController.extend({
 	needs: ['map'],
 	name: 'sidebar/search_controller',
-	debug: true
+	debug: false
 });
 
 module.exports = SearchController;
@@ -1124,21 +1124,6 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'search_key': ("c")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
-  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
-    'menu_context': ("SidebarWaypoints"),
-    'icon': ("fontello-location"),
-    'width': ("400")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	");
-  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
-    'menu_context': ("SidebarMedia"),
-    'icon': ("fontello-camera"),
-    'width': ("400")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
   data.buffer.push("\n	<div class='sidebar-accent'></div>");
   return buffer;
@@ -1167,11 +1152,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  data.buffer.push("\n	<div id='trip-quickinfo-container'>\n		");
+  data.buffer.push("\n	<div id='trip-quickinfo-container'>\n		<span>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "trip.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n		");
+  data.buffer.push("</span>\n		<span>");
   hashTypes = {};
   hashContexts = {};
   options = {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
@@ -1179,7 +1164,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "travelling", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("\n	</div>\n	<div id='user-quickinfo-container'>\n		");
+  data.buffer.push("</span>\n	</div>\n	<div id='user-quickinfo-container'>\n		");
   hashContexts = {'menu_context': depth0,'width': depth0,'icon': depth0};
   hashTypes = {'menu_context': "STRING",'width': "STRING",'icon': "STRING"};
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.TopbarTriggerView", {hash:{
@@ -1254,7 +1239,7 @@ function program1(depth0,data) {
 Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -1275,7 +1260,16 @@ function program1(depth0,data) {
   hashContexts = {};
   stack1 = helpers['if'].call(depth0, "debug", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  else { data.buffer.push(''); }
+  data.buffer.push("\n\n	<div class='search-input'>\n		");
+  hashContexts = {'type': depth0,'placeholder': depth0};
+  hashTypes = {'type': "STRING",'placeholder': "STRING"};
+  options = {hash:{
+    'type': ("text"),
+    'placeholder': ("Search for a place...")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n	</div>");
+  return buffer;
   
 });
 
@@ -2014,6 +2008,10 @@ var CreateView = Ember.View.extend({
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        $('#create-trip-form > #trip-creation > .form-group > .input-group > .date').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true
+		});
 	},
 	willDestroyElement: function() {
 		var _this = this;

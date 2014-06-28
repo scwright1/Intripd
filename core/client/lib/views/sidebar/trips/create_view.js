@@ -7,6 +7,10 @@ var CreateView = Ember.View.extend({
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        $('#create-trip-form > #trip-creation > .form-group > .input-group > .date').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true
+		});
 	},
 	willDestroyElement: function() {
 		var _this = this;
