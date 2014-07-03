@@ -175,7 +175,9 @@ function configServer(server, callback) {
 		server.set('view engine', 'hbs');
 		server.set('views', config.paths().server+'/views/errors');
 		if(dev) server.use(require('morgan')('dev'));
-		server.use(require('body-parser')());
+		//body-parser as a global deprecated, need to specify parsers individually
+		server.use(require('body-parser').urlencoded({extended: true}));
+		server.use(require('body-parser').json());
 		server.use(require('method-override')());
 		//not convinced we need this
 		server.use(require('cookie-parser')('qL17C8iQnxPuDg50mYFDk56sdR0KuUm3'));
@@ -233,7 +235,7 @@ function loadRoutes(server, callback) {
 /**
  * load ErrorHandler (internal server errors)
  * @param  {Object}   server   Contains server instance
- * @param  {Function} callback 
+ * @param  {Function} callback
  */
 function configErrorHandler(server, callback) {
 	try {
