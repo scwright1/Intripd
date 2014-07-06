@@ -1,7 +1,6 @@
 var Session 		= require('../models/session'),
-	config			= require('../config'),
-	configuration	= config(),
-	foursquare		= require('foursquarevenues')(configuration.apps.FOURSQUARE.id, configuration.apps.FOURSQUARE.sec);
+	foursquare		= require('../middleware/foursquare')();
+	config			= require('../config')();
 
 module.exports = function(server) {
 	server.post('/api/search', Session.validate, function(req, res) {
@@ -12,7 +11,7 @@ module.exports = function(server) {
 		if(intent === "browse") {
 			params = {
 				"ll": 		latlng,
-				"radius":	5000,
+				"radius":	10000,
 				"query":	data,
 				"intent":	intent
 			};

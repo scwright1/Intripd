@@ -33,6 +33,7 @@
 		"underscore": "*",
 		"colors": "*",
 		"when": "*",
-		"foursquarevenues": "*"
+		"request": "*",
+		"querystring": "*"
 	}
 }
