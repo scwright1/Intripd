@@ -50,6 +50,8 @@ Ember.Handlebars.helper('travelDates', function(property) {
 			function r(reason){}
 			property.then(f,r);
 		}
+	} else {
+		this.set('travelling', null);
 	}
 });
 

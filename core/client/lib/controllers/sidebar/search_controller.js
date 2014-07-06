@@ -5,6 +5,7 @@ var SearchController = Ember.ObjectController.extend({
 	search_term_cache: null,
 	search_timestamp: null,
 	waypointSearch: null,
+	pending_searches: 0,
 	searchTextChanged: function() {
 		var self = this;
 		$(document).keyup(function() {
@@ -31,18 +32,26 @@ var SearchController = Ember.ObjectController.extend({
 			}
 		});
 	}.observes('waypointSearch'),
+	pending: function() {
+		//todo, processing div over search results
+		if(this.get('pending_searches') > 0) {
+			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'table');
+		} else {
+			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'none');
+		}
+	}.observes('pending_searches'),
 	actions: {
 		search: function() {
 			var now = +new Date;
 			var self = this;
 			var then = this.get('search_timestamp');
 			if(now !== then) {
+				self.set('pending_searches', (self.get('pending_searches') +1));
 				var term = self.get('search_term_cache');
-				$('.search-results').html('Loading...');
-				if(parseInt(now - then) < 1000) {
+				if(parseInt(now - then) < 2000) {
 					setTimeout(function() {
 						self.send('executeSearch', now, term);
-					}, 1000);
+					}, 2000);
 				} else {
 					self.send('executeSearch', now, term);
 				}
@@ -57,12 +66,13 @@ var SearchController = Ember.ObjectController.extend({
 				$.ajax({
 					type: 'POST',
 					url: '/api/search',
-					data: {term: current, ll: ll},
+					data: {term: current, ll: ll, intent: "browse"},
 					dataType: 'json',
 					success: function(data) {
-						$('.search-results').empty();
+						self.set('pending_searches', (self.get('pending_searches')-1));
+						$('.search-results > .venues').empty();
 						for(var i = 0; i < data.response.venues.length; i++) {
-							$('.search-results').append("<div class='result'><div class='name'>"+data.response.venues[i].name+"</div><div class='address'>"+data.response.venues[i].location.address+"</div></div>");
+							$('.search-results > .venues').append("<div class='result'><div class='name'>"+data.response.venues[i].name+"</div><div class='address'>"+data.response.venues[i].location.address+"</div></div>");
 						}
 					},
 					complete: function() {
@@ -70,6 +80,7 @@ var SearchController = Ember.ObjectController.extend({
 					}
 				});
 			} else {
+				self.set('pending_searches', (self.get('pending_searches')-1));
 				return;
 			}
 		}
