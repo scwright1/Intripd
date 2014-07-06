@@ -8,6 +8,7 @@ module.exports = function(server, passport) {
 		require('./user')(server);
 		require('./authentication')(server, passport);
 		require('./trip')(server);
+		require('./search')(server);
 		//once complete
 		console.info('Setup routes successfully');
 	} catch(err) {

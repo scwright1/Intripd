@@ -326,7 +326,70 @@ module.exports = MediaController;
 var SearchController = Ember.ObjectController.extend({
 	needs: ['map'],
 	name: 'sidebar/search_controller',
-	debug: false
+	debug: false,
+	search_term_cache: null,
+	search_timestamp: null,
+	waypointSearch: null,
+	searchTextChanged: function() {
+		var self = this;
+		$(document).keyup(function() {
+			//rate limiting on search terms being sent to the server
+			//
+			//1.  Nothing is really shorter than 3 characters, so first of all, make sure that
+			//the search term is > 3 characters in length
+			//
+			if(self.get('waypointSearch').length >= 3) {
+				//
+				//2.  Only check if the search term has changed (i.e. don't fire on typing somewhere else)
+				//
+				if(self.get('waypointSearch') !== self.get('search_term_cache')) {
+					//
+					//3.  Immediately update the term cache, so that we don't get duplicate ajax polls waiting
+					//for the first one to complete
+					//
+					self.set('search_term_cache', self.get('waypointSearch'));
+					//
+					//4.  Search
+					//
+					var now = +new Date;
+					var term = self.get('search_term_cache');
+					self.send('search', now, term);
+				}
+			}
+		});
+	}.observes('waypointSearch'),
+	actions: {
+		search: function(now, term) {
+			var self = this;
+			var then = this.get('search_timestamp');
+			if(now !== then) {
+				if(parseInt(now - then) < 1000) {
+					setTimeout(function() {
+						self.send('executeSearch', now, term);
+					}, 1000);
+				} else {
+					self.send('executeSearch', now, term);
+				}
+			}
+		},
+		executeSearch: function(now, term) {
+			var self = this;
+			var current = this.get('search_term_cache');
+			if(current === term) {
+				$.ajax({
+					type: 'POST',
+					url: '/api/search',
+					data: {term: current},
+					dataType: 'json',
+					complete: function() {
+						self.set('search_timestamp', now);
+					}
+				});
+			} else {
+				return;
+			}
+		}
+	}
 });
 
 module.exports = SearchController;
@@ -1261,14 +1324,16 @@ function program1(depth0,data) {
   stack1 = helpers['if'].call(depth0, "debug", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n\n	<div class='search-input'>\n		");
-  hashContexts = {'type': depth0,'placeholder': depth0};
-  hashTypes = {'type': "STRING",'placeholder': "STRING"};
+  hashContexts = {'type': depth0,'placeholder': depth0,'value': depth0,'id': depth0};
+  hashTypes = {'type': "STRING",'placeholder': "STRING",'value': "ID",'id': "STRING"};
   options = {hash:{
     'type': ("text"),
-    'placeholder': ("Search for a place...")
+    'placeholder': ("Begin typing to search..."),
+    'value': ("waypointSearch"),
+    'id': ("waypoint_search_input")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n	</div>");
+  data.buffer.push("\n	</div>\n	<div class='search-results'>\n		<i class=\"fa fa-circle-o-notch fa-spin\"></i>\n	</div>");
   return buffer;
   
 });
