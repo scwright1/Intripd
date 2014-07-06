@@ -32,6 +32,7 @@
 		"buggr": "*",
 		"underscore": "*",
 		"colors": "*",
-		"when": "*"
+		"when": "*",
+		"foursquarevenues": "*"
 	}
 }

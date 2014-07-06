@@ -351,18 +351,19 @@ var SearchController = Ember.ObjectController.extend({
 					//
 					//4.  Search
 					//
-					var now = +new Date;
-					var term = self.get('search_term_cache');
-					self.send('search', now, term);
+					self.send('search');
 				}
 			}
 		});
 	}.observes('waypointSearch'),
 	actions: {
-		search: function(now, term) {
+		search: function() {
+			var now = +new Date;
 			var self = this;
 			var then = this.get('search_timestamp');
 			if(now !== then) {
+				var term = self.get('search_term_cache');
+				$('.search-results').html('Loading...');
 				if(parseInt(now - then) < 1000) {
 					setTimeout(function() {
 						self.send('executeSearch', now, term);
@@ -376,11 +377,19 @@ var SearchController = Ember.ObjectController.extend({
 			var self = this;
 			var current = this.get('search_term_cache');
 			if(current === term) {
+				var center = self.get('controllers.map').get('map').getCenter();
+				var ll = center.lat()+','+center.lng();
 				$.ajax({
 					type: 'POST',
 					url: '/api/search',
-					data: {term: current},
+					data: {term: current, ll: ll},
 					dataType: 'json',
+					success: function(data) {
+						$('.search-results').empty();
+						for(var i = 0; i < data.response.venues.length; i++) {
+							$('.search-results').append("<div class='result'><div class='name'>"+data.response.venues[i].name+"</div><div class='address'>"+data.response.venues[i].location.address+"</div></div>");
+						}
+					},
 					complete: function() {
 						self.set('search_timestamp', now);
 					}
@@ -1333,7 +1342,7 @@ function program1(depth0,data) {
     'id': ("waypoint_search_input")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n	</div>\n	<div class='search-results'>\n		<i class=\"fa fa-circle-o-notch fa-spin\"></i>\n	</div>");
+  data.buffer.push("\n	</div>\n	<div class='search-results'>\n	</div>");
   return buffer;
   
 });
