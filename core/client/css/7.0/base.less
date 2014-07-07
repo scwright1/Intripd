@@ -173,3 +173,38 @@ input:-webkit-autofill:hover {
 #site-info > sub {
 	color: #919ca2;
 }
+
+button {
+	height: 60px;
+	border: none;
+	line-height: 60px;
+	padding: 0;
+	width: 100%;
+	outline: none !important;
+	box-shadow: none;
+	color: @color-slate;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: background-color 0.5s ease;
+	&.danger {
+		background: @color-red;
+		&:disabled {
+			background: lighten(@color-red, 20%);
+			transition: background-color 0.5s ease;
+		}
+		&:hover {
+			&:enabled {
+				background: @color-red - #090909;
+			}
+		}
+	}
+	&:hover {
+		&:enabled {
+			transition: background-color 0.5s ease;
+			background: @color-green - #090909;
+		}
+	}
+}

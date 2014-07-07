@@ -4,6 +4,7 @@ module.exports = function(server, passport) {
 	try {
 		//TODO: routes
 		require('./error')(server);
+		require('./api')(server);
 		require('./sessions')(server);
 		require('./user')(server);
 		require('./authentication')(server, passport);

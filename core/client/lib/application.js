@@ -1324,28 +1324,10 @@ function program1(depth0,data) {
 Ember.TEMPLATES['sidebar/search'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = '', stack1, hashContexts, hashTypes, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
 
-function program1(depth0,data) {
-  
-  var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n	<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n");
-  return buffer;
-  }
 
-  hashTypes = {};
-  hashContexts = {};
-  stack1 = helpers['if'].call(depth0, "debug", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n\n	<div class='search-input'>\n		");
+  data.buffer.push("	<div class='search-input'>\n		");
   hashContexts = {'type': depth0,'placeholder': depth0,'value': depth0,'id': depth0};
   hashTypes = {'type': "STRING",'placeholder': "STRING",'value': "ID",'id': "STRING"};
   options = {hash:{
@@ -1355,7 +1337,7 @@ function program1(depth0,data) {
     'id': ("waypoint_search_input")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n	</div>\n	<div class='search-results'>\n		<div class='venues'>\n		</div>\n		<!-- pending searches overlay -->\n		<div class='overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n	</div>\n	<div class='search-results'>\n		<div class='venues'>\n			<input id='search_global_toggle' class='toggle' type='checkbox' />\n		</div>\n		<!-- pending searches overlay -->\n		<div class='overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });

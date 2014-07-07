@@ -1,13 +1,9 @@
-{{#if debug}}
-	<p>{{name}}</p>
-	<p>{{view.name}}</p>
-{{/if}}
-
 	<div class='search-input'>
 		{{input type='text' placeholder='Begin typing to search...' value=waypointSearch id='waypoint_search_input'}}
 	</div>
 	<div class='search-results'>
 		<div class='venues'>
+			<input id='search_global_toggle' class='toggle' type='checkbox' />
 		</div>
 		<!-- pending searches overlay -->
 		<div class='overlay gradient'>
