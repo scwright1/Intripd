@@ -6441,6 +6441,74 @@ button:hover:enabled {
   transition: background-color 0.5s ease;
   background: #a6c43c;
 }
+/*** custom checkboxes ***/
+input[type=checkbox].chk {
+  display: none;
+}
+input[type=checkbox].chk + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f10c";
+  letter-spacing: 10px;
+}
+input[type=checkbox].chk:checked + label:before {
+  content: "\f05d";
+  letter-spacing: 10px;
+}
+input[type=checkbox].tgl {
+  display: none;
+  vertical-align: middle;
+}
+input[type=checkbox].tgl,
+input[type=checkbox].tgl *:after,
+input[type=checkbox].tgl *:before input[type=checkbox].tgl + .tgl-btn {
+  box-sizing: border-box;
+}
+input[type=checkbox].tgl::selection,
+input[type=checkbox].tgl *:after::selection,
+input[type=checkbox].tgl *:before input[type=checkbox].tgl + .tgl-btn::selection {
+  background: none;
+}
+input[type=checkbox].tgl + .tgl-btn {
+  vertical-align: middle;
+  outline: 0;
+  display: inline-block;
+  width: 4em;
+  height: 2em;
+  position: relative;
+  cursor: pointer;
+}
+input[type=checkbox].tgl + .tgl-btn:after,
+input[type=checkbox].tgl + .tgl-btn:before {
+  position: relative;
+  display: block;
+  content: "";
+  width: 50%;
+  height: 100%;
+}
+input[type=checkbox].tgl + .tgl-btn:after {
+  left: 0;
+}
+input[type=checkbox].tgl + .tgl-btn:before {
+  display: none;
+}
+input[type=checkbox].tgl:checked + .tgl-btn:after {
+  left: 50%;
+}
+input[type=checkbox].tgl-light + .tgl-btn {
+  background: #dedede;
+  border-radius: 2em;
+  padding: 2px;
+  transition: all 0.5s ease;
+}
+input[type=checkbox].tgl-light + .tgl-btn:after {
+  border-radius: 50%;
+  background: #f7f7f3;
+  transition: all 0.2s ease;
+}
+input[type=checkbox].tgl-light:checked + .tgl-btn {
+  background: #afcd45;
+}
 #splash {
   background: url(/img/splash.jpg) 50% 0 repeat fixed;
   width: 100%;
@@ -6872,31 +6940,6 @@ label {
     margin: 0 auto;
   }
 }
-/*** custom checkboxes ***/
-input[type=checkbox] {
-  display: none;
-}
-/* to hide the checkbox itself */
-input[type=checkbox] + label:before {
-  font-family: FontAwesome;
-  display: inline-block;
-}
-input[type=checkbox] + label:before {
-  content: "\f10c";
-}
-/* unchecked icon */
-input[type=checkbox] + label:before {
-  letter-spacing: 10px;
-}
-/* space between checkbox and label */
-input[type=checkbox]:checked + label:before {
-  content: "\f05d";
-}
-/* checked icon */
-input[type=checkbox]:checked + label:before {
-  letter-spacing: 10px;
-}
-/* allow space for check mark */
 #map {
   width: 100%;
   height: 100%;
@@ -7196,16 +7239,24 @@ input[type=checkbox]:checked + label:before {
   padding-right: 20px;
 }
 #sidebar-menu .search-container .search-input > input {
+  float: left;
   height: 60px;
   background: none;
   border: none;
   border-bottom: 1px solid #edede4;
-  width: 100%;
+  width: 270px;
   font-size: 16px;
   font-weight: 300;
   font-family: 'Open Sans', sans-serif;
   outline: none !important;
   box-shadow: none;
+}
+#sidebar-menu .search-container .search-input .toggle {
+  float: right;
+  width: 80px;
+  height: 100%;
+  line-height: 60px;
+  color: #b4b4aa;
 }
 #sidebar-menu .search-container .search-results {
   position: relative;

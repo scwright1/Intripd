@@ -331,6 +331,8 @@ var SearchController = Ember.ObjectController.extend({
 	search_timestamp: null,
 	waypointSearch: null,
 	pending_searches: 0,
+	searchScope: false,
+	scope: 'browse',
 	searchTextChanged: function() {
 		var self = this;
 		$(document).keyup(function() {
@@ -365,6 +367,13 @@ var SearchController = Ember.ObjectController.extend({
 			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'none');
 		}
 	}.observes('pending_searches'),
+	updateScope: function() {
+		if(this.get('searchScope') === true) {
+			this.set('scope', 'global');
+		} else if(this.get('searchScope') === false) {
+			this.set('scope', 'browse');
+		}
+	}.observes('searchScope'),
 	actions: {
 		search: function() {
 			var now = +new Date;
@@ -391,7 +400,7 @@ var SearchController = Ember.ObjectController.extend({
 				$.ajax({
 					type: 'POST',
 					url: '/api/search',
-					data: {term: current, ll: ll, intent: "browse"},
+					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
 						self.set('pending_searches', (self.get('pending_searches')-1));
@@ -1337,7 +1346,17 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'id': ("waypoint_search_input")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n	</div>\n	<div class='search-results'>\n		<div class='venues'>\n			<input id='search_global_toggle' class='toggle' type='checkbox' />\n		</div>\n		<!-- pending searches overlay -->\n		<div class='overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n		<div class='toggle'>\n			<span class='fontello-address' style='float: left;'></span>");
+  hashContexts = {'id': depth0,'class': depth0,'type': depth0,'checked': depth0};
+  hashTypes = {'id': "STRING",'class': "STRING",'type': "STRING",'checked': "ID"};
+  options = {hash:{
+    'id': ("search_global_toggle"),
+    'class': ("tgl tgl-light"),
+    'type': ("checkbox"),
+    'checked': ("searchScope")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
+  data.buffer.push("\n			<label class='tgl-btn' for='search_global_toggle'></label><span class='fontello-globe' style='float: right;'></span>\n		</div>\n	</div>\n	<div class='search-results'>\n		<div class='venues'>\n		</div>\n		<!-- pending searches overlay -->\n		<div class='overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });
@@ -1694,11 +1713,12 @@ function program4(depth0,data) {
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
   data.buffer.push("\n			</div>\n		</div>\n		");
-  hashContexts = {'type': depth0,'id': depth0,'checked': depth0};
-  hashTypes = {'type': "STRING",'id': "STRING",'checked': "ID"};
+  hashContexts = {'type': depth0,'id': depth0,'class': depth0,'checked': depth0};
+  hashTypes = {'type': "STRING",'id': "STRING",'class': "STRING",'checked': "ID"};
   options = {hash:{
     'type': ("checkbox"),
     'id': ("remember"),
+    'class': ("chk"),
     'checked': ("remember")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));

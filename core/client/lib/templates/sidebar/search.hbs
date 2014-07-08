@@ -1,9 +1,12 @@
 	<div class='search-input'>
 		{{input type='text' placeholder='Begin typing to search...' value=waypointSearch id='waypoint_search_input'}}
+		<div class='toggle'>
+			<span class='fontello-address' style='float: left;'></span>{{input id='search_global_toggle' class='tgl tgl-light' type='checkbox' checked=searchScope}}
+			<label class='tgl-btn' for='search_global_toggle'></label><span class='fontello-globe' style='float: right;'></span>
+		</div>
 	</div>
 	<div class='search-results'>
 		<div class='venues'>
-			<input id='search_global_toggle' class='toggle' type='checkbox' />
 		</div>
 		<!-- pending searches overlay -->
 		<div class='overlay gradient'>

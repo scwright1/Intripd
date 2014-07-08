@@ -208,3 +208,83 @@ button {
 		}
 	}
 }
+
+/*** custom checkboxes ***/
+
+input[type=checkbox] {
+	&.chk {
+		display:none;
+		+label:before {
+			font-family: FontAwesome;
+			display: inline-block;
+			content: "\f10c";
+			letter-spacing: 10px;
+		}
+		&:checked {
+			+label:before {
+				content: "\f05d";
+				letter-spacing: 10px;
+			}
+		}
+	}
+}
+
+input[type=checkbox] {
+	&.tgl {
+		display: none;
+		vertical-align:middle;
+		&,& *:after, & *:before &+.tgl-btn{
+			box-sizing: border-box;
+			&::selection {
+				background: none;
+			}
+		}
+		+.tgl-btn {
+			vertical-align:middle;
+			outline: 0;
+			display: inline-block;
+			width: 4em;
+			height: 2em;
+			position: relative;
+			cursor: pointer;
+			&:after, &:before {
+				position: relative;
+				display: block;
+				content: "";
+				width: 50%;
+				height: 100%;
+			}
+			&:after {
+				left: 0;
+			}
+			&:before {
+				display: none;
+			}
+		}
+		&:checked {
+			+.tgl-btn {
+				&:after {
+					left: 50%;
+				}
+			}
+		}
+	}
+	&.tgl-light {
+		+.tgl-btn {
+			background: darken(#f0f0f0, 7%);
+			border-radius: 2em;
+			padding: 2px;
+			transition: all 0.5s ease;
+			&:after {
+				border-radius: 50%;
+				background: @color-slate;
+				transition: all 0.2s ease;
+			}
+		}
+		&:checked {
+			+.tgl-btn {
+				background: @color-green;
+			}
+		}
+	}
+}

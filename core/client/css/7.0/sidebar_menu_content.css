@@ -154,16 +154,24 @@
   padding-right: 20px;
 }
 #sidebar-menu .search-container .search-input > input {
+  float: left;
   height: 60px;
   background: none;
   border: none;
   border-bottom: 1px solid #edede4;
-  width: 100%;
+  width: 270px;
   font-size: 16px;
   font-weight: 300;
   font-family: 'Open Sans', sans-serif;
   outline: none !important;
   box-shadow: none;
+}
+#sidebar-menu .search-container .search-input .toggle {
+  float: right;
+  width: 80px;
+  height: 100%;
+  line-height: 60px;
+  color: #b4b4aa;
 }
 #sidebar-menu .search-container .search-results {
   position: relative;

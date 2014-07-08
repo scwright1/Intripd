@@ -6,6 +6,8 @@ var SearchController = Ember.ObjectController.extend({
 	search_timestamp: null,
 	waypointSearch: null,
 	pending_searches: 0,
+	searchScope: false,
+	scope: 'browse',
 	searchTextChanged: function() {
 		var self = this;
 		$(document).keyup(function() {
@@ -40,6 +42,13 @@ var SearchController = Ember.ObjectController.extend({
 			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'none');
 		}
 	}.observes('pending_searches'),
+	updateScope: function() {
+		if(this.get('searchScope') === true) {
+			this.set('scope', 'global');
+		} else if(this.get('searchScope') === false) {
+			this.set('scope', 'browse');
+		}
+	}.observes('searchScope'),
 	actions: {
 		search: function() {
 			var now = +new Date;
@@ -66,7 +75,7 @@ var SearchController = Ember.ObjectController.extend({
 				$.ajax({
 					type: 'POST',
 					url: '/api/search',
-					data: {term: current, ll: ll, intent: "browse"},
+					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
 						self.set('pending_searches', (self.get('pending_searches')-1));
