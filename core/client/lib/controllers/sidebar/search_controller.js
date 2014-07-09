@@ -78,6 +78,16 @@ var SearchController = Ember.ObjectController.extend({
 					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
+						//TODO - maybe load the data into a model array so that we are storing it a bit better?
+						//
+						//that way, we can use views and controllers for each piece of data.  The overhead would be clearing out the model every time we re-searched.
+						//
+						//
+						//
+						//
+						//
+						//
+						//
 						self.set('pending_searches', (self.get('pending_searches')-1));
 						$('.search-results > .venues').empty();
 						for(var i = 0; i < data.response.venues.length; i++) {
