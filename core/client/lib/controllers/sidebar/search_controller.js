@@ -1,13 +1,12 @@
-var SearchController = Ember.ObjectController.extend({
+var SearchController = Ember.ArrayController.extend({
 	needs: ['map'],
-	name: 'sidebar/search_controller',
-	debug: false,
 	search_term_cache: null,
 	search_timestamp: null,
 	waypointSearch: null,
 	pending_searches: 0,
 	searchScope: false,
 	scope: 'browse',
+	results: [],
 	searchTextChanged: function() {
 		var self = this;
 		$(document).keyup(function() {
@@ -78,20 +77,17 @@ var SearchController = Ember.ObjectController.extend({
 					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
-						//TODO - maybe load the data into a model array so that we are storing it a bit better?
-						//
-						//that way, we can use views and controllers for each piece of data.  The overhead would be clearing out the model every time we re-searched.
-						//
-						//
-						//
-						//
-						//
-						//
-						//
 						self.set('pending_searches', (self.get('pending_searches')-1));
-						$('.search-results > .venues').empty();
+						self.set('results', []);
 						for(var i = 0; i < data.response.venues.length; i++) {
-							$('.search-results > .venues').append("<div class='result'><div class='name'>"+data.response.venues[i].name+"</div><div class='address'>"+data.response.venues[i].location.address+"</div></div>");
+							var obj = (Em.Object.create({
+								'sid': data.response.venues[i].id,
+								'name': data.response.venues[i].name,
+								'addr': data.response.venues[i].location.address,
+								'lat': data.response.venues[i].location.lat,
+								'lng': data.response.venues[i].location.lng
+							}));
+							self.get('results').push(obj);
 						}
 					},
 					complete: function() {
