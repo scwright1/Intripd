@@ -324,7 +324,7 @@ var MediaController = Ember.ObjectController.extend({
 module.exports = MediaController;
 },{}],11:[function(require,module,exports){
 var ResultController = Em.ObjectController.extend({
-	name: null
+	content: []
 });
 
 module.exports = ResultController;
@@ -1355,16 +1355,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 function program1(depth0,data) {
   
-  var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n				<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "result.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n				<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "result.addr", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n			");
+  var buffer = '', hashContexts, hashTypes;
+  data.buffer.push("\n				");
+  hashContexts = {'contentBinding': depth0};
+  hashTypes = {'contentBinding': "STRING"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarSearchResultView", {hash:{
+    'contentBinding': ("result")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n			");
   return buffer;
   }
 
@@ -1643,12 +1641,19 @@ function program1(depth0,data) {
 Ember.TEMPLATES['sidebar/search/result'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
+  data.buffer.push("<h5>");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h5>\n<h6>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.addr", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>");
+  return buffer;
   
 });
 

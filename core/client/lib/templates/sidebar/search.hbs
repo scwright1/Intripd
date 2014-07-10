@@ -8,8 +8,7 @@
 	<div class='search-results'>
 		<div class='venues'>
 			{{#each result in results}}
-				<p>{{result.name}}</p>
-				<p>{{result.addr}}</p>
+				{{view App.SidebarSearchResultView contentBinding='result'}}
 			{{/each}}
 		</div>
 		<!-- pending searches overlay -->

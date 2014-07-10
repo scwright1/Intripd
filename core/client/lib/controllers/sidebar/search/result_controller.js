@@ -1,5 +1,5 @@
 var ResultController = Em.ObjectController.extend({
-	name: null
+	content: []
 });
 
 module.exports = ResultController;
