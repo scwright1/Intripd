@@ -4,7 +4,7 @@ var SearchController = Ember.ArrayController.extend({
 	search_timestamp: null,
 	waypointSearch: null,
 	pending_searches: 0,
-	searchScope: false,
+	searchScope: true,
 	scope: 'browse',
 	results: [],
 	searchTextChanged: function() {
@@ -48,6 +48,14 @@ var SearchController = Ember.ArrayController.extend({
 			this.set('scope', 'browse');
 		}
 	}.observes('searchScope'),
+	/*dynamically changes the search scope based on the current zoom level of the map*/
+	contextScope: function() {
+		if(this.get('controllers.map.zoom') <= 10) {
+			this.set('searchScope', true);
+		} else {
+			this.set('searchScope', false)
+		}
+	}.observes('controllers.map.zoom'),
 	actions: {
 		search: function() {
 			var now = +new Date;
