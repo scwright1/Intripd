@@ -103,7 +103,7 @@ var SearchController = Ember.ArrayController.extend({
 		},
 		cache: function(record) {
 			this.get('store').createRecord('waypoint', {
-	  			sid: record.id,
+				id: record.id,
 	  			name: record.name,
 	  			lat: record.location.lat,
 	  			lng: record.location.lng

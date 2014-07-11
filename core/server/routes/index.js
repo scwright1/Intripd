@@ -10,6 +10,7 @@ module.exports = function(server, passport) {
 		require('./authentication')(server, passport);
 		require('./trip')(server);
 		require('./search')(server);
+		require('./waypoints')(server);
 		//once complete
 		console.info('Setup routes successfully');
 	} catch(err) {

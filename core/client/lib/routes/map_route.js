@@ -11,6 +11,8 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				} else {
 					m = this.store.find(model, App.Session.get('user_active_trip'));
 				}
+			} else if(search_key === 'wl') {
+				m = this.store.find(model, tuid);
 			}
 			controller.set('model', m);
 			this.render(element, {into: location, outlet: 'menu'});

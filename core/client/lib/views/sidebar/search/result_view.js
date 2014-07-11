@@ -19,6 +19,7 @@ var ResultView = Em.View.extend({
 
   		//now we create a temporary model in the store so that we can potentially save it out to the database should we want to:
   		this.get('controller').send('cache', self.get('content'));
+  		this.get('controller').send('renderMenuElement', 'SidebarWaypointsDetails', 'sidebar-menu', 'waypoint', 'wl', self.get('content.id'));
 	}
 });
 
