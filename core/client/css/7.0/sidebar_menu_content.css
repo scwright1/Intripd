@@ -177,6 +177,7 @@
   position: relative;
   height: 90%;
   width: 100%;
+  overflow: auto;
 }
 #sidebar-menu .search-container .search-results .overlay {
   display: none;
@@ -240,6 +241,13 @@
   -webkit-animation-delay: 0.5s;
   animation-delay: 0.5s;
   right: 0;
+}
+#sidebar-menu .search-container .search-results > .venues > .result {
+  width: 100%;
+  height: 59px;
+  border-bottom: 1px solid #edede4;
+  text-align: left;
+  padding-left: 10px;
 }
 @-webkit-keyframes load-bounce {
   10% {

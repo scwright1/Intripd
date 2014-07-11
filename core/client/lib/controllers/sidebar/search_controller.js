@@ -5,7 +5,7 @@ var SearchController = Ember.ArrayController.extend({
 	waypointSearch: null,
 	pending_searches: 0,
 	searchScope: true,
-	scope: 'browse',
+	scope: 'global',
 	results: [],
 	searchTextChanged: function() {
 		var self = this;
@@ -88,13 +88,7 @@ var SearchController = Ember.ArrayController.extend({
 						self.set('pending_searches', (self.get('pending_searches')-1));
 						self.set('results', []);
 						for(var i = 0; i < data.response.venues.length; i++) {
-							var obj = (Em.Object.create({
-								'sid': data.response.venues[i].id,
-								'name': data.response.venues[i].name,
-								'addr': data.response.venues[i].location.address,
-								'lat': data.response.venues[i].location.lat,
-								'lng': data.response.venues[i].location.lng
-							}));
+							var obj = (Em.Object.create(data.response.venues[i]));
 							self.get('results').push(obj);
 						}
 					},

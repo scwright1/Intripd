@@ -324,6 +324,7 @@ var MediaController = Ember.ObjectController.extend({
 module.exports = MediaController;
 },{}],11:[function(require,module,exports){
 var ResultController = Em.ObjectController.extend({
+	needs: ['map'],
 	content: []
 });
 
@@ -336,7 +337,7 @@ var SearchController = Ember.ArrayController.extend({
 	waypointSearch: null,
 	pending_searches: 0,
 	searchScope: true,
-	scope: 'browse',
+	scope: 'global',
 	results: [],
 	searchTextChanged: function() {
 		var self = this;
@@ -419,13 +420,7 @@ var SearchController = Ember.ArrayController.extend({
 						self.set('pending_searches', (self.get('pending_searches')-1));
 						self.set('results', []);
 						for(var i = 0; i < data.response.venues.length; i++) {
-							var obj = (Em.Object.create({
-								'sid': data.response.venues[i].id,
-								'name': data.response.venues[i].name,
-								'addr': data.response.venues[i].location.address,
-								'lat': data.response.venues[i].location.lat,
-								'lng': data.response.venues[i].location.lng
-							}));
+							var obj = (Em.Object.create(data.response.venues[i]));
 							self.get('results').push(obj);
 						}
 					},
@@ -1652,14 +1647,18 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<h5>");
+  data.buffer.push("<b>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h5>\n<h6>");
+  data.buffer.push("</b>\n<h6>");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.addr", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.location.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(" - ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.content.location.country", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("</h6>");
   return buffer;
   
@@ -2063,7 +2062,14 @@ module.exports = MediaView;
 
 var ResultView = Em.View.extend({
 	templateName: 'sidebar/search/result',
-	classNames: ['result']
+	classNames: ['result'],
+	click: function() {
+		var map = this.get('controller.controllers.map').get('map');
+		var lat = this.get('content.location.lat');
+		var lng = this.get('content.location.lng');
+		map.setZoom(12);
+		map.panTo(new google.maps.LatLng(lat,lng));
+	}
 });
 
 module.exports = ResultView;
