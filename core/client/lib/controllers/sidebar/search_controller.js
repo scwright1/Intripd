@@ -100,6 +100,14 @@ var SearchController = Ember.ArrayController.extend({
 				self.set('pending_searches', (self.get('pending_searches')-1));
 				return;
 			}
+		},
+		cache: function(record) {
+			this.get('store').createRecord('waypoint', {
+	  			sid: record.id,
+	  			name: record.name,
+	  			lat: record.location.lat,
+	  			lng: record.location.lng
+  			});
 		}
 	}
 });

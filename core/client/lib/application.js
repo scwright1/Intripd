@@ -325,7 +325,10 @@ module.exports = MediaController;
 },{}],11:[function(require,module,exports){
 var ResultController = Em.ObjectController.extend({
 	needs: ['map'],
-	content: []
+	content: [],
+	actions: {
+
+	}
 });
 
 module.exports = ResultController;
@@ -432,6 +435,14 @@ var SearchController = Ember.ArrayController.extend({
 				self.set('pending_searches', (self.get('pending_searches')-1));
 				return;
 			}
+		},
+		cache: function(record) {
+			this.get('store').createRecord('waypoint', {
+	  			sid: record.id,
+	  			name: record.name,
+	  			lat: record.location.lat,
+	  			lng: record.location.lng
+  			});
 		}
 	}
 });
@@ -781,8 +792,8 @@ App.SidebarSearchResultController = require('./controllers/sidebar/search/result
 App.AuthLoginController = require('./controllers/auth/login_controller');
 App.AuthRegisterController = require('./controllers/auth/register_controller');
 App.Profile = require('./models/profile');
-App.Result = require('./models/result');
 App.Trip = require('./models/trip');
+App.Waypoint = require('./models/waypoint');
 App.ApplicationRoute = require('./routes/application_route');
 App.ErrorRoute = require('./routes/error_route');
 App.MapRoute = require('./routes/map_route');
@@ -813,7 +824,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/media_controller":10,"./controllers/sidebar/search/result_controller":11,"./controllers/sidebar/search_controller":12,"./controllers/sidebar/trips/create_controller":13,"./controllers/sidebar/trips/delete_controller":14,"./controllers/sidebar/trips_controller":15,"./controllers/sidebar/waypoints_controller":16,"./controllers/sidebar_controller":17,"./controllers/topbar/friends_controller":18,"./controllers/topbar_controller":19,"./helpers/tripHelper":20,"./models/profile":22,"./models/result":23,"./models/trip":24,"./routes/application_route":25,"./routes/auth/login_route":26,"./routes/auth/register_route":27,"./routes/error_route":28,"./routes/map_route":29,"./routes/sidebar/trips_route":30,"./routes/topbar/friends_route":31,"./templates":32,"./views/application_view":33,"./views/footer_view":34,"./views/index_view":35,"./views/map_view":36,"./views/sidebar/media_view":37,"./views/sidebar/search/result_view":38,"./views/sidebar/search_view":39,"./views/sidebar/trigger_view":40,"./views/sidebar/trips/create_view":41,"./views/sidebar/trips/delete_view":42,"./views/sidebar/trips/entry_view":43,"./views/sidebar/trips_view":44,"./views/sidebar/waypoints_view":45,"./views/sidebar_view":46,"./views/topbar/friends_view":47,"./views/topbar/trigger_view":48,"./views/topbar_view":49}],22:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/media_controller":10,"./controllers/sidebar/search/result_controller":11,"./controllers/sidebar/search_controller":12,"./controllers/sidebar/trips/create_controller":13,"./controllers/sidebar/trips/delete_controller":14,"./controllers/sidebar/trips_controller":15,"./controllers/sidebar/waypoints_controller":16,"./controllers/sidebar_controller":17,"./controllers/topbar/friends_controller":18,"./controllers/topbar_controller":19,"./helpers/tripHelper":20,"./models/profile":22,"./models/trip":23,"./models/waypoint":24,"./routes/application_route":25,"./routes/auth/login_route":26,"./routes/auth/register_route":27,"./routes/error_route":28,"./routes/map_route":29,"./routes/sidebar/trips_route":30,"./routes/topbar/friends_route":31,"./templates":32,"./views/application_view":33,"./views/footer_view":34,"./views/index_view":35,"./views/map_view":36,"./views/sidebar/media_view":37,"./views/sidebar/search/result_view":38,"./views/sidebar/search_view":39,"./views/sidebar/trigger_view":40,"./views/sidebar/trips/create_view":41,"./views/sidebar/trips/delete_view":42,"./views/sidebar/trips/entry_view":43,"./views/sidebar/trips_view":44,"./views/sidebar/waypoints_view":45,"./views/sidebar_view":46,"./views/topbar/friends_view":47,"./views/topbar/trigger_view":48,"./views/topbar_view":49}],22:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -825,9 +836,6 @@ var Profile = DS.Model.extend({
 
 module.exports = Profile;
 },{}],23:[function(require,module,exports){
-var Result = [];
-module.exports = Result;
-},{}],24:[function(require,module,exports){
 var Trip = DS.Model.extend({
 	uid: DS.attr('string'),
 	creator_uid: DS.attr('string'),
@@ -841,6 +849,15 @@ var Trip = DS.Model.extend({
 });
 
 module.exports = Trip;
+},{}],24:[function(require,module,exports){
+var Waypoint = DS.Model.extend({
+	sid: DS.attr('string'),
+	name: DS.attr('string'),
+	lat: DS.attr('string'),
+	lng: DS.attr('string')
+});
+
+module.exports = Waypoint;
 },{}],25:[function(require,module,exports){
 var AppSession = require('../config/session_manager');
 
@@ -1237,6 +1254,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'width': ("full"),
     'model_context': ("trip"),
     'search_key': ("c")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n	");
+  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
+  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
+    'menu_context': ("SidebarWaypoints"),
+    'icon': ("fontello-location"),
+    'width': ("400")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
   data.buffer.push("\n	");
@@ -2064,11 +2089,19 @@ var ResultView = Em.View.extend({
 	templateName: 'sidebar/search/result',
 	classNames: ['result'],
 	click: function() {
+		var self = this;
 		var map = this.get('controller.controllers.map').get('map');
-		var lat = this.get('content.location.lat');
-		var lng = this.get('content.location.lng');
+		var latlng = new google.maps.LatLng(self.get('content.location.lat'), self.get('content.location.lng'));
 		map.setZoom(12);
-		map.panTo(new google.maps.LatLng(lat,lng));
+		map.panTo(latlng);
+		var marker = new google.maps.Marker({
+      		position: latlng,
+      		map: map,
+      		title: this.get('content.name')
+  		});
+
+  		//now we create a temporary model in the store so that we can potentially save it out to the database should we want to:
+  		this.get('controller').send('cache', self.get('content'));
 	}
 });
 
