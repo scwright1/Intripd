@@ -1579,7 +1579,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<h5>");
+  data.buffer.push("<div class='return' ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "renderMenuElement", "SidebarSearch", "sidebar-menu", {hash:{},contexts:[depth0,depth0,depth0],types:["STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">&larr; Return to results</div>\n<h5>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "venue.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -2159,6 +2163,11 @@ var SearchView = Em.View.extend({
 	name: 'sidebar/search_view',
 	templateName: 'sidebar/search',
 	classNames: ['search-container'],
+	didInsertElement: function() {
+		var left = 0 - this.$().parent().width();
+        this.$().css('left', left + 'px');
+      	this.$().animate({'left': '0px'}, {duration: 200,queue: false});
+	},
 	willDestroyElement: function() {
 		var _this = this;
 		var clone = this.$().clone();
