@@ -1,12 +1,17 @@
 var DetailsController = Em.ObjectController.extend({
+	venue: null,
 	actions: {
 		pull: function() {
 			var self = this;
 			$.ajax({
-				url: '/api/waypoints',
+				url: '/api/search/foursquare',
 				dataType: 'json',
 				type: 'GET',
-				data: {id: self.get('id')}
+				data: {id: self.get('id')},
+				success: function(data) {
+					self.set('venue', data.response.venue);
+					console.log(self.get('venue'));
+				}
 			});
 		},
 		uncache: function() {

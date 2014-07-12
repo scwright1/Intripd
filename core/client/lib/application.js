@@ -416,7 +416,7 @@ var SearchController = Ember.ArrayController.extend({
 				var ll = center.lat()+','+center.lng();
 				$.ajax({
 					type: 'POST',
-					url: '/api/search',
+					url: '/api/search/foursquare',
 					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
@@ -621,14 +621,19 @@ var TripsController = Ember.ArrayController.extend({
 module.exports = TripsController;
 },{}],16:[function(require,module,exports){
 var DetailsController = Em.ObjectController.extend({
+	venue: null,
 	actions: {
 		pull: function() {
 			var self = this;
 			$.ajax({
-				url: '/api/waypoints',
+				url: '/api/search/foursquare',
 				dataType: 'json',
 				type: 'GET',
-				data: {id: self.get('id')}
+				data: {id: self.get('id')},
+				success: function(data) {
+					self.set('venue', data.response.venue);
+					console.log(self.get('venue'));
+				}
 			});
 		},
 		uncache: function() {
@@ -1574,10 +1579,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
+  data.buffer.push("<h5>");
   hashTypes = {};
   hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(" Hi");
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "venue.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h5>\n<h6>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "venue.location.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</h6>");
   return buffer;
   
 });

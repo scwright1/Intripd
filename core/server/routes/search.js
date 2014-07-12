@@ -3,7 +3,7 @@ var Session 		= require('../models/session'),
 	config			= require('../config')();
 
 module.exports = function(server) {
-	server.post('/api/search', Session.validate, function(req, res) {
+	server.post('/api/search/foursquare', Session.validate, function(req, res) {
 		var data	= req.body.term,
 			latlng	= req.body.ll,
 			intent	= req.body.intent,
@@ -24,6 +24,21 @@ module.exports = function(server) {
 		foursquare.getVenues(params, function(err, venues) {
 			if(!err) {
 				res.send(200, venues);
+			} else {
+				res.send(500, err);
+			}
+		});
+	});
+
+	server.get('/api/search/foursquare', Session.validate, function(req, res) {
+		var id = req.query.id,
+		params;
+		params = {
+			venue_id: id
+		};
+		foursquare.getVenue(params, function(err, venue) {
+			if(!err) {
+				res.send(200, venue);
 			} else {
 				res.send(500, err);
 			}

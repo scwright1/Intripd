@@ -81,7 +81,7 @@ var SearchController = Ember.ArrayController.extend({
 				var ll = center.lat()+','+center.lng();
 				$.ajax({
 					type: 'POST',
-					url: '/api/search',
+					url: '/api/search/foursquare',
 					data: {term: current, ll: ll, intent: self.get('scope')},
 					dataType: 'json',
 					success: function(data) {
