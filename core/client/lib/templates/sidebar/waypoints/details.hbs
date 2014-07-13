@@ -1,3 +1,21 @@
 <div class='return' {{action 'renderMenuElement' 'SidebarSearch' 'sidebar-menu'}}>&larr; Return to results</div>
-<h5>{{venue.name}}</h5>
-<h6>{{venue.location.address}}</h6>
+<div class='waypoint-result'>
+	<h5>{{venue.name}}</h5>
+	<h6>{{venue.location.address}}</h6>
+
+
+	<div class='add-to-trip'>
+		<button class='btn btn-sucess' {{bind-attr disabled='trip_exists'}} {{action 'addWaypoint'}}>Add To Trip</button>
+	</div>
+
+	<div class='loading-overlay gradient'>
+		<div class='cell'>
+			<div class='loader'>
+				<div></div>
+				<div></div>
+				<div></div>
+			</div>
+			<div class='info'><b>Fetching Details...</b></div>
+		</div>
+	</div>
+</div>

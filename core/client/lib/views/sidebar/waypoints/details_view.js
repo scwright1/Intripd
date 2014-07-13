@@ -2,10 +2,12 @@ var DetailsView = Em.View.extend({
 	templateName: 'sidebar/waypoints/details',
 	classNames: ['search-details-container'],
 	didInsertElement: function() {
+		this.get('controller').set('venue', null);
 		this.get('controller').send('pull');
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        this.$().children('.waypoint-result').children('.loading-overlay').css('display', 'table');
 	},
 	willDestroyElement: function() {
 		this.get('controller').send('uncache');

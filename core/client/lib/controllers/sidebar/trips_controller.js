@@ -1,6 +1,6 @@
 var TripsController = Ember.ArrayController.extend({
 	content: [],
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypoints'],
 	name: 'sidebar/trips_controller',
 	debug: false,
 	actions: {
@@ -9,6 +9,12 @@ var TripsController = Ember.ArrayController.extend({
 			if(!trip) {
 				//handle no trip error
 			} else {
+				//clear all previous waypoints
+				self.store.unloadAll('waypoint');
+				var controller = self.get('controllers.SidebarWaypoints');
+				var model = self.store.find('waypoint', {trip: trip._data.uid});
+				controller.set('model', model);
+				controller.send('plot');
 				//set the new active trip and close the menu
 				App.Session.set('user_active_trip', trip._data.uid);
 				$('#sidebar-menu').data('fill', false);

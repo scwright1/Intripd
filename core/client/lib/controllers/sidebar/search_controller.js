@@ -36,9 +36,9 @@ var SearchController = Ember.ArrayController.extend({
 	pending: function() {
 		//todo, processing div over search results
 		if(this.get('pending_searches') > 0) {
-			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'table');
+			$('#sidebar-menu > .search-container > .search-results > .loading-overlay').css('display', 'table');
 		} else {
-			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'none');
+			$('#sidebar-menu > .search-container > .search-results > .loading-overlay').css('display', 'none');
 		}
 	}.observes('pending_searches'),
 	updateScope: function() {

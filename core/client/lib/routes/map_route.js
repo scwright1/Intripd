@@ -9,7 +9,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				if(tuid) {
 					m = this.store.find(model, tuid);
 				} else {
-					m = this.store.find(model, App.Session.get('user_active_trip'));
+					m = this.store.find(model, {trip: App.Session.get('user_active_trip')});
 				}
 			} else if(search_key === 'wl') {
 				m = this.store.find(model, tuid);

@@ -371,9 +371,9 @@ var SearchController = Ember.ArrayController.extend({
 	pending: function() {
 		//todo, processing div over search results
 		if(this.get('pending_searches') > 0) {
-			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'table');
+			$('#sidebar-menu > .search-container > .search-results > .loading-overlay').css('display', 'table');
 		} else {
-			$('#sidebar-menu > .search-container > .search-results > .overlay').css('display', 'none');
+			$('#sidebar-menu > .search-container > .search-results > .loading-overlay').css('display', 'none');
 		}
 	}.observes('pending_searches'),
 	updateScope: function() {
@@ -591,7 +591,7 @@ module.exports = SidebarTripsDeleteController;
 },{}],15:[function(require,module,exports){
 var TripsController = Ember.ArrayController.extend({
 	content: [],
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypoints'],
 	name: 'sidebar/trips_controller',
 	debug: false,
 	actions: {
@@ -600,6 +600,12 @@ var TripsController = Ember.ArrayController.extend({
 			if(!trip) {
 				//handle no trip error
 			} else {
+				//clear all previous waypoints
+				self.store.unloadAll('waypoint');
+				var controller = self.get('controllers.SidebarWaypoints');
+				var model = self.store.find('waypoint', {trip: trip._data.uid});
+				controller.set('model', model);
+				controller.send('plot');
 				//set the new active trip and close the menu
 				App.Session.set('user_active_trip', trip._data.uid);
 				$('#sidebar-menu').data('fill', false);
@@ -622,8 +628,20 @@ module.exports = TripsController;
 },{}],16:[function(require,module,exports){
 var DetailsController = Em.ObjectController.extend({
 	venue: null,
+	init: function() {
+		if(App.Session.get('user_active_trip')) {
+			this.set('trip_exists', false);
+		} else {
+			this.set('trip_exists', true);
+		}
+	},
 	actions: {
 		pull: function() {
+			if(App.Session.get('user_active_trip')) {
+				this.set('trip_exists', false);
+			} else {
+				this.set('trip_exists', true);
+			}
 			var self = this;
 			$.ajax({
 				url: '/api/search/foursquare',
@@ -633,22 +651,54 @@ var DetailsController = Em.ObjectController.extend({
 				success: function(data) {
 					self.set('venue', data.response.venue);
 					console.log(self.get('venue'));
+					$('#sidebar-menu > .search-details-container > .waypoint-result > .loading-overlay').css('display', 'none');
 				}
 			});
 		},
 		uncache: function() {
 			//simple removal of waypoints from cache
 			this.store.unloadAll('waypoint');
+		},
+		addWaypoint: function() {
+			//at the moment, this can be simple
+			function f(model) {
+				model.set('trip', App.Session.get('user_active_trip'));
+				model.save().then(function() {
+					//maybe do something?
+				});
+			}
+			function r(reason) {
+				console.log(reason);
+			}
+			var self = this;
+			var point = this.get('store').find('waypoint', self.get('id'));
+			point.then(f,r);
 		}
 	}
 });
 
 module.exports = DetailsController;
 },{}],17:[function(require,module,exports){
-var WaypointsController = Ember.ObjectController.extend({
+var WaypointsController = Ember.ArrayController.extend({
+	content: [],
 	needs: ['map'],
 	name: 'sidebar/waypoints_controller',
-	debug: true
+	actions: {
+		plot: function() {
+			var self = this;
+			var data = this.get('content');
+			Ember.run.later(function(){
+				data.forEach(function(item){
+					var ll = new google.maps.LatLng(item._data.lat, item._data.lng);
+					var marker = new google.maps.Marker({
+			      		position: ll,
+			      		map: self.get('controllers.map').get('map'),
+			      		title: item._data.name
+			  		});
+				});
+			}, 500);
+		}
+	}
 });
 
 module.exports = WaypointsController;
@@ -880,7 +930,8 @@ module.exports = Trip;
 var Waypoint = DS.Model.extend({
 	name: DS.attr('string'),
 	lat: DS.attr('string'),
-	lng: DS.attr('string')
+	lng: DS.attr('string'),
+	trip: DS.attr('string')
 });
 
 module.exports = Waypoint;
@@ -983,7 +1034,7 @@ var MapRoute = App.AuthenticatedRoute.extend({
 				if(tuid) {
 					m = this.store.find(model, tuid);
 				} else {
-					m = this.store.find(model, App.Session.get('user_active_trip'));
+					m = this.store.find(model, {trip: App.Session.get('user_active_trip')});
 				}
 			} else if(search_key === 'wl') {
 				m = this.store.find(model, tuid);
@@ -1284,12 +1335,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'search_key': ("c")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
-  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0};
-  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING"};
+  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0,'model_context': depth0,'search_key': depth0};
+  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING",'model_context': "STRING",'search_key': "STRING"};
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
     'menu_context': ("SidebarWaypoints"),
     'icon': ("fontello-location"),
-    'width': ("400")
+    'width': ("400"),
+    'model_context': ("waypoint"),
+    'search_key': ("t")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
   data.buffer.push("\n	");
@@ -1447,7 +1500,7 @@ function program1(depth0,data) {
   hashContexts = {};
   stack2 = helpers.each.call(depth0, "result", "in", "results", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
-  data.buffer.push("\n		</div>\n		<!-- pending searches overlay -->\n		<div class='overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n			</div>\n		</div>\n	</div>");
+  data.buffer.push("\n		</div>\n		<!-- pending searches overlay -->\n		<div class='loading-overlay gradient'>\n			<div class='cell'>\n				<div class='loader'>\n					<div></div>\n					<div></div>\n					<div></div>\n				</div>\n				<div class='info'><b>Getting Results...</b></div>\n			</div>\n		</div>\n	</div>");
   return buffer;
   
 });
@@ -1548,7 +1601,7 @@ function program4(depth0,data) {
 Ember.TEMPLATES['sidebar/waypoints'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -1565,33 +1618,60 @@ function program1(depth0,data) {
   return buffer;
   }
 
+function program3(depth0,data) {
+  
+  var buffer = '', hashTypes, hashContexts;
+  data.buffer.push("\n	<p>");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("</p>\n");
+  return buffer;
+  }
+
   hashTypes = {};
   hashContexts = {};
   stack1 = helpers['if'].call(depth0, "debug", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  else { data.buffer.push(''); }
+  data.buffer.push("\n\n");
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  return buffer;
   
 });
 
 Ember.TEMPLATES['sidebar/waypoints/details'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashTypes, hashContexts, options, escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   data.buffer.push("<div class='return' ");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers.action.call(depth0, "renderMenuElement", "SidebarSearch", "sidebar-menu", {hash:{},contexts:[depth0,depth0,depth0],types:["STRING","STRING","STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push(">&larr; Return to results</div>\n<h5>");
+  data.buffer.push(">&larr; Return to results</div>\n<div class='waypoint-result'>\n	<h5>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "venue.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h5>\n<h6>");
+  data.buffer.push("</h5>\n	<h6>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "venue.location.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h6>");
+  data.buffer.push("</h6>\n\n\n	<div class='add-to-trip'>\n		<button class='btn btn-sucess' ");
+  hashContexts = {'disabled': depth0};
+  hashTypes = {'disabled': "STRING"};
+  options = {hash:{
+    'disabled': ("trip_exists")
+  },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers['bind-attr'] || depth0['bind-attr']),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "bind-attr", options))));
+  data.buffer.push(" ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "addWaypoint", {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">Add To Trip</button>\n	</div>\n\n	<div class='loading-overlay gradient'>\n		<div class='cell'>\n			<div class='loader'>\n				<div></div>\n				<div></div>\n				<div></div>\n			</div>\n			<div class='info'><b>Fetching Details...</b></div>\n		</div>\n	</div>\n</div>");
   return buffer;
   
 });
@@ -2378,10 +2458,12 @@ var DetailsView = Em.View.extend({
 	templateName: 'sidebar/waypoints/details',
 	classNames: ['search-details-container'],
 	didInsertElement: function() {
+		this.get('controller').set('venue', null);
 		this.get('controller').send('pull');
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        this.$().children('.waypoint-result').children('.loading-overlay').css('display', 'table');
 	},
 	willDestroyElement: function() {
 		this.get('controller').send('uncache');
