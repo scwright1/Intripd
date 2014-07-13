@@ -164,6 +164,7 @@ module.exports = SessionManager;
 var ApplicationController = Ember.ObjectController.extend({
 	profile: null,
 	trip: null,
+	needs: ['SidebarWaypoints'],
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
@@ -209,6 +210,11 @@ var ApplicationController = Ember.ObjectController.extend({
 		};
 		if(App.Session.get('user_active_trip')) {
 			trip = this.store.find('trip', App.Session.get('user_active_trip'));
+			this.store.unloadAll('waypoint');
+			var controller = this.get('controllers.SidebarWaypoints');
+			var model = this.store.find('waypoint', {trip: App.Session.get('user_active_trip')});
+			controller.set('model', model);
+			controller.send('plot');
 		}
 		return trip;
 	}.property(),
@@ -305,7 +311,8 @@ var IndexController = Ember.ObjectController.extend({
 module.exports = IndexController;
 },{}],8:[function(require,module,exports){
 var MapController = App.ApplicationController.extend({
-	map: null
+	map: null,
+	markers: []
 });
 
 module.exports = MapController;
@@ -685,6 +692,10 @@ var WaypointsController = Ember.ArrayController.extend({
 	name: 'sidebar/waypoints_controller',
 	actions: {
 		plot: function() {
+			var marker_index = this.get('controllers.map').get('markers');
+			for (var i = 0; i < marker_index.length; i++) {
+				marker_index[i].setMap(null);
+			}
 			var self = this;
 			var data = this.get('content');
 			Ember.run.later(function(){
@@ -695,6 +706,7 @@ var WaypointsController = Ember.ArrayController.extend({
 			      		map: self.get('controllers.map').get('map'),
 			      		title: item._data.name
 			  		});
+					marker_index.push(marker);
 				});
 			}, 500);
 		}
@@ -1601,7 +1613,7 @@ function program4(depth0,data) {
 Ember.TEMPLATES['sidebar/waypoints'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
+  var stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -1610,35 +1622,15 @@ function program1(depth0,data) {
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n	<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "view.name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</p>\n");
-  return buffer;
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	<p>");
-  hashTypes = {};
-  hashContexts = {};
-  data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("</p>\n");
   return buffer;
   }
 
   hashTypes = {};
   hashContexts = {};
-  stack1 = helpers['if'].call(depth0, "debug", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  stack1 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n\n");
-  hashTypes = {};
-  hashContexts = {};
-  stack1 = helpers.each.call(depth0, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  return buffer;
+  else { data.buffer.push(''); }
   
 });
 

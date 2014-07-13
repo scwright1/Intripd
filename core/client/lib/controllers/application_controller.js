@@ -1,6 +1,7 @@
 var ApplicationController = Ember.ObjectController.extend({
 	profile: null,
 	trip: null,
+	needs: ['SidebarWaypoints'],
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
@@ -46,6 +47,11 @@ var ApplicationController = Ember.ObjectController.extend({
 		};
 		if(App.Session.get('user_active_trip')) {
 			trip = this.store.find('trip', App.Session.get('user_active_trip'));
+			this.store.unloadAll('waypoint');
+			var controller = this.get('controllers.SidebarWaypoints');
+			var model = this.store.find('waypoint', {trip: App.Session.get('user_active_trip')});
+			controller.set('model', model);
+			controller.send('plot');
 		}
 		return trip;
 	}.property(),

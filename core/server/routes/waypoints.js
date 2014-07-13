@@ -22,7 +22,6 @@ module.exports = function(server) {
 					msg: data
 				});
 			} else {
-				console.log(data);
 				var ret = {
 					'waypoints': data
 				};

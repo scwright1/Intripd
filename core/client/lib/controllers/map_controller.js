@@ -1,5 +1,6 @@
 var MapController = App.ApplicationController.extend({
-	map: null
+	map: null,
+	markers: []
 });
 
 module.exports = MapController;
