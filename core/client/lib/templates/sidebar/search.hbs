@@ -6,6 +6,9 @@
 		</div>
 	</div>
 	<div class='search-results'>
+		<div class='custom-point'>
+			<button class='btn btn-info'>Add custom point...</button>
+		</div>
 		<div class='venues'>
 			{{#each result in results}}
 				{{view App.SidebarSearchResultView contentBinding='result'}}

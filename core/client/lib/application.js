@@ -1525,7 +1525,7 @@ function program1(depth0,data) {
     'checked': ("searchScope")
   },contexts:[],types:[],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
   data.buffer.push(escapeExpression(((stack1 = helpers.input || depth0.input),stack1 ? stack1.call(depth0, options) : helperMissing.call(depth0, "input", options))));
-  data.buffer.push("\n			<label class='tgl-btn' for='search_global_toggle'></label><span class='fontello-globe' style='float: right;'></span>\n		</div>\n	</div>\n	<div class='search-results'>\n		<div class='venues'>\n			");
+  data.buffer.push("\n			<label class='tgl-btn' for='search_global_toggle'></label><span class='fontello-globe' style='float: right;'></span>\n		</div>\n	</div>\n	<div class='search-results'>\n		<div class='custom-point'>\n			<button class='btn btn-info'>Add custom point...</button>\n		</div>\n		<div class='venues'>\n			");
   hashTypes = {};
   hashContexts = {};
   stack2 = helpers.each.call(depth0, "result", "in", "results", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0,depth0,depth0],types:["ID","ID","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
