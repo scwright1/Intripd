@@ -5,6 +5,9 @@ var ApplicationController = Ember.ObjectController.extend({
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
+	hasActiveTrip: function() {
+		return App.Session.hasActiveTrip();
+	}.property('App.Session.user_active_trip'),
 	profileChanged: function() {
 		var self = this;
 		var uid = App.Session.get('user_uid');

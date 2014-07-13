@@ -108,6 +108,10 @@ var SessionManager = Ember.Object.extend({
       return !Ember.isEmpty(this.get('user_auth_token')) && !Ember.isEmpty(this.get('user_uid'));
   	},
 
+    hasActiveTrip: function() {
+      return !Ember.isEmpty(this.get('user_active_trip'));
+    },
+
   	//update cookie if token changes 
   	tokenChanged: function() {
   		if(this.get('persist') === true) {
@@ -168,6 +172,9 @@ var ApplicationController = Ember.ObjectController.extend({
 	isAuthenticated: function() {
 		return App.Session.isAuthenticated();
 	}.property('App.Session.user_auth_token'),
+	hasActiveTrip: function() {
+		return App.Session.hasActiveTrip();
+	}.property('App.Session.user_active_trip'),
 	profileChanged: function() {
 		var self = this;
 		var uid = App.Session.get('user_uid');
@@ -1324,8 +1331,24 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES['sidebar'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', hashContexts, hashTypes, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, hashContexts, hashTypes, escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  var buffer = '', hashContexts, hashTypes;
+  data.buffer.push("\n	");
+  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0,'model_context': depth0,'search_key': depth0};
+  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING",'model_context': "STRING",'search_key': "STRING"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
+    'menu_context': ("SidebarWaypoints"),
+    'icon': ("fontello-location"),
+    'width': ("400"),
+    'model_context': ("waypoint"),
+    'search_key': ("t")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push("\n	");
+  return buffer;
+  }
 
   data.buffer.push("\n	<div class='sidebar-logo'>\n		<img src='img/logo-white.png' width='38px' height='38px' />\n	</div>\n\n	");
   data.buffer.push("\n	");
@@ -1347,15 +1370,10 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'search_key': ("c")
   },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
   data.buffer.push("\n	");
-  hashContexts = {'menu_context': depth0,'icon': depth0,'width': depth0,'model_context': depth0,'search_key': depth0};
-  hashTypes = {'menu_context': "STRING",'icon': "STRING",'width': "STRING",'model_context': "STRING",'search_key': "STRING"};
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "App.SidebarTriggerView", {hash:{
-    'menu_context': ("SidebarWaypoints"),
-    'icon': ("fontello-location"),
-    'width': ("400"),
-    'model_context': ("waypoint"),
-    'search_key': ("t")
-  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers['if'].call(depth0, "hasActiveTrip", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n	");
   data.buffer.push("\n	");
   data.buffer.push("\n	<div class='sidebar-accent'></div>");

@@ -20,6 +20,10 @@ var SessionManager = Ember.Object.extend({
       return !Ember.isEmpty(this.get('user_auth_token')) && !Ember.isEmpty(this.get('user_uid'));
   	},
 
+    hasActiveTrip: function() {
+      return !Ember.isEmpty(this.get('user_active_trip'));
+    },
+
   	//update cookie if token changes 
   	tokenChanged: function() {
   		if(this.get('persist') === true) {
