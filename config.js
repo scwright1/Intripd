@@ -30,6 +30,14 @@ var config = {
 			pw:		'~{5<+>crt1$YGr',
 			db: 	'IDB'
 		}
+		apps: {
+			FOURSQUARE: {
+				v:		'20140706',
+				id:		'TRLWJKI5WUSEHUDWHCSJPU240ZH4L0WMARTFZS2NCQSD34ML',
+				sec:	'JEWXW4JPUZ0A5SVD3HDKXVKAJ5B1AUH2GMRQA321KZNDI0QR',
+				calls:	5000
+			}
+		}
 	}
 };
 
