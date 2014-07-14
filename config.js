@@ -29,7 +29,7 @@ var config = {
 			user:	'mule',
 			pw:		'~{5<+>crt1$YGr',
 			db: 	'IDB'
-		}
+		},
 		apps: {
 			FOURSQUARE: {
 				v:		'20140706',
