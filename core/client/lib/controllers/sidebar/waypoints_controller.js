@@ -19,6 +19,9 @@ var WaypointsController = Ember.ArrayController.extend({
 			      		title: item._data.name
 			  		});
 					marker_index.push(marker);
+					google.maps.event.addListener(marker, 'click', function() {
+						self.send('renderMenuElement', 'SidebarWaypointsEdit', 'sidebar-menu', item);
+					});
 				});
 			}, 500);
 		}
