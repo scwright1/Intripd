@@ -1,0 +1,10 @@
+<div class='notification gradient'>
+	<div {{bind-attr class=':sider :gradient type'}}></div>
+	<div class='information'>
+		<div class='title'>{{title}}</div>
+		<div class='content'>{{message}}</div>
+		<div class='close' {{action clear on='click'}}>
+			<div class='fontello-cancel'></div>
+		</div>
+	</div>
+</div>
