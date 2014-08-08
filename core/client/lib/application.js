@@ -70,6 +70,8 @@ App.Router.map(function() {
 		this.route('register');
 	});
 
+	this.route('register');
+
 	this.resource('policies', function() {
 		this.route('tos');
 		this.route('privacy');
@@ -944,6 +946,7 @@ App.ApplicationView = require('./views/application_view');
 App.FooterView = require('./views/footer_view');
 App.IndexView = require('./views/index_view');
 App.MapView = require('./views/map_view');
+App.RegisterView = require('./views/register_view');
 App.SidebarView = require('./views/sidebar_view');
 App.TopbarView = require('./views/topbar_view');
 App.UtilsNotificationView = require('./views/utils/notification_view');
@@ -966,7 +969,7 @@ require('./config/routes');
 module.exports = App;
 
 
-},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/media_controller":10,"./controllers/sidebar/search/result_controller":11,"./controllers/sidebar/search_controller":12,"./controllers/sidebar/trips/create_controller":13,"./controllers/sidebar/trips/delete_controller":14,"./controllers/sidebar/trips_controller":15,"./controllers/sidebar/waypoints/details_controller":16,"./controllers/sidebar/waypoints/edit_controller":17,"./controllers/sidebar/waypoints_controller":18,"./controllers/sidebar_controller":19,"./controllers/topbar/friends_controller":20,"./controllers/topbar_controller":21,"./controllers/utils/notification_controller":22,"./controllers/utils/notifications_controller":23,"./helpers/tripHelper":24,"./models/profile":26,"./models/trip":27,"./models/waypoint":28,"./routes/application_route":29,"./routes/auth/login_route":30,"./routes/auth/register_route":31,"./routes/error_route":32,"./routes/map_route":33,"./routes/sidebar/trips_route":34,"./routes/topbar/friends_route":35,"./templates":36,"./views/application_view":37,"./views/footer_view":38,"./views/index_view":39,"./views/map_view":40,"./views/sidebar/media_view":41,"./views/sidebar/search/result_view":42,"./views/sidebar/search_view":43,"./views/sidebar/trigger_view":44,"./views/sidebar/trips/create_view":45,"./views/sidebar/trips/delete_view":46,"./views/sidebar/trips/entry_view":47,"./views/sidebar/trips_view":48,"./views/sidebar/waypoints/details_view":49,"./views/sidebar/waypoints/edit_view":50,"./views/sidebar/waypoints_view":51,"./views/sidebar_view":52,"./views/topbar/friends_view":53,"./views/topbar/trigger_view":54,"./views/topbar_view":55,"./views/utils/notification_view":56}],26:[function(require,module,exports){
+},{"./config/app":1,"./config/routes":2,"./controllers/application_controller":4,"./controllers/auth/login_controller":5,"./controllers/auth/register_controller":6,"./controllers/index_controller":7,"./controllers/map_controller":8,"./controllers/menu_controller":9,"./controllers/sidebar/media_controller":10,"./controllers/sidebar/search/result_controller":11,"./controllers/sidebar/search_controller":12,"./controllers/sidebar/trips/create_controller":13,"./controllers/sidebar/trips/delete_controller":14,"./controllers/sidebar/trips_controller":15,"./controllers/sidebar/waypoints/details_controller":16,"./controllers/sidebar/waypoints/edit_controller":17,"./controllers/sidebar/waypoints_controller":18,"./controllers/sidebar_controller":19,"./controllers/topbar/friends_controller":20,"./controllers/topbar_controller":21,"./controllers/utils/notification_controller":22,"./controllers/utils/notifications_controller":23,"./helpers/tripHelper":24,"./models/profile":26,"./models/trip":27,"./models/waypoint":28,"./routes/application_route":29,"./routes/auth/login_route":30,"./routes/auth/register_route":31,"./routes/error_route":32,"./routes/map_route":33,"./routes/sidebar/trips_route":34,"./routes/topbar/friends_route":35,"./templates":36,"./views/application_view":37,"./views/footer_view":38,"./views/index_view":39,"./views/map_view":40,"./views/register_view":41,"./views/sidebar/media_view":42,"./views/sidebar/search/result_view":43,"./views/sidebar/search_view":44,"./views/sidebar/trigger_view":45,"./views/sidebar/trips/create_view":46,"./views/sidebar/trips/delete_view":47,"./views/sidebar/trips/entry_view":48,"./views/sidebar/trips_view":49,"./views/sidebar/waypoints/details_view":50,"./views/sidebar/waypoints/edit_view":51,"./views/sidebar/waypoints_view":52,"./views/sidebar_view":53,"./views/topbar/friends_view":54,"./views/topbar/trigger_view":55,"./views/topbar_view":56,"./views/utils/notification_view":57}],26:[function(require,module,exports){
 var Profile = DS.Model.extend({
 	uid: DS.attr('string'),
 	firstName: DS.attr('string'),
@@ -1139,7 +1142,7 @@ module.exports = FriendsRoute;
 Ember.TEMPLATES['application'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, self=this, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, stack2, hashTypes, hashContexts, options, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
@@ -1151,6 +1154,18 @@ function program3(depth0,data) {
   
   
   data.buffer.push("More Information");
+  }
+
+function program5(depth0,data) {
+  
+  var buffer = '', stack1, hashTypes, hashContexts, options;
+  data.buffer.push("\n	");
+  hashTypes = {};
+  hashContexts = {};
+  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
+  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "utils/notifications", options) : helperMissing.call(depth0, "render", "utils/notifications", options))));
+  data.buffer.push("\n");
+  return buffer;
   }
 
   data.buffer.push("<div id='cookies' class='gradient'>We use cookies to deliver our services.  We assume you are happy with this, or you can ");
@@ -1176,8 +1191,8 @@ function program3(depth0,data) {
   data.buffer.push("\n");
   hashTypes = {};
   hashContexts = {};
-  options = {hash:{},contexts:[depth0],types:["STRING"],hashContexts:hashContexts,hashTypes:hashTypes,data:data};
-  data.buffer.push(escapeExpression(((stack1 = helpers.render || depth0.render),stack1 ? stack1.call(depth0, "utils/notifications", options) : helperMissing.call(depth0, "render", "utils/notifications", options))));
+  stack2 = helpers['if'].call(depth0, "isAuthenticated", {hash:{},inverse:self.noop,fn:self.program(5, program5, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   return buffer;
   
 });
@@ -1374,6 +1389,16 @@ function program9(depth0,data) {
   if(stack2 || stack2 === 0) { data.buffer.push(stack2); }
   data.buffer.push("\n	    </ul>\n  	</div>\n</nav>");
   return buffer;
+  
+});
+
+Ember.TEMPLATES['register'] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
+  
+
+
+  data.buffer.push("<section id='user-register-container'>\n	<div class='auth-form-container'>\n	</div>\n</section>");
   
 });
 
@@ -2360,6 +2385,13 @@ var MapView = Em.View.extend({
 
 module.exports = MapView;
 },{}],41:[function(require,module,exports){
+var RegisterView = Em.View.extend({
+	templateName: 'register',
+	classNames: ['content-container']
+});
+
+module.exports = RegisterView;
+},{}],42:[function(require,module,exports){
 var MediaView = Em.View.extend({
 	name: 'sidebar/media_view',
 	templateName: 'sidebar/media',
@@ -2367,7 +2399,7 @@ var MediaView = Em.View.extend({
 });
 
 module.exports = MediaView;
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 /**
  * SidebarSearchResultView
  */
@@ -2394,7 +2426,7 @@ var ResultView = Em.View.extend({
 });
 
 module.exports = ResultView;
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 var SearchView = Em.View.extend({
 	name: 'sidebar/search_view',
 	templateName: 'sidebar/search',
@@ -2417,7 +2449,7 @@ var SearchView = Em.View.extend({
 });
 
 module.exports = SearchView;
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 /**
  * Sidebar/trigger_view.js
  * View logic for the sidebar menu items to allow for insertion of the primary menus
@@ -2508,7 +2540,7 @@ var TriggerView = Em.View.extend({
 });
 
 module.exports = TriggerView;
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 var CreateView = Ember.View.extend({
 	templateName: 'sidebar/trips/create',
 	classNames: ['create-container'],
@@ -2536,7 +2568,7 @@ var CreateView = Ember.View.extend({
 });
 
 module.exports = CreateView;
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var DeleteView = Em.View.extend({
 	templateName: 'sidebar/trips/delete',
 	classNames: ['delete-container'],
@@ -2562,7 +2594,7 @@ var DeleteView = Em.View.extend({
 });
 
 module.exports = DeleteView;
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var EntryView = Ember.View.extend({
 	classNames: ['trip-box'],
 	mouseEnter: function() {
@@ -2586,7 +2618,7 @@ var EntryView = Ember.View.extend({
 });
 
 module.exports = EntryView;
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 var TripsView = Em.View.extend({
 	name: 'sidebar/trips_view',
 	templateName: 'sidebar/trips',
@@ -2609,7 +2641,7 @@ var TripsView = Em.View.extend({
 });
 
 module.exports = TripsView;
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 var DetailsView = Em.View.extend({
 	templateName: 'sidebar/waypoints/details',
 	classNames: ['search-details-container'],
@@ -2635,7 +2667,7 @@ var DetailsView = Em.View.extend({
 });
 
 module.exports = DetailsView;
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var EditView = Em.View.extend({
 	templateName: 'sidebar/waypoints/edit',
 	classNames: ['waypoint-edit-container'],
@@ -2657,7 +2689,7 @@ var EditView = Em.View.extend({
 });
 
 module.exports = EditView;
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 var WaypointsView = Em.View.extend({
 	name: 'sidebar/waypoints_view',
 	templateName: 'sidebar/waypoints',
@@ -2665,7 +2697,7 @@ var WaypointsView = Em.View.extend({
 });
 
 module.exports = WaypointsView;
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 var SidebarView = Em.View.extend({
 	templateName: 'sidebar',
 	elementId: 'sidebar',
@@ -2673,7 +2705,7 @@ var SidebarView = Em.View.extend({
 });
 
 module.exports = SidebarView;
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 var FriendsView = Em.View.extend({
 	name: 'topbar/friends_view',
 	templateName: 'topbar/friends',
@@ -2681,7 +2713,7 @@ var FriendsView = Em.View.extend({
 });
 
 module.exports = FriendsView;
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var TriggerView = Em.View.extend({
 	classNames: ['menu-item'],
 	template: Em.Handlebars.compile("<div {{bind-attr class='view.icon'}}></div>"),
@@ -2734,7 +2766,7 @@ var TriggerView = Em.View.extend({
 });
 
 module.exports = TriggerView;
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 var TopbarView = Em.View.extend({
 	templateName: 'topbar',
 	elementId: 'topbar',
@@ -2745,7 +2777,7 @@ var TopbarView = Em.View.extend({
 });
 
 module.exports = TopbarView;
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 var NotificationView = Em.View.extend({
 	templateName: 'utils/notification',
 	message: 'This is a message',

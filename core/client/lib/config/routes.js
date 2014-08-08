@@ -7,6 +7,8 @@ App.Router.map(function() {
 		this.route('register');
 	});
 
+	this.route('register');
+
 	this.resource('policies', function() {
 		this.route('tos');
 		this.route('privacy');
