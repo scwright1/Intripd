@@ -340,7 +340,7 @@ var MediaController = Ember.ObjectController.extend({
 module.exports = MediaController;
 },{}],11:[function(require,module,exports){
 var ResultController = Em.ObjectController.extend({
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypointDetails'],
 	content: [],
 	actions: {
 
@@ -350,7 +350,7 @@ var ResultController = Em.ObjectController.extend({
 module.exports = ResultController;
 },{}],12:[function(require,module,exports){
 var SearchController = Ember.ArrayController.extend({
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypointsDetails'],
 	search_term_cache: null,
 	search_timestamp: null,
 	waypointSearch: null,
@@ -508,6 +508,10 @@ var CreateController = Ember.ObjectController.extend({
 				var promise = trip.save();
 				promise.then(fulfill, reject);
 				function fulfill(model) {
+					var marker_index = self.get('controllers.map').get('markers');
+					for (var i = 0; i < marker_index.length; i++) {
+						marker_index[i].setMap(null);
+					}
 					App.Session.set('trip', model._data);
 					App.Session.set('user_active_trip', model._data.uid);
 					self.set('tripname', null);
@@ -644,6 +648,8 @@ module.exports = TripsController;
 },{}],16:[function(require,module,exports){
 var DetailsController = Em.ObjectController.extend({
 	venue: null,
+	marker: null,
+	needs: ['map'],
 	init: function() {
 		if(App.Session.get('user_active_trip')) {
 			this.set('trip_exists', false);
@@ -679,9 +685,14 @@ var DetailsController = Em.ObjectController.extend({
 			//at the moment, this can be simple
 			function f(model) {
 				model.set('trip', App.Session.get('user_active_trip'));
-				model.save().then(function() {
-					//maybe do something?
-				});
+				model.save();
+				var marker = self.get('marker');
+				if (marker.getAnimation() != null) {
+				    marker.setAnimation(null);
+				  } else {
+				    marker.setAnimation(google.maps.Animation.BOUNCE);
+				  }
+				var marker_array = self.get('controllers.map').get('markers');
 			}
 			function r(reason) {
 				console.log(reason);
@@ -1398,7 +1409,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   
 
 
-  data.buffer.push("<section id='user-register-container'>\n	<div class='auth-form-container'>\n	</div>\n</section>");
+  data.buffer.push("<section id='__auth-register_container'>\n	<div class='register-form_container'>\n	</div>\n</section>");
   
 });
 
@@ -1788,7 +1799,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '', hashTypes, hashContexts;
-  data.buffer.push("\n	<p>");
+  data.buffer.push("\n	<p ");
+  hashTypes = {};
+  hashContexts = {};
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "renderMenuElement", "SidebarWaypointsEdit", "sidebar-menu", "", {hash:{},contexts:[depth0,depth0,depth0,depth0],types:["STRING","STRING","STRING","ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  data.buffer.push(">");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
@@ -1844,15 +1859,15 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', hashTypes, hashContexts, escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<h5>");
+  data.buffer.push("<div class='waypoint-edit'>\n\n	<h5>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "name", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h5>\n<h6>");
+  data.buffer.push("</h5>\n	<h6>");
   hashTypes = {};
   hashContexts = {};
   data.buffer.push(escapeExpression(helpers._triageMustache.call(depth0, "location.address", {hash:{},contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
-  data.buffer.push("</h6>");
+  data.buffer.push("</h6>\n\n	</div>");
   return buffer;
   
 });
@@ -2421,6 +2436,7 @@ var ResultView = Em.View.extend({
 
   		//now we create a temporary model in the store so that we can potentially save it out to the database should we want to:
   		this.get('controller').send('cache', self.get('content'));
+  		this.get('controller.controllers.SidebarWaypointsDetails').set('marker', marker);
   		this.get('controller').send('renderMenuElement', 'SidebarWaypointsDetails', 'sidebar-menu', 'waypoint', 'wl', self.get('content.id'));
 	}
 });
@@ -2675,6 +2691,7 @@ var EditView = Em.View.extend({
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        this.$().children('.waypoint-result').children('.loading-overlay').css('display', 'table');
 	},
 	willDestroyElement: function() {
 		var _this = this;

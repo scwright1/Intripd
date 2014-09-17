@@ -41,6 +41,10 @@ var CreateController = Ember.ObjectController.extend({
 				var promise = trip.save();
 				promise.then(fulfill, reject);
 				function fulfill(model) {
+					var marker_index = self.get('controllers.map').get('markers');
+					for (var i = 0; i < marker_index.length; i++) {
+						marker_index[i].setMap(null);
+					}
 					App.Session.set('trip', model._data);
 					App.Session.set('user_active_trip', model._data.uid);
 					self.set('tripname', null);

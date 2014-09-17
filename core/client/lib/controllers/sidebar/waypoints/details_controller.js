@@ -1,5 +1,7 @@
 var DetailsController = Em.ObjectController.extend({
 	venue: null,
+	marker: null,
+	needs: ['map'],
 	init: function() {
 		if(App.Session.get('user_active_trip')) {
 			this.set('trip_exists', false);
@@ -35,9 +37,14 @@ var DetailsController = Em.ObjectController.extend({
 			//at the moment, this can be simple
 			function f(model) {
 				model.set('trip', App.Session.get('user_active_trip'));
-				model.save().then(function() {
-					//maybe do something?
-				});
+				model.save();
+				var marker = self.get('marker');
+				if (marker.getAnimation() != null) {
+				    marker.setAnimation(null);
+				  } else {
+				    marker.setAnimation(google.maps.Animation.BOUNCE);
+				  }
+				var marker_array = self.get('controllers.map').get('markers');
 			}
 			function r(reason) {
 				console.log(reason);

@@ -1,5 +1,5 @@
 var ResultController = Em.ObjectController.extend({
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypointDetails'],
 	content: [],
 	actions: {
 

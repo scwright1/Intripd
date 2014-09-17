@@ -1,5 +1,5 @@
 var SearchController = Ember.ArrayController.extend({
-	needs: ['map'],
+	needs: ['map', 'SidebarWaypointsDetails'],
 	search_term_cache: null,
 	search_timestamp: null,
 	waypointSearch: null,

@@ -5,6 +5,7 @@ var EditView = Em.View.extend({
 		var right = this.$().parent().width();
         this.$().css('left', right + 'px');
         this.$().animate({'left': '0px'}, {duration: 400,queue: false});
+        this.$().children('.waypoint-result').children('.loading-overlay').css('display', 'table');
 	},
 	willDestroyElement: function() {
 		var _this = this;
